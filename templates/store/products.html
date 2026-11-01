@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}المنتجات — ريمشي المتجر الطبي{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <div class="flex flex-col md:flex-row gap-8">
+
+    <!-- ── Filter Sidebar ─────────────────────────────────────────────── -->
+    <aside class="w-full md:w-72 shrink-0">
+      <form id="filter-form"
+        hx-get="{% url 'store:products' %}"
+        hx-target="#product-grid-container"
+        hx-trigger="change, keyup delay:300ms from:#search-input"
+        hx-indicator="#loading-indicator"
+        class="card p-5 space-y-6 sticky top-24">
+
+        <div class="flex items-center justify-between border-b pb-3" style="border-color: var(--border);">
+          <h3 class="font-bold text-base flex items-center gap-2">
+            <span>⚙️</span> الفلترة متعددة الأبعاد
+          </h3>
+          <a href="{% url 'store:products' %}" class="text-xs text-red-500 hover:underline">مسح الكل</a>
+        </div>
+
+        <!-- Search -->
+        <div>
+          <label class="block text-xs font-bold mb-1 opacity-70">البحث اللحظي:</label>
+          <input type="text" name="q" id="search-input" value="{{ search_q }}"
+            placeholder="اسم المنتج، الماركة، المادة..."
+            class="w-full text-xs p-2.5 rounded-xl border bg-transparent"
+            style="border-color: var(--border);">
+        </div>
+
+        <!-- Routine Step -->
+        <div>
+          <label class="block text-xs font-bold mb-2 opacity-70">خطوة الروتين:</label>
+          <select name="step" class="w-full text-xs p-2.5 rounded-xl border bg-transparent" style="border-color: var(--border);">
+            <option value="">جميع الخطوات</option>
+            <option value="1" {% if selected_step == '1' %}selected{% endif %}>1 — غسول منظف 🧴</option>
+            <option value="2" {% if selected_step == '2' %}selected{% endif %}>2 — تونر وموازنة 💦</option>
+            <option value="3" {% if selected_step == '3' %}selected{% endif %}>3 — سيروم وعلاج مركز 💊</option>
+            <option value="4" {% if selected_step == '4' %}selected{% endif %}>4 — مرطب ومجدد 🥛</option>
+            <option value="5" {% if selected_step == '5' %}selected{% endif %}>5 — واقي شمس ☀️</option>
+            <option value="6" {% if selected_step == '6' %}selected{% endif %}>6 — عناية خاصة / ماسك 🎭</option>
+          </select>
+        </div>
+
+        <!-- Skin Type -->
+        <div>
+          <label class="block text-xs font-bold mb-2 opacity-70">نوع البشرة:</label>
+          <select name="skin_type" class="w-full text-xs p-2.5 rounded-xl border bg-transparent" style="border-color: var(--border);">
+            <option value="">جميع أنواع البشرة</option>
+            {% for st in skin_types %}
+              <option value="{{ st.slug }}" {% if selected_skin_type == st.slug %}selected{% endif %}>{{ st.icon }} {{ st.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Skin Concern -->
+        <div>
+          <label class="block text-xs font-bold mb-2 opacity-70">المشكلة المستهدفة:</label>
+          <select name="concern" class="w-full text-xs p-2.5 rounded-xl border bg-transparent" style="border-color: var(--border);">
+            <option value="">جميع المشاكل</option>
+            {% for sc in skin_concerns %}
+              <option value="{{ sc.slug }}" {% if selected_concern == sc.slug %}selected{% endif %}>{{ sc.icon }} {{ sc.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Use Time -->
+        <div>
+          <label class="block text-xs font-bold mb-2 opacity-70">وقت الاستخدام:</label>
+          <div class="flex gap-2">
+            <label class="flex-1 text-center text-xs p-2 rounded-xl border cursor-pointer hover:border-emerald-500">
+              <input type="radio" name="use_time" value="" {% if not selected_use_time %}checked{% endif %} class="hidden">
+              الكل
+            </label>
+            <label class="flex-1 text-center text-xs p-2 rounded-xl border cursor-pointer hover:border-emerald-500">
+              <input type="radio" name="use_time" value="morning" {% if selected_use_time == 'morning' %}checked{% endif %} class="hidden">
+              ☀️ صباحي
+            </label>
+            <label class="flex-1 text-center text-xs p-2 rounded-xl border cursor-pointer hover:border-emerald-500">
+              <input type="radio" name="use_time" value="evening" {% if selected_use_time == 'evening' %}checked{% endif %} class="hidden">
+              🌙 مسائي
+            </label>
+          </div>
+        </div>
+
+        <!-- Safety Toggles -->
+        <div class="space-y-2 pt-2 border-t" style="border-color: var(--border);">
+          <label class="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+            <input type="checkbox" name="safe_pregnancy" value="1" {% if selected_safe_pregnancy == '1' %}checked{% endif %} class="rounded">
+            <span>🤰 آمن للحمل والرضاعة فقط</span>
+          </label>
+          <label class="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+            <input type="checkbox" name="fragrance_free" value="1" {% if selected_fragrance_free == '1' %}checked{% endif %} class="rounded">
+            <span>🌿 خالٍ من العطور (للبشرة الحساسة)</span>
+          </label>
+        </div>
+
+        <!-- Sorting -->
+        <div>
+          <label class="block text-xs font-bold mb-1 opacity-70">الترتيب حسب:</label>
+          <select name="sort" class="w-full text-xs p-2.5 rounded-xl border bg-transparent" style="border-color: var(--border);">
+            <option value="step" {% if sort_by == 'step' %}selected{% endif %}>خطوة الروتين (1 إلى 6)</option>
+            <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>السعر: من الأقل للأعلى</option>
+            <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>السعر: من الأعلى للأقل</option>
+            <option value="hydration" {% if sort_by == 'hydration' %}selected{% endif %}>أعلى نسبة ترطيب</option>
+          </select>
+        </div>
+      </form>
+    </aside>
+
+    <!-- ── Products Grid & Results ────────────────────────────────────── -->
+    <main class="flex-1">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-black" style="color: var(--text);">صيدلية ريمشي الجلدية</h1>
+          <p class="text-xs opacity-60">جميع المنتجات أصلية 100% ومختبرة سريرياً</p>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" class="htmx-indicator items-center gap-2 text-xs font-bold text-emerald-600">
+          <svg class="animate-spin h-4 w-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+          جاري التحديث اللحظي...
+        </div>
+      </div>
+
+      <div id="product-grid-container">
+        {% include "store/partials/product_grid.html" %}
+      </div>
+    </main>
+
+  </div>
+</div>
+{% endblock %}
+

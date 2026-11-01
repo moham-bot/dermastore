@@ -1,0 +1,14 @@
+<a href="{% url 'store:'|add:url %}" class="card p-6 flex flex-col gap-3 group hover:border-emerald-500 transition-colors">
+  <div class="flex items-center gap-3">
+    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform" style="background: var(--bg);">
+      {{ icon }}
+    </div>
+    <h3 class="font-bold text-lg" style="color: var(--text);">{{ title }}</h3>
+  </div>
+  <p class="text-xs opacity-70 leading-relaxed">{{ desc }}</p>
+  <div class="mt-auto pt-2 flex items-center gap-1 text-xs font-bold" style="color: var(--primary);">
+    <span>ابدأ الآن</span>
+    <span>←</span>
+  </div>
+</a>
+

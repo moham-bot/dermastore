@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static store_tags %}
+{% block title %}مختبر فحص التوافق الكيميائي — ريمشي{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+  <div class="text-center max-w-2xl mx-auto mb-10">
+    <div class="text-5xl mb-2">⚗️</div>
+    <span class="text-xs px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold uppercase tracking-wider">
+      أنبوب الاختبار الافتراضي
+    </span>
+    <h1 class="text-3xl font-black mt-2 mb-2" style="color: var(--text);">مختبر فحص توافق المنتجات الفوري</h1>
+    <p class="text-xs opacity-60">اختر منتجين أو أكثر لفحص موادهما الفعالة والتأكد من عدم وجود أي تعارض كيميائي قبل دمجهما.</p>
+  </div>
+
+  <div class="card p-6 mb-8">
+    <form hx-get="{% url 'store:check_compatibility' %}"
+      hx-target="#compatibility-result"
+      hx-trigger="change"
+      class="space-y-4">
+
+      <h3 class="font-bold text-sm mb-3">اختر المنتجات المراد فحص توافقها معاً (اختر منتجين على الأقل):</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-80 overflow-y-auto p-2 border rounded-xl" style="border-color: var(--border);">
+        {% for product in products %}
+        <label class="card p-2.5 flex items-center gap-2 cursor-pointer hover:border-emerald-500 text-xs">
+          <input type="checkbox" name="products" value="{{ product.id }}" class="rounded">
+          <div class="truncate">
+            <div class="font-bold truncate">{{ product.name }}</div>
+            <div class="text-[10px] opacity-60">{{ product.brand }}</div>
+          </div>
+        </label>
+        {% endfor %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Results -->
+  <div id="compatibility-result">
+    <div class="card p-8 text-center opacity-60">
+      <div class="text-4xl mb-2">🧪</div>
+      <p class="text-xs">حدد منتجين أو ثلاثة من الأعلى ليقوم المحرك بفحص التوافق الكيميائي فورياً.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

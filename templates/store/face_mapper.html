@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static store_tags %}
+{% block title %}خريطة الوجه التشخيصية التفاعلية — ريمشي{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-12" x-data="{ activeZone: 't_zone' }">
+  <div class="text-center max-w-2xl mx-auto mb-10">
+    <div class="text-5xl mb-2">🗺️</div>
+    <h1 class="text-3xl font-black mb-2" style="color: var(--text);">خريطة الوجه التشخيصية التفاعلية</h1>
+    <p class="text-xs opacity-60">اضغط على أي منطقة في خريطة الوجه لاكتشاف المشاكل الشائعة فيها وعلاجها الموضعي (Multi-Masking).</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+
+    <!-- ── Interactive SVG Face Diagram ────────────────────────────────── -->
+    <div class="card p-6 flex flex-col items-center">
+      <h3 class="font-bold text-sm mb-4">انقر على منطقة الوجه:</h3>
+      <div class="w-64 h-80 relative flex items-center justify-center">
+        <svg viewBox="0 0 300 360" width="100%" height="100%" class="cursor-pointer">
+          <!-- Face Contour -->
+          <ellipse cx="150" cy="180" rx="110" ry="145" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+          
+          <!-- T-Zone (Forehead & Nose) -->
+          <path d="M 65 100 Q 150 70 235 100 L 220 135 L 170 135 L 170 240 L 130 240 L 130 135 L 80 135 Z"
+            :fill="activeZone === 't_zone' ? '#10b981' : '#e2e8f0'"
+            opacity="0.8"
+            stroke="#10b981"
+            stroke-width="2"
+            @click="activeZone = 't_zone'"
+            hx-get="{% url 'store:face_mapper' %}?zone=t_zone"
+            hx-target="#zone-results"
+            class="transition-colors hover:opacity-100"/>
+          <text x="150" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">منطقة T</text>
+
+          <!-- U-Zone (Cheeks & Jaw) -->
+          <path d="M 50 160 Q 60 270 150 310 Q 240 270 250 160 L 220 170 Q 200 250 150 280 Q 100 250 80 170 Z"
+            :fill="activeZone === 'u_zone' ? '#3b82f6' : '#e2e8f0'"
+            opacity="0.8"
+            stroke="#3b82f6"
+            stroke-width="2"
+            @click="activeZone = 'u_zone'"
+            hx-get="{% url 'store:face_mapper' %}?zone=u_zone"
+            hx-target="#zone-results"
+            class="transition-colors hover:opacity-100"/>
+          <text x="150" y="275" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">منطقة U</text>
+
+          <!-- Eyes -->
+          <ellipse cx="110" cy="165" rx="22" ry="14"
+            :fill="activeZone === 'eye_area' ? '#a855f7' : '#f1f5f9'"
+            stroke="#a855f7" stroke-width="1.5"
+            @click="activeZone = 'eye_area'"
+            hx-get="{% url 'store:face_mapper' %}?zone=eye_area"
+            hx-target="#zone-results"
+            class="transition-colors hover:opacity-100"/>
+          <ellipse cx="190" cy="165" rx="22" ry="14"
+            :fill="activeZone === 'eye_area' ? '#a855f7' : '#f1f5f9'"
+            stroke="#a855f7" stroke-width="1.5"
+            @click="activeZone = 'eye_area'"
+            hx-get="{% url 'store:face_mapper' %}?zone=eye_area"
+            hx-target="#zone-results"
+            class="transition-colors hover:opacity-100"/>
+          <text x="150" y="170" text-anchor="middle" font-size="10" font-weight="bold" fill="#64748b">محيط العين</text>
+
+          <!-- Mouth line -->
+          <path d="M 125 255 Q 150 270 175 255" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <!-- Quick zone buttons -->
+      <div class="flex flex-wrap gap-2 mt-4 justify-center">
+        <button @click="activeZone = 't_zone'" hx-get="{% url 'store:face_mapper' %}?zone=t_zone" hx-target="#zone-results"
+          class="text-xs px-3 py-1.5 rounded-xl border font-bold"
+          :class="activeZone === 't_zone' ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-transparent'">
+          ✨ منطقة T (الجبين والأنف)
+        </button>
+        <button @click="activeZone = 'u_zone'" hx-get="{% url 'store:face_mapper' %}?zone=u_zone" hx-target="#zone-results"
+          class="text-xs px-3 py-1.5 rounded-xl border font-bold"
+          :class="activeZone === 'u_zone' ? 'bg-blue-500 text-white border-blue-500' : 'bg-transparent'">
+          💧 منطقة U (الخدين والفك)
+        </button>
+        <button @click="activeZone = 'eye_area'" hx-get="{% url 'store:face_mapper' %}?zone=eye_area" hx-target="#zone-results"
+          class="text-xs px-3 py-1.5 rounded-xl border font-bold"
+          :class="activeZone === 'eye_area' ? 'bg-purple-500 text-white border-purple-500' : 'bg-transparent'">
+          👁️ محيط العينين
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Right: Zone Details & Products ──────────────────────────────── -->
+    <div id="zone-results" class="md:col-span-2">
+      {% include "store/partials/face_mapper_results.html" %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,57 @@
+{% if decoded %}
+<div class="card p-6 space-y-6">
+  <div class="flex items-center justify-between pb-4 border-b" style="border-color: var(--border);">
+    <h3 class="font-bold text-base">نتيجة التحليل الصيدلاني ({{ decoded|length }} مكون):</h3>
+    <div class="flex gap-2 text-[10px]">
+      <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">● مادة فعالة معروفة</span>
+      <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">● مقشر / نشط</span>
+      <span class="px-2 py-0.5 rounded-full bg-red-100 text-red-800 font-bold">● تنبيه تحسس</span>
+      <span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-800">● مادة مساعدة</span>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap gap-2">
+    {% for item in decoded %}
+      {% if item.type == 'known' %}
+        <span class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-bold"
+          title="{{ item.info.mechanism }}">
+          ✨ {{ item.info.name_ar }} ({{ item.name }})
+        </span>
+      {% elif item.type == 'active' %}
+        <span class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold">
+          ⚡ {{ item.name }}
+        </span>
+      {% elif item.type == 'caution' %}
+        <span class="px-3 py-1.5 rounded-xl bg-red-50 border border-red-300 text-red-900 text-xs font-bold"
+          title="قد يسبب تحسساً للبشرة شديدة الحساسية">
+          ⚠️ {{ item.name }}
+        </span>
+      {% else %}
+        <span class="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 text-xs">
+          {{ item.name }}
+        </span>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Detailed Known Ingredients breakdown -->
+  <div class="pt-4 border-t space-y-3" style="border-color: var(--border);">
+    <h4 class="font-bold text-xs uppercase opacity-70">شرح المواد الفعالة الرئيسية:</h4>
+    <div class="space-y-2">
+      {% for item in decoded %}
+        {% if item.info %}
+        <div class="p-3 rounded-xl bg-emerald-50/50 border border-emerald-100 text-xs">
+          <div class="font-bold text-emerald-900">{{ item.info.name_ar }} — {{ item.info.name_en }} ({{ item.info.get_category_display }})</div>
+          <div class="opacity-80 text-[11px] mt-0.5">{{ item.info.mechanism }}</div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% elif inci_text %}
+<div class="card p-6 text-center text-xs opacity-60">
+  لم نتمكن من تحليل النص المدخل، تأكد من فصل المكونات بفواصل.
+</div>
+{% endif %}
+

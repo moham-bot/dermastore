@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static store_tags %}
+{% block title %}مولّد جدول التدوير الليلي للبشرة (Skin Cycling) — ريمشي{% endblock %}
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-12">
+  <div class="text-center max-w-2xl mx-auto mb-10">
+    <div class="text-5xl mb-2">🌙</div>
+    <span class="text-xs px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 font-bold uppercase tracking-wider">
+      البروتوكول السريري العالمي
+    </span>
+    <h1 class="text-3xl font-black mt-2 mb-2" style="color: var(--text);">مولّد جدول التدوير الليلي للبشرة (4-Night Skin Cycling)</h1>
+    <p class="text-xs opacity-60">
+      استراتيجية أطباء الجلد المعتمدة دولياً لتجديد خلايا البشرة بالريتينول والمقشرات دون الإضرار بالحاجز الواقي.
+    </p>
+  </div>
+
+  <!-- The 4-Night Schedule Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+
+    <!-- Night 1: Exfoliation -->
+    <div class="card p-5 border-t-4 border-amber-500 flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-amber-600">الليلة الأولى</span>
+        <span class="text-2xl">✨</span>
+      </div>
+      <h3 class="font-black text-base">ليلة التقشير (Exfoliation)</h3>
+      <p class="text-[11px] opacity-70 leading-relaxed">
+        إزالة خلايا الجلد الميتة وفتح المسام وتهيئة البشرة لامتصاص أعمق في الليلة التالية.
+      </p>
+      <div class="mt-auto pt-3 border-t text-xs space-y-1" style="border-color: var(--border);">
+        <div class="font-bold opacity-80">الروتين الموصى به:</div>
+        <div class="text-[11px]">1. غسول لطيف</div>
+        <div class="text-[11px] font-bold text-amber-700">2. مقشر AHA أو BHA</div>
+        <div class="text-[11px]">3. مرطب خفيف</div>
+      </div>
+    </div>
+
+    <!-- Night 2: Retinol -->
+    <div class="card p-5 border-t-4 border-purple-500 flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-purple-600">الليلة الثانية</span>
+        <span class="text-2xl">💊</span>
+      </div>
+      <h3 class="font-black text-base">ليلة الريتينول (Retinoid)</h3>
+      <p class="text-[11px] opacity-70 leading-relaxed">
+        تحفيز إنتاج الكولاجين وتسريع دوران الخلايا ومكافحة التجاعيد والتصبغات.
+      </p>
+      <div class="mt-auto pt-3 border-t text-xs space-y-1" style="border-color: var(--border);">
+        <div class="font-bold opacity-80">الروتين الموصى به:</div>
+        <div class="text-[11px]">1. غسول لطيف</div>
+        <div class="text-[11px] font-bold text-purple-700">2. سيروم ريتينول بحجم بازلاء</div>
+        <div class="text-[11px]">3. مرطب مغذٍ بالسيراميد</div>
+      </div>
+    </div>
+
+    <!-- Night 3: Recovery -->
+    <div class="card p-5 border-t-4 border-emerald-500 flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-emerald-600">الليلة الثالثة</span>
+        <span class="text-2xl">🛡️</span>
+      </div>
+      <h3 class="font-black text-base">ليلة الترميم (Recovery 1)</h3>
+      <p class="text-[11px] opacity-70 leading-relaxed">
+        إراحة البشرة وترميم الحاجز الجلدي وتجديد الدهون الأساسية (السيراميد).
+      </p>
+      <div class="mt-auto pt-3 border-t text-xs space-y-1" style="border-color: var(--border);">
+        <div class="font-bold opacity-80">الروتين الموصى به:</div>
+        <div class="text-[11px]">1. غسول مرطب</div>
+        <div class="text-[11px] font-bold text-emerald-700">2. سيروم هيالورونيك/بانثينول</div>
+        <div class="text-[11px]">3. مرطب سيراميد مكثف</div>
+      </div>
+    </div>
+
+    <!-- Night 4: Deep Recovery -->
+    <div class="card p-5 border-t-4 border-sky-500 flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-sky-600">الليلة الرابعة</span>
+        <span class="text-2xl">💧</span>
+      </div>
+      <h3 class="font-black text-base">ليلة الراحة (Recovery 2)</h3>
+      <p class="text-[11px] opacity-70 leading-relaxed">
+        استكمال بناء الحاجز الدهني لضمان عدم حدوث أي جفاف أو تحسس قبل دورة التقشير القادمة.
+      </p>
+      <div class="mt-auto pt-3 border-t text-xs space-y-1" style="border-color: var(--border);">
+        <div class="font-bold opacity-80">الروتين الموصى به:</div>
+        <div class="text-[11px]">1. غسول مرطب</div>
+        <div class="text-[11px] font-bold text-sky-700">2. سيروم مرطب مهدئ</div>
+        <div class="text-[11px]">3. كريم مرطب غني</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Static Daily Morning Routine -->
+  <div class="card p-6 bg-amber-50/50 border border-amber-200 mb-8">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="text-2xl">☀️</span>
+      <h3 class="font-bold text-base text-amber-900">القاعدة الذهبية الصباحية الثابتة كل يوم:</h3>
+    </div>
+    <p class="text-xs text-amber-800 leading-relaxed">
+      بغض النظر عن ليلة الأمس؛ كل صباح يتطلب حصراً: <strong>غسول لطيف ← سيروم مضاد أكسدة (مثل فيتامين سي أو نياسيناميد) ← مرطب خفيف ← واقي شمس SPF 50+ إلزامي!</strong>
+    </p>
+  </div>
+
+  <div class="text-center">
+    <a href="{% url 'store:products' %}" class="btn-primary text-xs py-3 px-6">
+      تصفح منتجات التقشير والريتينول والمرطبات لجدولك ←
+    </a>
+  </div>
+</div>
+{% endblock %}
+

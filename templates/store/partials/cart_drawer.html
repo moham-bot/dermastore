@@ -1,0 +1,129 @@
+{% load static %}
+<div class="h-full flex flex-col p-6" style="background: var(--bg-card); color: var(--text);">
+  <!-- Header -->
+  <div class="flex items-center justify-between pb-4 border-b" style="border-color: var(--border);">
+    <div class="flex items-center gap-2">
+      <span class="text-2xl">🛍️</span>
+      <h3 class="font-black text-xl">سلة المشتريات الذكية</h3>
+      <span class="text-xs px-2 py-0.5 rounded-full font-bold" style="background: var(--primary); color: #fff;">
+        {{ cart_count|default:0 }}
+      </span>
+    </div>
+    <button @click="cartOpen = false" class="p-2 rounded-lg opacity-70 hover:opacity-100 text-lg">✕</button>
+  </div>
+
+  <!-- Gamified gift bar -->
+  {% if cart_analysis.gift_threshold is not None %}
+  <div class="my-4 p-3 rounded-xl border text-xs" style="background: var(--bg); border-color: var(--border);">
+    <div class="flex justify-between font-bold mb-1.5">
+      <span>🎁 هدية الروتين المتكامل:</span>
+      <span>{{ cart_analysis.gift_threshold }}%</span>
+    </div>
+    <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+      <div class="h-full transition-all duration-500 rounded-full" style="width: {{ cart_analysis.gift_threshold }}%; background: var(--primary);"></div>
+    </div>
+    <p class="mt-1 opacity-60 text-[11px]">
+      {% if cart_analysis.gift_threshold >= 100 %}
+        🎉 مبروك! حصلت على جدول عناية رقمي مخصص مجاناً مع طلبك.
+      {% else %}
+        أضف منتجات أخرى لتصل إلى 4 خطوات روتين وتحصل على جدول عناية مجاني!
+      {% endif %}
+    </p>
+  </div>
+  {% endif %}
+
+  <!-- Missing Sunscreen Warning -->
+  {% if cart_analysis.missing_sunscreen %}
+  <div class="mb-3 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-start gap-2">
+    <span class="text-lg">⚠️</span>
+    <div>
+      <span class="font-bold">تنبيه صيدلاني:</span>
+      سلتك تحتوي على مقشر أو مواد فعالة تتطلب واقياً شمسياً صباحاً لحماية البشرة من التصبغ.
+      <a href="{% url 'store:products' %}?step=5" class="block font-bold text-amber-900 underline mt-1">اختر واقي شمس مناسب ←</a>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Chemical Conflicts in Cart -->
+  {% if cart_analysis.conflicts %}
+  <div class="mb-3 p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs">
+    <div class="font-bold flex items-center gap-1.5 mb-1">
+      <span>⚠️</span>
+      <span>رادار التعارضات الكيميائية:</span>
+    </div>
+    {% for conf in cart_analysis.conflicts %}
+    <div class="mt-1 pt-1 border-t border-red-100">
+      <div class="font-bold text-red-900">{{ conf.product_a }} ⚡ {{ conf.product_b }}</div>
+      <div class="opacity-80 text-[11px]">{{ conf.reason }}</div>
+      <div class="text-[11px] font-semibold text-emerald-800 mt-0.5">القاعدة: {{ conf.safe_usage }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Cart Items List (Sorted by Routine Step) -->
+  <div class="flex-1 overflow-y-auto space-y-3 my-3 pr-1">
+    {% if cart_items_list %}
+      <div class="text-[11px] font-bold opacity-60 mb-1">✨ المنتجات مرتبة تلقائياً بحسب خطوات الاستخدام اليومي:</div>
+      {% for item in cart_items_list %}
+      <div class="card p-3 flex gap-3 items-center relative">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden" style="background: {{ item.package_color }}22;">
+          {% if item.image_url %}
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-full h-full object-cover">
+          {% else %}
+            <span class="text-xl">🧴</span>
+          {% endif %}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="text-[10px] px-1.5 py-0.5 rounded font-bold" style="background: var(--bg); border: 1px solid var(--border);">
+              الخطوة {{ item.routine_step }}
+            </span>
+            <span class="text-[11px] opacity-60">{{ item.brand }}</span>
+          </div>
+          <div class="font-bold text-xs truncate" style="color: var(--text);">{{ item.name }}</div>
+          <div class="text-xs font-black mt-1" style="color: var(--primary);">
+            {{ item.subtotal|floatformat:0 }} {{ current_currency_symbol }}
+            <span class="text-[10px] opacity-50 font-normal">({{ item.price|floatformat:0 }} × {{ item.quantity }})</span>
+          </div>
+        </div>
+        <button hx-post="{% url 'store:cart_remove' item.product_id %}"
+          hx-target="#cart-drawer > div"
+          hx-swap="innerHTML"
+          hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+          class="p-1.5 rounded-lg opacity-40 hover:opacity-100 hover:bg-red-50 hover:text-red-600 transition"
+          title="حذف">
+          🗑️
+        </button>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="h-64 flex flex-col items-center justify-center text-center opacity-50 gap-2">
+        <span class="text-5xl">🛒</span>
+        <p class="font-bold text-sm">سلتك فارغة حالياً</p>
+        <a href="{% url 'store:products' %}" @click="cartOpen = false" class="btn-primary text-xs mt-2">تصفح المنتجات</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Footer Summary -->
+  {% if cart_items_list %}
+  <div class="pt-4 border-t space-y-3" style="border-color: var(--border);">
+    <div class="flex justify-between items-center text-sm">
+      <span class="opacity-70">المجموع الكلي:</span>
+      <span class="font-black text-xl" style="color: var(--primary);">{{ cart_total|floatformat:0 }} {{ current_currency_symbol }}</span>
+    </div>
+    <div class="flex gap-2">
+      <a href="{% url 'store:prescription_card' %}" target="_blank"
+        class="btn-outline text-xs flex-1 text-center py-2.5">
+        🖨️ طباعة الروتين
+      </a>
+      <a href="{% url 'store:checkout' %}"
+        class="btn-primary text-xs flex-1 text-center py-2.5">
+        إتمام الطلب ←
+      </a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+

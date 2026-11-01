@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static store_tags %}
+{% block title %}محلل قوائم المكونات الذكي (INCI Decoder) — ريمشي{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+  <div class="text-center max-w-2xl mx-auto mb-10">
+    <div class="text-5xl mb-2">🔬</div>
+    <span class="text-xs px-3 py-1 rounded-full bg-sky-100 text-sky-800 font-bold uppercase tracking-wider">
+      الشفافية السريرية للمكونات
+    </span>
+    <h1 class="text-3xl font-black mt-2 mb-2" style="color: var(--text);">محلل قوائم المكونات الذكي (INCI Decoder)</h1>
+    <p class="text-xs opacity-60">الصق قائمة مكونات أي منتج أو اختر منتجاً من المتجر لفك رموز الأسماء العلمية الصعبة بالعربية.</p>
+  </div>
+
+  <div class="card p-6 mb-8">
+    <form hx-get="{% url 'store:inci_decoder' %}"
+      hx-target="#inci-result"
+      hx-trigger="submit"
+      class="space-y-4">
+
+      <div>
+        <label class="block text-xs font-bold mb-1 opacity-70">اختر منتجاً جاهزاً من المتجر:</label>
+        <select name="product_id"
+          hx-get="{% url 'store:inci_decoder' %}"
+          hx-target="#inci-result"
+          class="w-full text-xs p-3 rounded-xl border bg-transparent"
+          style="border-color: var(--border);">
+          <option value="">-- أو اختر منتجاً من القائمة --</option>
+          {% for p in products_with_inci %}
+          <option value="{{ p.id }}">{{ p.brand }} — {{ p.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="text-center text-xs opacity-50 font-bold">— أو —</div>
+
+      <div>
+        <label class="block text-xs font-bold mb-1 opacity-70">الصق قائمة المكونات (مفصولة بفواصل):</label>
+        <textarea name="inci_text" rows="3" placeholder="Water, Niacinamide, Glycerin, Salicylic Acid, Ceramide NP..."
+          class="w-full text-xs p-3 rounded-xl border bg-transparent font-mono"
+          style="border-color: var(--border);">{{ inci_text }}</textarea>
+      </div>
+
+      <button type="submit" class="btn-primary text-xs py-2.5 px-6">
+        🔍 تحليل وفك رموز المكونات بالعربية
+      </button>
+    </form>
+  </div>
+
+  <div id="inci-result">
+    {% include "store/partials/inci_result.html" %}
+  </div>
+</div>
+{% endblock %}
+

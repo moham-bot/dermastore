@@ -1,0 +1,120 @@
+{% load static store_tags %}
+<!-- Product Card Partial -->
+<div class="card overflow-hidden group"
+  x-data="{ imageError: false }"
+  hx-boost="true">
+
+  <!-- Image Area -->
+  <div class="relative overflow-hidden" style="height: 220px; background: var(--bg);">
+    {% if product.get_image_url %}
+      <img src="{{ product.get_image_url }}"
+        alt="{{ product.name }}"
+        class="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+        @error="imageError = true"
+        x-show="!imageError"
+        loading="lazy">
+      <!-- Fallback SVG if image fails -->
+      <div x-show="imageError" class="w-full h-full flex items-center justify-center">
+        {{ product|svg_placeholder }}
+      </div>
+    {% else %}
+      <!-- Dynamic SVG Placeholder -->
+      <div class="w-full h-full flex items-center justify-center">
+        {{ product|svg_placeholder }}
+      </div>
+    {% endif %}
+
+    <!-- Badge -->
+    {% if product.badge %}
+    <div class="absolute top-3 right-3">
+      <span class="text-xs font-bold px-3 py-1 rounded-full"
+        style="background: var(--primary); color: #fff;">
+        {% if product.badge == 'bestseller' %}🔥 الأكثر مبيعاً
+        {% elif product.badge == 'featured' %}⭐ مميز
+        {% elif product.badge == 'new' %}✨ جديد
+        {% elif product.badge == 'sale' %}🏷️ عرض
+        {% endif %}
+      </span>
+    </div>
+    {% endif %}
+
+    <!-- Low stock warning -->
+    {% if product.is_low_stock %}
+    <div class="absolute bottom-3 left-3">
+      <span class="text-xs font-bold px-2 py-1 rounded-full bg-amber-500 text-white">
+        ⚠️ بقي {{ product.stock_quantity }} فقط!
+      </span>
+    </div>
+    {% endif %}
+
+    <!-- Routine step + time pill (shows on hover) -->
+    <div class="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span class="text-xs font-bold px-2 py-1 rounded-full bg-black/60 text-white">
+        خطوة {{ product.routine_step }}
+        {% if product.use_time == 'morning' %}☀️{% elif product.use_time == 'evening' %}🌙{% else %}☀️🌙{% endif %}
+      </span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="p-4">
+    <div class="text-xs font-semibold mb-1 opacity-60">{{ product.brand }}</div>
+    <h3 class="font-bold text-base mb-2 leading-snug" style="color: var(--text);">{{ product.name }}</h3>
+
+    {% if product.short_description %}
+    <p class="text-xs opacity-60 mb-3 leading-relaxed">{{ product.short_description|truncatewords:12 }}</p>
+    {% endif %}
+
+    <!-- Scientific mini-bars -->
+    <div class="flex gap-3 mb-3">
+      <div class="flex-1" title="الترطيب {{ product.hydration_level }}%">
+        <div class="text-xs opacity-50 mb-1">💧 {{ product.hydration_level }}%</div>
+        <div class="sci-bar"><div class="sci-bar-fill" style="width: {{ product.hydration_level }}%; background: #38bdf8;"></div></div>
+      </div>
+      <div class="flex-1" title="الأمان {{ product.sensitivity_safety }}%">
+        <div class="text-xs opacity-50 mb-1">🌸 {{ product.sensitivity_safety }}%</div>
+        <div class="sci-bar"><div class="sci-bar-fill" style="width: {{ product.sensitivity_safety }}%; background: #a78bfa;"></div></div>
+      </div>
+    </div>
+
+    <!-- Safety tags -->
+    <div class="flex flex-wrap gap-1 mb-3">
+      {% if product.safe_pregnancy %}<span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">🤰 آمن للحمل</span>{% endif %}
+      {% if product.fragrance_free %}<span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">🌿 خالٍ من العطور</span>{% endif %}
+      {% if product.non_comedogenic %}<span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">✓ لا يسد المسام</span>{% endif %}
+    </div>
+
+    <!-- Price & Actions -->
+    <div class="flex items-center justify-between mt-4">
+      <div>
+        {% if product.discount_percent > 0 %}
+        <div class="text-xs line-through opacity-40">
+          {% if current_currency == 'usd' %}{{ product.price_usd }} ${% elif current_currency == 'sar' %}{{ product.price_sar }} ر.س{% else %}{{ product.price_yer }} ر.ي{% endif %}
+        </div>
+        {% endif %}
+        <div class="text-lg font-black" style="color: var(--primary);">
+          {% if current_currency == 'usd' %}{{ product.discounted_price_usd }} $
+          {% elif current_currency == 'sar' %}{{ product.discounted_price_sar }} ر.س
+          {% else %}{{ product.discounted_price_yer|floatformat:0 }} ر.ي{% endif %}
+        </div>
+        {% if product.discount_percent > 0 %}
+        <div class="text-xs font-bold text-red-500">خصم {{ product.discount_percent }}%</div>
+        {% endif %}
+      </div>
+
+      <div class="flex gap-2">
+        <a href="{% url 'store:product_detail' product.slug %}" class="btn-outline text-xs px-3 py-2">التفاصيل</a>
+        <button
+          hx-post="{% url 'store:cart_add' product.id %}"
+          hx-trigger="click"
+          hx-target="#cart-drawer > div"
+          hx-swap="innerHTML"
+          hx-include="[name=csrfmiddlewaretoken]"
+          class="btn-primary text-xs px-3 py-2">
+          🛍️ أضف
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

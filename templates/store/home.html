@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}ريمشي — علم البشرة بثقة صيدلانية{% endblock %}
+{% block content %}
+
+<!-- ═══ HERO SECTION ═══════════════════════════════════════════════════════ -->
+<section class="relative overflow-hidden py-20 px-4" style="background: linear-gradient(135deg, var(--bg) 0%, var(--bg-card) 100%);">
+  <div class="max-w-7xl mx-auto text-center">
+    <div class="text-6xl mb-4">🌿</div>
+    <h1 class="text-4xl md:text-6xl font-black mb-4 leading-tight" style="color: var(--text);">
+      روتين بشرة مبني على <span style="color: var(--primary);">علم حقيقي</span>
+    </h1>
+    <p class="text-lg md:text-xl opacity-70 max-w-2xl mx-auto mb-8">
+      اكتشف منتجاتك المثالية بمساعدة مستشارنا الصيدلاني الذكي. علم البشرة بثقة صيدلانية.
+    </p>
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="{% url 'store:skin_consultant' %}" class="btn-primary text-lg px-8 py-4">
+        🧪 ابدأ التشخيص المجاني
+      </a>
+      <a href="{% url 'store:products' %}" class="btn-outline text-lg px-8 py-4">
+        🛍️ تصفح المنتجات
+      </a>
+    </div>
+
+    <!-- Feature badges -->
+    <div class="flex flex-wrap justify-center gap-3 mt-10 text-sm">
+      <span class="px-4 py-2 rounded-full font-semibold" style="background: var(--bg-card); border: 1px solid var(--border);">✅ بيانات علمية حقيقية</span>
+      <span class="px-4 py-2 rounded-full font-semibold" style="background: var(--bg-card); border: 1px solid var(--border);">🔬 12 أداة تفاعلية</span>
+      <span class="px-4 py-2 rounded-full font-semibold" style="background: var(--bg-card); border: 1px solid var(--border);">🌍 3 عملات</span>
+      <span class="px-4 py-2 rounded-full font-semibold" style="background: var(--bg-card); border: 1px solid var(--border);">🎨 5 ثيمات بصرية</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTERACTIVE TOOLS SHOWCASE ════════════════════════════════════════ -->
+<section class="py-16 px-4">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-black text-center mb-3" style="color: var(--text);">أدوات العيادة التفاعلية</h2>
+    <p class="text-center opacity-60 mb-10">12 أداة علمية فريدة لم تجدها في أي متجر آخر</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {% include "store/partials/tool_card.html" with icon="🗺️" title="خريطة الوجه التفاعلية" desc="اضغط على منطقة وجهك لاكتشاف مشاكلها ومنتجاتها المخصصة" url="face_mapper" %}
+      {% include "store/partials/tool_card.html" with icon="🧪" title="المستشار الصيدلاني" desc="5 أسئلة تشخيصية تنتج وصفة رقمية شخصية متكاملة" url="skin_consultant" %}
+      {% include "store/partials/tool_card.html" with icon="⚗️" title="مختبر فحص التوافق" desc="افحص توافق منتجاتك مجاناً قبل الاستخدام أو الشراء" url="compatibility_lab" %}
+      {% include "store/partials/tool_card.html" with icon="🌙" title="جدول التدوير الليلي" desc="Skin Cycling — البروتوكول العلمي الأمثل للريتينول والمقشرات" url="skin_cycling" %}
+      {% include "store/partials/tool_card.html" with icon="⚖️" title="مقارنة المنتجات" desc="قارن حتى 3 منتجات جنباً لجنب بكل التفاصيل العلمية" url="compare" %}
+      {% include "store/partials/tool_card.html" with icon="🔬" title="محلل المكونات INCI" desc="الصق قائمة المكونات وافهم كل مادة بالعربية" url="inci_decoder" %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURED PRODUCTS ══════════════════════════════════════════════════ -->
+{% if featured_products %}
+<section class="py-16 px-4" style="background: var(--bg-card);">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-3xl font-black" style="color: var(--text);">⭐ المنتجات المميزة</h2>
+      <a href="{% url 'store:products' %}?badge=featured" class="btn-outline text-sm">عرض الكل</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for product in featured_products %}
+        {% include "store/partials/product_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ═══ BESTSELLERS ════════════════════════════════════════════════════════ -->
+{% if bestsellers %}
+<section class="py-16 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-3xl font-black" style="color: var(--text);">🔥 الأكثر مبيعاً</h2>
+      <a href="{% url 'store:products' %}?badge=bestseller" class="btn-outline text-sm">عرض الكل</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for product in bestsellers %}
+        {% include "store/partials/product_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ═══ NEW ARRIVALS ═══════════════════════════════════════════════════════ -->
+{% if new_arrivals %}
+<section class="py-16 px-4" style="background: var(--bg-card);">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-3xl font-black" style="color: var(--text);">✨ أحدث المنتجات</h2>
+      <a href="{% url 'store:products' %}?badge=new" class="btn-outline text-sm">عرض الكل</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for product in new_arrivals %}
+        {% include "store/partials/product_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ═══ BUNDLES ════════════════════════════════════════════════════════════ -->
+{% if bundles %}
+<section class="py-16 px-4" style="background: var(--bg-card);">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-black text-center mb-3" style="color: var(--text);">📦 الباقات الجاهزة</h2>
+    <p class="text-center opacity-60 mb-10">باقات علاجية متكاملة بخصومات حصرية</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for bundle in bundles %}
+      <div class="card p-6 flex flex-col gap-4">
+        <div class="text-3xl">📦</div>
+        <h3 class="text-xl font-bold" style="color: var(--text);">{{ bundle.name }}</h3>
+        <p class="text-sm opacity-70">{{ bundle.description|truncatewords:20 }}</p>
+        <div class="flex items-center gap-2">
+          <span class="font-black text-lg" style="color: var(--primary);">خصم {{ bundle.discount_percent }}%</span>
+          <span class="text-xs px-2 py-1 rounded-full" style="background: var(--badge-bg); color: var(--badge-text);">
+            {{ bundle.products.count }} منتجات
+          </span>
+        </div>
+        <div class="flex gap-2 mt-auto">
+          <a href="{% url 'store:bundles' %}" class="btn-outline text-sm flex-1 text-center">التفاصيل</a>
+          <form method="post" action="{% url 'store:add_bundle_to_cart' bundle.id %}" class="flex-1">
+            {% csrf_token %}
+            <button type="submit" class="btn-primary w-full text-sm">أضف للسلة</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ═══ SKIN TYPE QUICK FILTER ════════════════════════════════════════════ -->
+<section class="py-16 px-4">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-black text-center mb-10" style="color: var(--text);">💆 ما نوع بشرتك؟</h2>
+    <div class="flex flex-wrap justify-center gap-4">
+      {% for st in skin_types %}
+      <a href="{% url 'store:products' %}?skin_type={{ st.slug }}"
+        class="card px-6 py-4 text-center hover:scale-105 cursor-pointer transition-transform">
+        <div class="text-4xl mb-2">{{ st.icon }}</div>
+        <div class="font-bold text-sm" style="color: var(--text);">{{ st.name }}</div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ROUTINE STEPS GUIDE ═══════════════════════════════════════════════ -->
+<section class="py-16 px-4" style="background: var(--bg-card);">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl font-black text-center mb-3">الروتين الصحيح خطوة بخطوة</h2>
+    <p class="text-center opacity-60 mb-10">الترتيب الصحيح يعني فاعلية أقصى وتهيج أقل</p>
+    <div class="relative">
+      <!-- Line -->
+      <div class="absolute right-8 top-0 bottom-0 w-0.5" style="background: var(--border);"></div>
+      {% for step_num, step_name, icon, time in steps %}
+      <div class="flex items-start gap-6 mb-6 relative">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black z-10 shrink-0"
+          style="background: var(--primary); color: #fff;">
+          {{ step_num }}
+        </div>
+        <div class="card p-4 flex-1">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">{{ icon }}</span>
+            <span class="font-bold">{{ step_name }}</span>
+            <span class="text-xs px-2 py-1 rounded-full mr-auto" style="background: var(--badge-bg); color: var(--badge-text);">{{ time }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Inject steps data
+  const stepsData = [
+    [1, 'غسول منظف', '🧴', 'ص + م'],
+    [2, 'تونر وموازنة', '💦', 'ص + م'],
+    [3, 'سيروم وعلاج مركز', '💊', 'ص أو م'],
+    [4, 'مرطب ومجدد للحاجز', '🥛', 'ص + م'],
+    [5, 'واقي شمس', '☀️', 'صباحاً فقط'],
+    [6, 'عناية خاصة / ماسك', '🎭', 'أسبوعياً'],
+  ];
+  // Django template engine handles this above, kept for reference
+</script>
+{% endblock %}
+

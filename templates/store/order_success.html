@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}تم تأكيد طلبك بنجاح! — ريمشي{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-16 text-center">
+  <div class="card p-10 space-y-6">
+    <div class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl" style="background: var(--badge-bg); color: var(--badge-text);">
+      🎉
+    </div>
+    <h1 class="text-3xl font-black" style="color: var(--text);">تم استلام طلبك بنجاح!</h1>
+    <p class="text-sm opacity-70">
+      رقم الطلب: <strong class="font-mono text-emerald-700">#{{ order.id }}</strong> | العميل: <strong>{{ order.customer_name }}</strong>
+    </p>
+
+    <!-- WhatsApp Action Button -->
+    <div class="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 space-y-3">
+      <div class="text-2xl">📱</div>
+      <h3 class="font-bold text-base">اضغط للفتح المباشر على واتساب وإرسال الفاتورة</h3>
+      <p class="text-xs opacity-80">
+        تم تجهيز رسالة منسقة باحترافية تحتوي على تفاصيل فاتورتك ودليل الاستخدام الصيدلاني (الروتين الصباحي والمسائي).
+      </p>
+      <a href="{{ wa_url }}" target="_blank"
+        class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-white text-base shadow-lg transition hover:scale-105"
+        style="background: #25D366;">
+        <span>💬 إرسال الفاتورة إلى واتساب الصيدلية الآن</span>
+      </a>
+    </div>
+
+    <!-- Routine Guide Preview -->
+    <div class="text-right card p-6 space-y-4">
+      <h3 class="font-bold text-base flex items-center gap-2" style="color: var(--text);">
+        <span>💊</span> دليل استخدام المنتجات المشتراة (خدمة ريمشي الاستشارية):
+      </h3>
+
+      {% if morning_items %}
+      <div class="space-y-2">
+        <h4 class="font-bold text-xs text-amber-700 flex items-center gap-1">☀️ الروتين الصباحي:</h4>
+        <ol class="list-decimal list-inside text-xs space-y-1 opacity-80">
+          {% for item in morning_items %}
+            <li><strong>الخطوة {{ item.routine_step }}:</strong> {{ item.name }} ({{ item.brand }})</li>
+          {% endfor %}
+        </ol>
+      </div>
+      {% endif %}
+
+      {% if evening_items %}
+      <div class="space-y-2 pt-2 border-t" style="border-color: var(--border);">
+        <h4 class="font-bold text-xs text-indigo-700 flex items-center gap-1">🌙 الروتين المسائي:</h4>
+        <ol class="list-decimal list-inside text-xs space-y-1 opacity-80">
+          {% for item in evening_items %}
+            <li><strong>الخطوة {{ item.routine_step }}:</strong> {{ item.name }} ({{ item.brand }})</li>
+          {% endfor %}
+        </ol>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="flex justify-center gap-4 pt-4">
+      <a href="{% url 'store:home' %}" class="btn-outline text-xs">العودة للرئيسية</a>
+      <a href="{% url 'store:prescription_card' %}" target="_blank" class="btn-primary text-xs">🖨️ طباعة بطاقة الروتين</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

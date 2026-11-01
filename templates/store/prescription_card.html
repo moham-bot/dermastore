@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>بطاقة روتيني السريري اليومي — ريمشي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: 'Cairo', sans-serif; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff !important; }
+      .print-card { box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 p-6 md:p-12">
+
+  <div class="max-w-3xl mx-auto space-y-6">
+
+    <!-- Print Action Header -->
+    <div class="no-print flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border">
+      <div class="font-bold text-sm">🖨️ جاهزة للطباعة المباشرة أو الحفظ كـ PDF:</div>
+      <div class="flex gap-2">
+        <button onclick="window.print()" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700">
+          طباعة البطاقة الآن 🖨️
+        </button>
+        <button onclick="window.close()" class="px-4 py-2 rounded-xl bg-gray-100 text-gray-700 font-bold text-xs">
+          إغلاق
+        </button>
+      </div>
+    </div>
+
+    <!-- Official Clinical Prescription Card -->
+    <div class="print-card bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-200 space-y-8">
+      <!-- Header -->
+      <div class="flex justify-between items-start border-b pb-6">
+        <div>
+          <div class="text-3xl font-black text-emerald-700">🌿 ريمشي CLINICAL</div>
+          <div class="text-xs text-gray-500 mt-1">بطاقة الروتين الصيدلاني المخصص | Personal Dermocosmetics Card</div>
+        </div>
+        <div class="text-left text-xs text-gray-500">
+          <div>التاريخ: {% now "Y-m-d" %}</div>
+          <div class="font-mono text-emerald-800 font-bold">REMSHY-RX</div>
+        </div>
+      </div>
+
+      <!-- Morning Routine -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-black text-amber-700 flex items-center gap-2 border-b pb-2">
+          <span>☀️</span> الروتين الصباحي (الوقاية والحماية):
+        </h3>
+        {% if morning_items %}
+        <div class="space-y-3">
+          {% for item in morning_items %}
+          <div class="flex items-center gap-4 p-3 rounded-xl bg-amber-50/50 border border-amber-100">
+            <div class="w-8 h-8 rounded-full bg-amber-500 text-white font-black flex items-center justify-center text-xs shrink-0">
+              {{ item.routine_step }}
+            </div>
+            <div class="flex-1">
+              <div class="font-bold text-sm">{{ item.brand }} — {{ item.name }}</div>
+              <div class="text-[11px] text-gray-600">الكمية: ضع مقدار مناسب بعد الغسيل والتجفيف.</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-xs text-gray-400">لا توجد منتجات صباحية مضافة.</p>
+        {% endif %}
+      </div>
+
+      <!-- Evening Routine -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-black text-indigo-700 flex items-center gap-2 border-b pb-2">
+          <span>🌙</span> الروتين المسائي (العلاج والتجديد):
+        </h3>
+        {% if evening_items %}
+        <div class="space-y-3">
+          {% for item in evening_items %}
+          <div class="flex items-center gap-4 p-3 rounded-xl bg-indigo-50/50 border border-indigo-100">
+            <div class="w-8 h-8 rounded-full bg-indigo-600 text-white font-black flex items-center justify-center text-xs shrink-0">
+              {{ item.routine_step }}
+            </div>
+            <div class="flex-1">
+              <div class="font-bold text-sm">{{ item.brand }} — {{ item.name }}</div>
+              <div class="text-[11px] text-gray-600">الترتيب: طبق بعد الغسول وقبل النوم بـ 30 دقيقة.</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-xs text-gray-400">لا توجد منتجات مسائية مضافة.</p>
+        {% endif %}
+      </div>
+
+      <!-- Golden Rules -->
+      <div class="p-4 rounded-2xl bg-gray-50 border text-xs text-gray-700 space-y-1">
+        <div class="font-bold text-emerald-800">💡 تعليمات صيدلانية مهمة:</div>
+        <div>1. انتظر 60 ثانية على الأقل بين كل طبقة والأخرى لضمان الامتصاص التام.</div>
+        <div>2. واقي الشمس إلزامي كل صباح ولا يقل عن SPF 50 ويجدد كل ساعتين في الشمس.</div>
+        <div>3. لا تدمج المقشرات مع الريتينول في نفس الليلة؛ اتبع جدول Skin Cycling.</div>
+      </div>
+
+      <!-- Footer Stamp -->
+      <div class="pt-6 border-t flex justify-between items-center text-xs text-gray-400">
+        <div>صيدلية ريمشي الجلدية التفاعلية — خدمة مجانية معتمدة</div>
+        <div class="font-mono">VERIFIED BY REMSHY RX</div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
+

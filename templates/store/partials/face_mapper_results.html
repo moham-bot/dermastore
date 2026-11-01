@@ -1,0 +1,53 @@
+<div class="card p-6 space-y-6">
+  <div>
+    <h2 class="text-xl font-black mb-1" style="color: var(--text);">
+      {% if zone == 't_zone' %}
+        ✨ مشاكل منطقة T (الجبين والأنف والذقن)
+      {% elif zone == 'u_zone' %}
+        💧 مشاكل منطقة U (الخدين وخط الفك)
+      {% elif zone == 'eye_area' %}
+        👁️ مشاكل محيط العين الحساس
+      {% else %}
+        🌟 مشاكل الوجه بالكامل
+      {% endif %}
+    </h2>
+    <p class="text-xs opacity-70">
+      {% if zone == 't_zone' %}
+        منطقة غنية بالغدد الدهنية. أبرز التحديات: الرؤوس السوداء، اللمعان المستمر، وحب الشباب.
+      {% elif zone == 'u_zone' %}
+        منطقة تميل للجفاف والتحسس وضعف الحاجز الجلدي وتوسع الشعيرات الدموية.
+      {% elif zone == 'eye_area' %}
+        أرق طبقة جلدية في الجسم. سريعة التأثر بالجفاف، الهالات السوداء، والانتفاخ.
+      {% else %}
+        اختر مشكلتك المستهدفة لعرض أفضل التركيبات السريرية لعلاجها.
+      {% endif %}
+    </p>
+  </div>
+
+  <!-- Concerns in this zone -->
+  <div class="flex flex-wrap gap-2">
+    {% for concern in zone_concerns %}
+    <a href="{% url 'store:face_mapper' %}?zone={{ zone }}&concern={{ concern.slug }}"
+      hx-get="{% url 'store:face_mapper' %}?zone={{ zone }}&concern={{ concern.slug }}"
+      hx-target="#zone-results"
+      class="text-xs px-3 py-1.5 rounded-xl border bg-white/40 hover:border-emerald-500 font-bold transition">
+      {{ concern.icon }} {{ concern.name }}
+    </a>
+    {% endfor %}
+  </div>
+
+  <!-- Products for this zone -->
+  <div>
+    <h4 class="text-xs font-bold opacity-60 mb-3">المنتجات السريرية الموصى بها لهذه المنطقة:</h4>
+    {% if products %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {% for product in products %}
+        {% include "store/partials/product_card.html" %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-xs opacity-50 py-4">اختر مشكلة من الأعلى لعرض المنتجات المناسبة.</p>
+    {% endif %}
+  </div>
+</div>
+

@@ -1,0 +1,30 @@
+# Environment & Secrets (NEVER COMMIT)
+.env
+.env.*
+!.env.example
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Django local database & static/media
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+*.log
+local_settings.py
+
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

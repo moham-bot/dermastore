@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
+  <defs>
+    <linearGradient id="remshyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="45%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="goldAccent" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#059669" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base with Soft Shadow -->
+  <rect x="10" y="10" width="100" height="100" rx="28" fill="url(#remshyGrad)" filter="url(#softGlow)"/>
+  
+  <!-- Subtle Glass Highlight Arc -->
+  <path d="M 12 38 C 12 22 22 12 38 12 L 82 12 C 98 12 108 22 108 38 C 75 42 45 42 12 38 Z" fill="url(#sheen)"/>
+
+  <!-- Golden Clinical Ring -->
+  <circle cx="60" cy="60" r="32" fill="none" stroke="url(#goldAccent)" stroke-width="2" stroke-dasharray="3 4" opacity="0.75"/>
+
+  <!-- Clinical Botanical Droplet -->
+  <path d="M 60 28 C 60 28 41 52 41 66 C 41 76.5 49.5 85 60 85 C 70.5 85 79 76.5 79 66 C 79 52 60 28 60 28 Z" fill="#ffffff" opacity="0.96"/>
+
+  <!-- Clinical Cross inside Droplet (Negative Space) -->
+  <path d="M 57 51 L 63 51 L 63 59 L 71 59 L 71 65 L 63 65 L 63 73 L 57 73 L 57 65 L 49 65 L 49 59 L 57 59 Z" fill="url(#remshyGrad)"/>
+
+  <!-- Micro Pearl Droplet (Glow Highlight) -->
+  <circle cx="53" cy="46" r="3" fill="#ffffff" opacity="0.9"/>
+  <circle cx="69" cy="73" r="2.2" fill="url(#goldAccent)"/>
+</svg>

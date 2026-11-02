@@ -1,0 +1,92 @@
+{% load static store_tags %}
+<!-- ═══ QUICK VIEW MODAL CONTENT ═══════════════════════════════════════════ -->
+<div class="relative p-6 md:p-8 bg-white" dir="rtl">
+  <!-- Close Button -->
+  <button type="button" onclick="closeQuickView()"
+    class="absolute top-4 left-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center font-bold text-lg transition z-20">
+    ✕
+  </button>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <!-- Product Image Area -->
+    <div class="bg-gradient-to-b from-stone-50 to-white rounded-2xl p-6 flex items-center justify-center border border-stone-200"
+      style="min-height: 280px;">
+      {% if product.get_image_url %}
+        <img src="{{ product.get_image_url }}" alt="{{ product.name }}"
+          class="max-h-72 w-auto object-contain drop-shadow-md">
+      {% else %}
+        <div class="w-full h-64 flex items-center justify-center">
+          {{ product|svg_placeholder }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Product Info Area -->
+    <div class="flex flex-col gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="badge-brand">{{ product.brand }}</span>
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
+            الخطوة {{ product.routine_step }}: {{ product.get_routine_step_display }}
+          </span>
+          <span class="text-xs text-amber-500 font-bold">★ {{ product.rating|default:"4.9" }}</span>
+        </div>
+        <h2 class="text-xl md:text-2xl font-black text-gray-900 leading-snug">{{ product.name }}</h2>
+        <div class="text-xs text-gray-500 mt-1">
+          {% if product.volume_ml %}{{ product.volume_ml }} • {% endif %}
+          {{ product.get_texture_display }} •
+          {% if product.use_time == 'morning' %}☀️ صباحي فقط{% elif product.use_time == 'evening' %}🌙 مسائي فقط{% else %}☀️🌙 صباحي ومسائي{% endif %}
+        </div>
+      </div>
+
+      <!-- Pricing -->
+      <div class="flex items-baseline gap-3 p-3 bg-stone-50 rounded-xl border border-stone-200">
+        <div class="text-2xl font-black text-emerald-800">
+          {% if current_currency == 'usd' %}{{ product.discounted_price_usd }} $
+          {% elif current_currency == 'sar' %}{{ product.discounted_price_sar }} ر.س
+          {% else %}{{ product.discounted_price_yer|floatformat:0 }} ر.ي{% endif %}
+        </div>
+        {% if product.discount_percent > 0 %}
+          <div class="text-sm line-through text-gray-400">
+            {% if current_currency == 'usd' %}{{ product.price_usd }} $
+            {% elif current_currency == 'sar' %}{{ product.price_sar }} ر.س
+            {% else %}{{ product.price_yer }} ر.ي{% endif %}
+          </div>
+          <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-red-100 text-red-700">خصم {{ product.discount_percent }}%</span>
+        {% endif %}
+      </div>
+
+      <!-- Short Description -->
+      <p class="text-xs text-gray-600 leading-relaxed">
+        {{ product.short_description|default:product.full_description|truncatewords:35 }}
+      </p>
+
+      <!-- Safety Badges -->
+      <div class="flex flex-wrap gap-1.5 text-[11px] font-semibold">
+        {% if product.safe_pregnancy %}<span class="px-2 py-0.5 rounded-md bg-green-50 text-green-700 border border-green-200">🤰 آمن للحمل</span>{% endif %}
+        {% if product.fragrance_free %}<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">🌿 خالٍ من العطور</span>{% endif %}
+        {% if product.non_comedogenic %}<span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 border border-purple-200">✓ لا يسد المسام</span>{% endif %}
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3 pt-3 border-t border-gray-100">
+        <button
+          type="button"
+          hx-post="{% url 'store:cart_add' product.id %}"
+          hx-target="#cart-drawer > div"
+          hx-swap="innerHTML"
+          hx-include="[name=csrfmiddlewaretoken]"
+          onclick="closeQuickView(); window.dispatchEvent(new CustomEvent('addToast', { detail: { message: 'تمت إضافة {{ product.name|truncatewords:3 }} إلى السلة', type: 'success' } }))"
+          class="btn-clinical-primary flex-1 py-3 text-sm">
+          <span>🛍️</span>
+          <span>إضافة إلى سلة المشتريات</span>
+        </button>
+
+        <a href="{% url 'store:product_detail' product.slug %}"
+          class="btn-clinical-outline py-3 px-5 text-sm">
+          عرض الصفحة الكاملة ↗
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

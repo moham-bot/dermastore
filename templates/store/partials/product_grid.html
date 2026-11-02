@@ -1,15 +1,68 @@
-{% if products %}
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {% for product in products %}
-      {% include "store/partials/product_card.html" %}
-    {% endfor %}
-  </div>
-{% else %}
-  <div class="p-16 text-center card">
-    <div class="text-6xl mb-3">🔍</div>
-    <h3 class="font-bold text-lg mb-1">لم يتم العثور على منتجات مطابقة</h3>
-    <p class="text-xs opacity-60 mb-4">جرّب تقليل الفلاتر أو البحث بكلمات أخرى.</p>
-    <a href="{% url 'store:products' %}" class="btn-primary text-xs">إعادة ضبط جميع الفلاتر</a>
-  </div>
-{% endif %}
+{% load static store_tags %}
+<!-- ═══ PRODUCT GRID & LIST WRAPPER ════════════════════════════════════════ -->
+<div id="product-grid-container">
 
+  <!-- Active Filters Chip Bar -->
+  {% if active_filters %}
+  <div class="flex flex-wrap items-center gap-2 mb-6 p-3 bg-white rounded-2xl border border-stone-200">
+    <span class="text-xs font-bold text-gray-500">الفلاتر النشطة:</span>
+    {% for af in active_filters %}
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+        <span>{{ af.label }}</span>
+        <button type="button"
+          hx-get="{% url 'store:products' %}?remove_filter={{ af.param }}"
+          hx-target="#product-grid-container"
+          hx-swap="outerHTML"
+          class="hover:text-red-600 transition font-bold text-sm">
+          ×
+        </button>
+      </span>
+    {% endfor %}
+    <a href="{% url 'store:products' %}"
+      hx-get="{% url 'store:products' %}"
+      hx-target="#product-grid-container"
+      hx-swap="outerHTML"
+      class="text-xs font-bold text-red-600 hover:underline mr-auto">
+      مسح الكل ↺
+    </a>
+  </div>
+  {% endif %}
+
+  <!-- Results Count & Active View State -->
+  <div class="flex items-center justify-between gap-4 mb-6">
+    <div class="text-xs sm:text-sm font-bold text-gray-600">
+      عرض <span class="text-emerald-800 font-black">{{ product_count }}</span> منتج سريري
+    </div>
+  </div>
+
+  {% if products %}
+    <!-- Products Container (Grid vs List based on view_mode) -->
+    <div class="{% if view_mode == 'list' %}product-list-view flex flex-col gap-4{% else %}grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6{% endif %}">
+      {% for product in products %}
+        {% include "store/partials/product_card.html" %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Helpful Empty State -->
+    <div class="p-12 sm:p-16 text-center bg-white rounded-3xl border border-stone-200 shadow-sm max-w-xl mx-auto my-6">
+      <div class="text-6xl mb-4">🔍</div>
+      <h3 class="font-black text-xl text-gray-900 mb-2">لم نجد أي منتج يطابق معايير الفلترة</h3>
+      <p class="text-xs sm:text-sm text-gray-500 mb-6 leading-relaxed">
+        قد تكون بعض الفلاتر المحددة معاً شديدة التضييق (مثل دمج نوع بشرة معين مع مواد فعالة غير شائعة).
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="{% url 'store:products' %}"
+          hx-get="{% url 'store:products' %}"
+          hx-target="#product-grid-container"
+          hx-swap="outerHTML"
+          class="btn-clinical-primary text-xs py-2.5 px-6 w-full sm:w-auto">
+          إعادة ضبط جميع الفلاتر
+        </a>
+        <a href="{% url 'store:skin_consultant' %}"
+          class="btn-clinical-outline text-xs py-2.5 px-6 w-full sm:w-auto">
+          استشر المستشار الصيدلاني 🧪
+        </a>
+      </div>
+    </div>
+  {% endif %}
+</div>

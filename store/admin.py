@@ -71,17 +71,17 @@ class ProductAdminForm(forms.ModelForm):
 class ProductAdmin(ModelAdmin):
     form = ProductAdminForm
     list_display = [
-        'product_thumbnail', 'name', 'brand', 'routine_step_display',
-        'price_yer', 'discount_percent', 'stock_qty_display',
-        'badge', 'image_source_badge', 'is_available'
+        'product_thumbnail', 'name', 'brand', 'sku', 'routine_step_display',
+        'price_yer', 'discount_percent', 'stock_quantity', 'stock_qty_display',
+        'badge', 'image_source_badge', 'is_available', 'view_on_site_btn'
     ]
-    list_editable = ['price_yer', 'discount_percent', 'is_available', 'badge']
+    list_editable = ['price_yer', 'discount_percent', 'stock_quantity', 'is_available', 'badge']
     list_filter = [
-        'brand', 'routine_step', 'use_time', 'badge',
+        'is_demo', 'brand', 'routine_step', 'use_time', 'badge',
         'is_available', 'safe_pregnancy', 'fragrance_free', 'non_comedogenic',
         'skin_types', 'skin_concerns',
     ]
-    search_fields = ['name', 'brand', 'short_description', 'inci_list', 'cloudinary_public_id']
+    search_fields = ['name', 'brand', 'sku', 'original_filename', 'short_description', 'inci_list', 'cloudinary_public_id']
     filter_horizontal = ['skin_types', 'skin_concerns', 'active_ingredients', 'pairs_well_with']
     readonly_fields = [
         'product_thumbnail_large', 'cloudinary_status_info',
@@ -92,18 +92,22 @@ class ProductAdmin(ModelAdmin):
 
     fieldsets = [
         ('المعلومات الأساسية', {
-            'fields': ['name', 'brand', 'slug', 'volume_ml', 'badge', 'short_description', 'full_description']
+            'fields': ['name', 'brand', 'sku', 'slug', 'volume_ml', 'badge', 'is_demo', 'short_description', 'full_description']
         }),
         ('محرك الصور السحابي (Cloudinary | رفع من الهاتف/الكمبيوتر | رابط | SVG تلقائي)', {
             'fields': [
                 'product_thumbnail_large', 'cloudinary_status_info',
                 'image_file', 'image_url',
                 'cloudinary_public_id', 'cloudinary_url',
-                'package_color'
+                'original_filename', 'package_color'
             ]
         }),
         ('التسعير والمخزون', {
             'fields': ['price_yer', 'price_sar', 'price_usd', 'discount_percent', 'stock_quantity', 'is_available']
+        }),
+        ('التقييمات والمراجعات', {
+            'fields': ['rating', 'review_count'],
+            'classes': ['collapse']
         }),
         ('بيانات الروتين', {
             'fields': ['routine_step', 'use_time']
@@ -132,6 +136,16 @@ class ProductAdmin(ModelAdmin):
 
     class Media:
         js = ('js/admin_image_preview.js',)
+
+    def view_on_site_btn(self, obj):
+        if obj.slug:
+            return format_html(
+                '<a href="/product/{}/" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;">'
+                'عرض بالموقع ↗</a>',
+                obj.slug
+            )
+        return '-'
+    view_on_site_btn.short_description = 'معاينة'
 
     def image_source_badge(self, obj):
         if obj.cloudinary_public_id:

@@ -202,11 +202,16 @@ class Product(models.Model):
     # Basic Info
     name = models.CharField(max_length=200, verbose_name='اسم المنتج')
     brand = models.CharField(max_length=100, verbose_name='الماركة')
+    sku = models.CharField(max_length=80, blank=True, null=True, unique=True, verbose_name='رمز SKU')
+    original_filename = models.CharField(max_length=255, blank=True, verbose_name='اسم ملف الصورة الأصلي')
     slug = models.SlugField(max_length=240, unique=True, blank=True)
     volume_ml = models.CharField(max_length=30, blank=True, verbose_name='الحجم')
     short_description = models.TextField(verbose_name='وصف مختصر', blank=True)
     full_description = models.TextField(verbose_name='وصف كامل', blank=True)
     badge = models.CharField(max_length=20, choices=BADGE_CHOICES, blank=True, default='', verbose_name='الشارة')
+    is_demo = models.BooleanField(default=False, verbose_name='منتج تجريبي للعرض Demo')
+    rating = models.DecimalField(max_digits=3, decimal_places=1, default=4.8, verbose_name='التقييم')
+    review_count = models.PositiveIntegerField(default=32, verbose_name='عدد التقييمات')
 
     # Pricing (multi-currency)
     price_yer = models.DecimalField(max_digits=10, decimal_places=0, verbose_name='السعر (ر.ي)', default=0)

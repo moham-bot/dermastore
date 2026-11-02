@@ -1,0 +1,351 @@
+/**
+ * REMSHY CLINICAL DERMOCOSMETICS — DESIGN TOKENS
+ * Strict High-Contrast, Calm Luxury Clinical Aesthetics
+ */
+
+:root {
+  /* ── 1. Color Palette (Design Tokens) ─────────────────── */
+  --color-primary: #2A5741;         /* Deep Swiss Sage */
+  --color-primary-hover: #1E3F2F;   /* Darker Forest Sage */
+  --color-primary-light: #EBF3EE;   /* Soft Sage Tint */
+  --color-primary-ring: rgba(42, 87, 65, 0.18);
+
+  --color-marine: #0E7490;          /* Thermal Marine Blue */
+  --color-marine-hover: #0369A1;
+  --color-marine-light: #F0F9FF;
+
+  --color-gold: #C5A059;            /* 24K Champagne Gold */
+  --color-gold-hover: #B88E3E;
+  --color-gold-light: #FDFBF7;
+  --color-gold-ring: rgba(197, 160, 89, 0.25);
+
+  --color-bg-main: #FBF9F6;         /* Warm Alabaster */
+  --color-bg-card: #FFFFFF;         /* Pure Ivory White */
+  --color-bg-subtle: #F4EFEA;       /* Cashmere Neutral */
+  --color-bg-overlay: rgba(15, 23, 42, 0.65);
+
+  --color-text-main: #0F172A;       /* Obsidian Black (WCAG AAA) */
+  --color-text-muted: #52616B;      /* Sophisticated Slate Gray */
+  --color-text-light: #94A3B8;      /* Light Hint Gray */
+
+  --color-border: #E8E2D9;          /* Delicate Warm Border */
+  --color-border-subtle: #F0ECE6;
+
+  /* Status Colors */
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-danger: #DC2626;
+  --color-info: #0284C7;
+
+  /* ── 2. Elevation & Shadows ───────────────────────────── */
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 4px 16px -2px rgba(42, 87, 65, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 14px 30px -4px rgba(42, 87, 65, 0.12), 0 6px 12px -2px rgba(0, 0, 0, 0.04);
+  --shadow-drawer: -8px 0 32px rgba(15, 23, 42, 0.15);
+  --shadow-modal: 0 24px 48px -12px rgba(15, 23, 42, 0.25);
+
+  /* ── 3. Border Radii ──────────────────────────────────── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* ── 4. Typography Scale ──────────────────────────────── */
+  --font-arabic: 'Cairo', 'Readex Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-clinical: 'Readex Pro', 'Cairo', sans-serif;
+
+  /* ── 5. Layout Constants ──────────────────────────────── */
+  --card-img-height: 230px;
+  --navbar-height: 74px;
+}
+
+/* ─── Global Base Settings ─────────────────────────────── */
+* {
+  font-family: var(--font-arabic);
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
+  direction: rtl;
+  text-align: right;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Accessibility & Reduced Motion ───────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Luxury Component Styles ──────────────────────────── */
+.luxury-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.luxury-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(42, 87, 65, 0.25);
+}
+
+/* Product Card Fixed Image Container */
+.product-image-container {
+  position: relative;
+  width: 100%;
+  height: var(--card-img-height);
+  background: linear-gradient(180deg, #F9F7F4 0%, #FFFFFF 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.product-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card:hover .product-image-container img {
+  transform: scale(1.05);
+}
+
+/* Scientific Indicators */
+.sci-gauge {
+  background: var(--color-bg-subtle);
+  border-radius: 999px;
+  height: 5px;
+  overflow: hidden;
+}
+
+.sci-gauge-bar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+/* Pill Badges */
+.badge-clinical {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-brand {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+.badge-bestseller {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.badge-new {
+  background: #E0F2FE;
+  color: #075985;
+  border: 1px solid #BAE6FD;
+}
+
+.badge-featured {
+  background: #FDF8ED;
+  color: #B88E3E;
+  border: 1px solid #F3E5AB;
+}
+
+.badge-sale {
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+/* Luxury Buttons */
+.btn-clinical-primary {
+  background-color: var(--color-primary);
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  box-shadow: 0 2px 8px rgba(42, 87, 65, 0.2);
+}
+
+.btn-clinical-primary:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(42, 87, 65, 0.3);
+}
+
+.btn-clinical-primary:active {
+  transform: translateY(0);
+}
+
+.btn-clinical-outline {
+  background-color: transparent;
+  color: var(--color-primary) !important;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.6rem 1.35rem;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.btn-clinical-outline:hover {
+  background-color: var(--color-primary-light);
+}
+
+.btn-clinical-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-main);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.btn-clinical-icon:hover {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+/* Sticky Bottom Mobile Bar */
+.sticky-bottom-mobile-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--color-border);
+  padding: 0.75rem 1rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+}
+
+@media (min-width: 768px) {
+  .sticky-bottom-mobile-bar {
+    display: none;
+  }
+}
+
+/* Mobile Bottom Navigation Bar */
+.mobile-nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 90;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
+}
+
+@media (min-width: 768px) {
+  .mobile-nav-bar {
+    display: none;
+  }
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  gap: 2px;
+}
+
+.mobile-nav-item.active, .mobile-nav-item:hover {
+  color: var(--color-primary);
+}
+
+/* Clean List View for Catalog */
+.product-list-view .luxury-card {
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+  gap: 1.5rem;
+}
+
+.product-list-view .product-image-container {
+  width: 160px;
+  height: 160px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+}
+
+@media (max-width: 640px) {
+  .product-list-view .luxury-card {
+    flex-direction: column;
+  }
+  .product-list-view .product-image-container {
+    width: 100%;
+    height: 200px;
+  }
+}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static store_tags %}
+{% block title %}قائمة أمنياتي والمفضلة — ريمشي{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-10">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-stone-200">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-2xl">❤️</span>
+        <h1 class="text-2xl sm:text-3xl font-black text-gray-900">قائمة أمنياتي والمفضلة</h1>
+      </div>
+      <p class="text-xs sm:text-sm text-gray-500">المنتجات التي قمت بحفظها للمراجعة والشراء لاحقاً.</p>
+    </div>
+    <div class="text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+      {{ product_count }} منتجات محفوظة
+    </div>
+  </div>
+
+  {% if products %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for product in products %}
+        {% include "store/partials/product_card.html" %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-20 bg-white rounded-3xl border border-stone-200 p-8 max-w-xl mx-auto shadow-sm">
+      <div class="text-6xl mb-4">🤍</div>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">قائمة أمنياتك فارغة حالياً</h3>
+      <p class="text-xs text-gray-500 mb-6 leading-relaxed">
+        تصفح كتالوج المنتجات السريرية واضغط على أيقونة القلب في أي منتج لحفظه هنا والرجوع إليه في أي وقت.
+      </p>
+      <a href="{% url 'store:products' %}" class="btn-clinical-primary py-3 px-8 text-sm">
+        استكشاف كتالوج المنتجات
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

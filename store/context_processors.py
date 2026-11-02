@@ -23,10 +23,13 @@ def cart_context(request):
     # Sort by routine step
     cart_items_list.sort(key=lambda x: x['routine_step'])
     cart_total = sum(item['subtotal'] for item in cart_items_list)
+    wishlist = request.session.get('wishlist', [])
     return {
         'cart_count': cart_count,
         'cart_items_list': cart_items_list,
         'cart_total': cart_total,
+        'wishlist_count': len(wishlist),
+        'wishlist_ids': wishlist,
     }
 
 

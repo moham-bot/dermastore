@@ -25,19 +25,27 @@ def get_currency(request):
 
 def home(request):
     currency = get_currency(request)
-    featured = Product.objects.filter(is_available=True, badge='featured')[:6]
-    bestsellers = Product.objects.filter(is_available=True, badge='bestseller')[:6]
-    new_arrivals = Product.objects.filter(is_available=True, badge='new')[:4]
-    bundles = RoutineBundle.objects.filter(is_active=True).prefetch_related('products')[:3]
+    featured = Product.objects.filter(is_available=True).filter(Q(badge='featured') | Q(is_demo=True))[:8]
+    if not featured.exists():
+        featured = Product.objects.filter(is_available=True)[:8]
+
+    bestsellers = Product.objects.filter(is_available=True).filter(Q(badge='bestseller') | Q(discount_percent__gt=0))[:8]
+    if not bestsellers.exists():
+        bestsellers = Product.objects.filter(is_available=True).order_by('-stock_quantity')[:8]
+
+    new_arrivals = Product.objects.filter(is_available=True).order_by('-created_at')[:8]
+    bundles = RoutineBundle.objects.filter(is_active=True).prefetch_related('products')[:4]
     skin_types = SkinType.objects.all()
     skin_concerns = SkinConcern.objects.all().order_by('display_order')
+    brands = list(Product.objects.filter(is_available=True).values_list('brand', flat=True).distinct())
+
     steps = [
-        (1, 'غسول منظف', '🧴', 'صباحي ومسائي'),
-        (2, 'تونر وموازنة', '💦', 'صباحي ومسائي'),
-        (3, 'سيروم وعلاج مركز', '💊', 'صباحي أو مسائي'),
-        (4, 'مرطب ومجدد للحاجز', '🥛', 'صباحي ومسائي'),
-        (5, 'واقي شمس', '☀️', 'صباحاً فقط'),
-        (6, 'عناية خاصة / ماسك', '🎭', 'أسبوعياً'),
+        (1, 'غسول ومنظف', '🧴', 'صباحي ومسائي', 'تنظيف الفروة والمسام من الشوائب والزيوت'),
+        (2, 'تونر وتوازن', '💦', 'صباحي أو مسائي', 'موازنة الـ pH وتقشير الطبقة الميتة'),
+        (3, 'سيروم وعلاج مركز', '💊', 'حسب المادة الفعالة', 'استهداف المشاكل (هيالورونيك، ريتينول، نياسيناميد)'),
+        (4, 'مرطب وحاجز دهني', '🥛', 'صباحي ومسائي', 'حبس الرطوبة وترميم سيراميدات الجلد'),
+        (5, 'واقي شمس سريري', '☀️', 'صباحاً إلزامي', 'حماية واسعة النطاق من التصبغات والتجاعيد'),
+        (6, 'عناية متقدمة وتدوير', '🌙', 'أسبوعياً', 'ماسكات، مقشرات، وجدول التدوير الجلدي'),
     ]
     context = {
         'featured_products': featured,
@@ -46,6 +54,7 @@ def home(request):
         'bundles': bundles,
         'skin_types': skin_types,
         'skin_concerns': skin_concerns,
+        'brands': brands,
         'steps': steps,
         'currency': currency,
         'page_title': 'ريمشي — علم البشرة بثقة صيدلانية',
@@ -53,7 +62,7 @@ def home(request):
     return render(request, 'store/home.html', context)
 
 
-# ─── 2. Products List + HTMX Filter ─────────────────────────────────────────
+# ─── 2. Products List + HTMX Filter & View Mode ─────────────────────────────
 
 def products(request):
     currency = get_currency(request)
@@ -65,27 +74,68 @@ def products(request):
     skin_type_slug = request.GET.get('skin_type', '')
     concern_slug = request.GET.get('concern', '')
     ingredient_slug = request.GET.get('ingredient', '')
+    brand = request.GET.get('brand', '')
+    badge = request.GET.get('badge', '')
     step = request.GET.get('step', '')
     use_time = request.GET.get('use_time', '')
     safe_pregnancy = request.GET.get('safe_pregnancy', '')
     fragrance_free = request.GET.get('fragrance_free', '')
+    non_comedogenic = request.GET.get('non_comedogenic', '')
     q = request.GET.get('q', '').strip()
-    sort_by = request.GET.get('sort', 'step')
+    sort_by = request.GET.get('sort', 'recommended')
+    view_mode = request.GET.get('view_mode', request.session.get('view_mode', 'grid'))
+    request.session['view_mode'] = view_mode
+
+    active_filters = []
 
     if skin_type_slug:
         all_products = all_products.filter(skin_types__slug=skin_type_slug)
+        st_obj = SkinType.objects.filter(slug=skin_type_slug).first()
+        if st_obj:
+            active_filters.append({'param': 'skin_type', 'label': f'بشرة: {st_obj.name}'})
+
     if concern_slug:
         all_products = all_products.filter(skin_concerns__slug=concern_slug)
+        sc_obj = SkinConcern.objects.filter(slug=concern_slug).first()
+        if sc_obj:
+            active_filters.append({'param': 'concern', 'label': f'المشكلة: {sc_obj.name}'})
+
     if ingredient_slug:
         all_products = all_products.filter(active_ingredients__slug=ingredient_slug)
+        ing_obj = ActiveIngredient.objects.filter(slug=ingredient_slug).first()
+        if ing_obj:
+            active_filters.append({'param': 'ingredient', 'label': f'مادة: {ing_obj.name_ar}'})
+
+    if brand:
+        all_products = all_products.filter(brand=brand)
+        active_filters.append({'param': 'brand', 'label': f'ماركة: {brand}'})
+
+    if badge:
+        all_products = all_products.filter(badge=badge)
+        active_filters.append({'param': 'badge', 'label': f'تصنيف: {badge}'})
+
     if step:
         all_products = all_products.filter(routine_step=step)
+        step_dict = dict(Product.ROUTINE_STEP_CHOICES)
+        active_filters.append({'param': 'step', 'label': f'الخطوة: {step_dict.get(int(step), step)}'})
+
     if use_time:
         all_products = all_products.filter(use_time__in=[use_time, 'both'])
+        use_time_dict = dict(Product.USE_TIME_CHOICES)
+        active_filters.append({'param': 'use_time', 'label': f'الوقت: {use_time_dict.get(use_time, use_time)}'})
+
     if safe_pregnancy == '1':
         all_products = all_products.filter(safe_pregnancy=True)
+        active_filters.append({'param': 'safe_pregnancy', 'label': 'آمن للحمل والرضاعة'})
+
     if fragrance_free == '1':
         all_products = all_products.filter(fragrance_free=True)
+        active_filters.append({'param': 'fragrance_free', 'label': 'خالٍ من العطور'})
+
+    if non_comedogenic == '1':
+        all_products = all_products.filter(non_comedogenic=True)
+        active_filters.append({'param': 'non_comedogenic', 'label': 'لا يسد المسام'})
+
     if q:
         all_products = all_products.filter(
             Q(name__icontains=q) | Q(brand__icontains=q) |
@@ -93,23 +143,40 @@ def products(request):
             Q(active_ingredients__name_ar__icontains=q) |
             Q(active_ingredients__name_en__icontains=q)
         )
+        active_filters.append({'param': 'q', 'label': f'بحث: "{q}"'})
 
+    # Sorting
+    price_col = 'price_usd' if currency == 'usd' else ('price_sar' if currency == 'sar' else 'price_yer')
     if sort_by == 'price_asc':
-        all_products = all_products.order_by('price_yer')
+        all_products = all_products.order_by(price_col)
     elif sort_by == 'price_desc':
-        all_products = all_products.order_by('-price_yer')
+        all_products = all_products.order_by(f'-{price_col}')
+    elif sort_by == 'newest':
+        all_products = all_products.order_by('-created_at')
+    elif sort_by == 'bestseller':
+        all_products = all_products.order_by('-discount_percent', 'routine_step')
+    elif sort_by == 'rating':
+        all_products = all_products.order_by('-rating')
     elif sort_by == 'hydration':
         all_products = all_products.order_by('-hydration_level')
-    else:
-        all_products = all_products.order_by('routine_step', 'name')
+    else:  # recommended
+        all_products = all_products.order_by('-rating', 'routine_step', 'name')
 
     all_products = all_products.distinct()
+
+    brands = Product.objects.filter(is_available=True).values_list('brand', flat=True).distinct().order_by('brand')
 
     # HTMX partial response
     if request.headers.get('HX-Request'):
         html = render_to_string(
             'store/partials/product_grid.html',
-            {'products': all_products, 'currency': currency},
+            {
+                'products': all_products,
+                'currency': currency,
+                'view_mode': view_mode,
+                'product_count': all_products.count(),
+                'active_filters': active_filters,
+            },
             request=request
         )
         return HttpResponse(html)
@@ -119,17 +186,24 @@ def products(request):
         'skin_types': SkinType.objects.all(),
         'skin_concerns': SkinConcern.objects.all().order_by('display_order'),
         'active_ingredients': ActiveIngredient.objects.all().order_by('name_ar'),
+        'brands': brands,
         'currency': currency,
         'selected_skin_type': skin_type_slug,
         'selected_concern': concern_slug,
+        'selected_ingredient': ingredient_slug,
+        'selected_brand': brand,
+        'selected_badge': badge,
         'selected_step': step,
         'selected_use_time': use_time,
         'selected_safe_pregnancy': safe_pregnancy,
         'selected_fragrance_free': fragrance_free,
+        'selected_non_comedogenic': non_comedogenic,
         'search_q': q,
         'sort_by': sort_by,
+        'view_mode': view_mode,
+        'active_filters': active_filters,
         'product_count': all_products.count(),
-        'page_title': 'جميع المنتجات',
+        'page_title': 'كتالوج المنتجات السريرية — ريمشي',
     }
     return render(request, 'store/products.html', context)
 
@@ -772,6 +846,54 @@ def bundles(request):
         'currency': currency,
         'page_title': 'الباقات الجاهزة',
     })
+
+
+# ─── 16. Quick View Modal ───────────────────────────────────────────────────
+
+def quick_view(request, product_id):
+    product = get_object_or_404(Product, pk=product_id, is_available=True)
+    currency = get_currency(request)
+    html = render_to_string(
+        'store/partials/quick_view_modal.html',
+        {'product': product, 'currency': currency},
+        request=request
+    )
+    return HttpResponse(html)
+
+
+# ─── 17. Wishlist / Favorites ────────────────────────────────────────────────
+
+@require_POST
+def wishlist_toggle(request, product_id):
+    wishlist = request.session.get('wishlist', [])
+    product_id_str = str(product_id)
+    added = False
+    if product_id_str in wishlist:
+        wishlist.remove(product_id_str)
+    else:
+        wishlist.append(product_id_str)
+        added = True
+    request.session['wishlist'] = wishlist
+    request.session.modified = True
+    return JsonResponse({
+        'status': 'ok',
+        'added': added,
+        'wishlist_count': len(wishlist),
+        'message': 'تمت الإضافة إلى المفضلة' if added else 'تمت الإزالة من المفضلة'
+    })
+
+
+def wishlist(request):
+    currency = get_currency(request)
+    wishlist_ids = request.session.get('wishlist', [])
+    products_qs = Product.objects.filter(id__in=wishlist_ids, is_available=True)
+    return render(request, 'store/wishlist.html', {
+        'products': products_qs,
+        'currency': currency,
+        'product_count': products_qs.count(),
+        'page_title': 'قائمة أمنياتي والمفضلة',
+    })
+
 
 
 @require_POST

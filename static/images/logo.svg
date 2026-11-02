@@ -1,26 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%">
   <defs>
-    <linearGradient id="markGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#10b981"/>
-      <stop offset="100%" stop-color="#047857"/>
+    <!-- Deep Swiss Clinical Teal-Emerald -->
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E4D3A"/>
+      <stop offset="50%" stop-color="#163C2D"/>
+      <stop offset="100%" stop-color="#0E281E"/>
     </linearGradient>
-    <linearGradient id="goldMark" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#f59e0b"/>
-      <stop offset="100%" stop-color="#fbbf24"/>
+
+    <!-- 24K Champagne Gold Accents -->
+    <linearGradient id="champagneGold" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#B88E3E"/>
+      <stop offset="35%" stop-color="#D4AF37"/>
+      <stop offset="70%" stop-color="#F3E5AB"/>
+      <stop offset="100%" stop-color="#C5A059"/>
     </linearGradient>
-    <filter id="markDrop" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#047857" flood-opacity="0.3"/>
+
+    <!-- Crystal Droplet Gradient -->
+    <linearGradient id="crystalDrop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="60%" stop-color="#E2F1EC"/>
+      <stop offset="100%" stop-color="#C1E2D6"/>
+    </linearGradient>
+
+    <!-- Subtle Luxury Shadow -->
+    <filter id="luxuryGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0E281E" flood-opacity="0.35"/>
     </filter>
   </defs>
-  <!-- Background Squircle -->
-  <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#markGrad)" filter="url(#markDrop)"/>
-  <!-- Gold Halo Ring -->
-  <circle cx="24" cy="24" r="14" fill="none" stroke="url(#goldMark)" stroke-width="1.2" stroke-dasharray="2 2.5" opacity="0.85"/>
-  <!-- Pure White Clinical Droplet -->
-  <path d="M 24 9 C 24 9 14.5 21 14.5 27.5 C 14.5 32.7 18.8 37 24 37 C 29.2 37 33.5 32.7 33.5 27.5 C 33.5 21 24 9 24 9 Z" fill="#ffffff"/>
-  <!-- Precision Clinical Cross -->
-  <path d="M 22.2 20.5 L 25.8 20.5 L 25.8 24.5 L 29.8 24.5 L 29.8 28.1 L 25.8 28.1 L 25.8 32.1 L 22.2 32.1 L 22.2 28.1 L 18.2 28.1 L 18.2 24.5 L 22.2 24.5 Z" fill="url(#markGrad)"/>
-  <!-- Micro Light Accent -->
-  <circle cx="20.5" cy="18" r="1.3" fill="#ffffff"/>
-  <circle cx="28.5" cy="32" r="1" fill="url(#goldMark)"/>
+
+  <!-- Luxury Geometric Squircle Base -->
+  <rect x="3" y="3" width="58" height="58" rx="18" fill="url(#shieldGrad)" filter="url(#luxuryGlow)"/>
+  
+  <!-- Outer Champagne Gold Precision Ring -->
+  <rect x="3" y="3" width="58" height="58" rx="18" fill="none" stroke="url(#champagneGold)" stroke-width="1.2" opacity="0.85"/>
+
+  <!-- Inner Concentric Dial (Swiss Chronometer / Laboratory Standard) -->
+  <circle cx="32" cy="32" r="23" fill="none" stroke="url(#champagneGold)" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.65"/>
+
+  <!-- Molecular Crystal Skincare Droplet -->
+  <path d="M 32 14 C 32 14 18 30.5 18 39 C 18 46.7 24.3 52 32 52 C 39.7 52 46 46.7 46 39 C 46 30.5 32 14 32 14 Z" fill="url(#crystalDrop)"/>
+
+  <!-- Inner Precision Clinical Cross in 24K Gold -->
+  <path d="M 29.8 30 L 34.2 30 L 34.2 35.5 L 39.7 35.5 L 39.7 39.9 L 34.2 39.9 L 34.2 45.4 L 29.8 45.4 L 29.8 39.9 L 24.3 39.9 L 24.3 35.5 L 29.8 35.5 Z" fill="url(#champagneGold)"/>
+
+  <!-- Diamond Refraction Highlights -->
+  <polygon points="32,20 34.5,27 32,29.5 29.5,27" fill="#FFFFFF" opacity="0.95"/>
+  <circle cx="26" cy="45" r="1.5" fill="url(#champagneGold)"/>
+  <circle cx="38" cy="45" r="1.5" fill="url(#champagneGold)"/>
 </svg>

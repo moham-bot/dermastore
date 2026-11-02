@@ -1,27 +1,32 @@
 {% extends "base.html" %}
 {% load static store_tags %}
 {% block title %}{{ product.name }} — {{ product.brand }} | ريمشي{% endblock %}
-{% block content %}
-<div class="max-w-7xl mx-auto px-4 py-8" x-data="productDetail({{ product.wait_seconds }})">
 
-  <!-- Breadcrumbs -->
-  <nav class="flex items-center gap-2 text-xs opacity-60 mb-6">
-    <a href="{% url 'store:home' %}">الرئيسية</a>
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8 mb-20 md:mb-10" x-data="productDetail({{ product.wait_seconds }})">
+
+  <!-- Breadcrumbs Navigation -->
+  <nav class="flex items-center gap-2 text-xs text-gray-500 mb-6">
+    <a href="{% url 'store:home' %}" class="hover:text-emerald-800 transition">الرئيسية</a>
     <span>/</span>
-    <a href="{% url 'store:products' %}">المنتجات</a>
+    <a href="{% url 'store:products' %}" class="hover:text-emerald-800 transition">المنتجات</a>
     <span>/</span>
-    <span class="font-bold text-emerald-700">{{ product.brand }} — {{ product.name }}</span>
+    <span class="font-bold text-emerald-800">{{ product.brand }}</span>
+    <span>/</span>
+    <span class="text-gray-800 truncate max-w-xs">{{ product.name }}</span>
   </nav>
 
-  <!-- Main Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+  <!-- ── 1. Main Product Showcase ─────────────────────────────────────────── -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
 
-    <!-- ── Left: Image Display (Triple Fallback Engine) ────────────────── -->
-    <div>
-      <div class="card p-6 flex items-center justify-center relative overflow-hidden" style="min-height: 420px; background: var(--bg);">
+    <!-- Left: Clinical Image Viewer -->
+    <div class="sticky top-24">
+      <div class="bg-gradient-to-b from-stone-50 to-white rounded-3xl p-8 border border-stone-200 shadow-sm flex items-center justify-center relative overflow-hidden"
+        style="min-height: 420px;">
+
         {% if product.get_image_url %}
           <img src="{{ product.get_image_url }}" alt="{{ product.name }}"
-            class="max-h-[380px] w-auto object-contain transition-transform duration-300 hover:scale-105"
+            class="max-h-[380px] w-auto object-contain transition-transform duration-500 hover:scale-105 drop-shadow-md"
             loading="lazy">
         {% else %}
           <div class="w-full h-80 flex items-center justify-center">
@@ -29,181 +34,290 @@
           </div>
         {% endif %}
 
+        <!-- Badge -->
         {% if product.badge %}
-        <span class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full"
-          style="background: var(--primary); color: #fff;">
+        <span class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full shadow-xs"
+          style="background: var(--color-primary, #2a5741); color: #fff;">
           {{ product.get_badge_display }}
         </span>
         {% endif %}
 
-        <!-- Cloudinary Status indicator -->
+        <!-- Cloudinary Optimization Indicator -->
         {% if product.cloudinary_public_id %}
-        <span class="absolute bottom-4 left-4 text-[11px] font-bold px-2.5 py-1 rounded-full bg-sky-100 text-sky-800 flex items-center gap-1">
-          <span>☁️</span> Cloudinary Optimized (f_auto, q_auto)
+        <span class="absolute bottom-4 left-4 text-[11px] font-bold px-2.5 py-1 rounded-full bg-sky-100 text-sky-800 flex items-center gap-1 shadow-xs">
+          <span>☁️</span> Cloudinary (f_auto, q_auto)
         </span>
         {% endif %}
       </div>
     </div>
 
-    <!-- ── Right: Product Info & Actions ──────────────────────────────── -->
-    <div class="flex flex-col gap-5">
+    <!-- Right: Product Info & Actions -->
+    <div class="flex flex-col gap-6">
       <div>
-        <div class="flex items-center gap-2 mb-1">
-          <span class="text-sm font-bold opacity-60 uppercase tracking-wide">{{ product.brand }}</span>
-          <span class="text-xs px-2.5 py-0.5 rounded-full font-bold" style="background: var(--badge-bg); color: var(--badge-text);">
+        <!-- Brand & Tags -->
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="badge-brand text-xs">{{ product.brand }}</span>
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
             الخطوة {{ product.routine_step }}: {{ product.get_routine_step_display }}
           </span>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-semibold">
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-stone-100 text-gray-700 font-semibold">
             {% if product.use_time == 'morning' %}☀️ صباحي فقط{% elif product.use_time == 'evening' %}🌙 مسائي فقط{% else %}☀️🌙 صباحي ومسائي{% endif %}
           </span>
+          <div class="flex items-center gap-1 text-xs font-bold text-amber-500 mr-auto">
+            <span>★</span>
+            <span>{{ product.rating|default:"4.9" }}</span>
+            <span class="text-[10px] text-gray-400">({{ product.review_count|default:"24" }} تقييم معتمد)</span>
+          </div>
         </div>
-        <h1 class="text-3xl font-black mb-2" style="color: var(--text);">{{ product.name }}</h1>
-        <div class="text-sm opacity-60">{{ product.volume_ml }}</div>
+
+        <h1 class="text-2xl sm:text-3xl font-black text-gray-900 leading-tight mb-2">{{ product.name }}</h1>
+        <div class="text-xs text-gray-500 font-medium">
+          الحجم: <span class="text-gray-800 font-bold">{{ product.volume_ml|default:"عبوة قياسية" }}</span>
+          {% if product.sku %} • رمز التخزين: <code class="text-[11px] text-gray-600 bg-stone-100 px-1.5 py-0.5 rounded">{{ product.sku }}</code>{% endif %}
+        </div>
       </div>
 
-      <!-- Pricing -->
-      <div class="flex items-baseline gap-4 card p-4">
-        <div class="text-3xl font-black" style="color: var(--primary);">
+      <!-- Price Box -->
+      <div class="flex items-baseline gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-200">
+        <div class="text-3xl font-black text-emerald-800">
           {% if current_currency == 'usd' %}{{ product.discounted_price_usd }} $
           {% elif current_currency == 'sar' %}{{ product.discounted_price_sar }} ر.س
           {% else %}{{ product.discounted_price_yer|floatformat:0 }} ر.ي{% endif %}
         </div>
         {% if product.discount_percent > 0 %}
-        <div class="text-base line-through opacity-40">
+        <div class="text-base line-through text-gray-400">
           {% if current_currency == 'usd' %}{{ product.price_usd }} $
           {% elif current_currency == 'sar' %}{{ product.price_sar }} ر.س
           {% else %}{{ product.price_yer }} ر.ي{% endif %}
         </div>
-        <span class="text-xs font-bold px-2 py-1 bg-red-100 text-red-700 rounded-full">
+        <span class="text-xs font-bold px-2.5 py-1 bg-red-100 text-red-700 rounded-full">
           وفر {{ product.discount_percent }}%
         </span>
         {% endif %}
 
         {% if product.is_low_stock %}
         <span class="text-xs font-bold text-amber-600 mr-auto">
-          ⚠️ بقي {{ product.stock_quantity }} قطع فقط في المخزون!
+          ⚠️ بقي {{ product.stock_quantity }} قطع فقط بالمخزون!
+        </span>
+        {% else %}
+        <span class="text-xs font-bold text-emerald-700 mr-auto flex items-center gap-1">
+          <span>✓</span> متوفر وجاهز للشحن
         </span>
         {% endif %}
       </div>
 
-      <p class="text-sm opacity-80 leading-relaxed">{{ product.full_description|default:product.short_description }}</p>
+      <!-- Quick Description -->
+      <p class="text-sm text-gray-700 leading-relaxed">
+        {{ product.short_description|default:product.full_description }}
+      </p>
 
-      <!-- Safety Warnings -->
+      <!-- Safety Warnings if any -->
       {% if product.safety_warning %}
-      <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex gap-2 items-start">
-        <span class="text-lg">⚠️</span>
-        <div>
-          <strong>تحذير صيدلاني:</strong> {{ product.safety_warning }}
+      <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-amber-900 text-xs flex gap-3 items-start">
+        <span class="text-xl shrink-0">⚠️</span>
+        <div class="leading-relaxed">
+          <strong class="font-bold">تحذير صيدلاني:</strong> {{ product.safety_warning }}
         </div>
       </div>
       {% endif %}
 
-      <!-- Scientific Progress Bars -->
-      <div class="card p-4 space-y-3">
-        <h4 class="font-bold text-xs uppercase opacity-70">المؤشرات العلمية للتركيبة:</h4>
-        <div class="space-y-2">
+      <!-- Scientific Formulations Gauges -->
+      <div class="bg-white p-5 rounded-2xl border border-stone-200 space-y-3 shadow-xs">
+        <h4 class="font-bold text-xs uppercase text-gray-400 tracking-wider">المؤشرات السريرية للتركيبة:</h4>
+        <div class="space-y-2.5">
           <div>
             <div class="flex justify-between text-xs font-semibold mb-1">
               <span>💧 مستوى الترطيب والاحتفاظ بالماء:</span>
-              <span class="font-bold text-sky-600">{{ product.hydration_level }}%</span>
+              <span class="font-bold text-emerald-700">{{ product.hydration_level }}%</span>
             </div>
-            <div class="sci-bar"><div class="sci-bar-fill" style="width: {{ product.hydration_level }}%; background: #38bdf8;"></div></div>
+            <div class="sci-gauge"><div class="sci-gauge-bar" style="width: {{ product.hydration_level }}%; background: #059669;"></div></div>
           </div>
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span>🌸 درجة الأمان للبشرة الحساسة:</span>
+              <span class="font-bold text-purple-700">{{ product.sensitivity_safety }}%</span>
+            </div>
+            <div class="sci-gauge"><div class="sci-gauge-bar" style="width: {{ product.sensitivity_safety }}%; background: #7c3aed;"></div></div>
+          </div>
+          {% if product.exfoliation_power > 0 %}
           <div>
             <div class="flex justify-between text-xs font-semibold mb-1">
               <span>🔬 قوة التقشير وتجديد الخلايا:</span>
               <span class="font-bold text-amber-600">{{ product.exfoliation_power }}%</span>
             </div>
-            <div class="sci-bar"><div class="sci-bar-fill" style="width: {{ product.exfoliation_power }}%; background: #fbbf24;"></div></div>
+            <div class="sci-gauge"><div class="sci-gauge-bar" style="width: {{ product.exfoliation_power }}%; background: #d97706;"></div></div>
           </div>
-          <div>
-            <div class="flex justify-between text-xs font-semibold mb-1">
-              <span>🌸 درجة اللطافة والأمان للبشرة الحساسة:</span>
-              <span class="font-bold text-purple-600">{{ product.sensitivity_safety }}%</span>
-            </div>
-            <div class="sci-bar"><div class="sci-bar-fill" style="width: {{ product.sensitivity_safety }}%; background: #a855f7;"></div></div>
-          </div>
+          {% endif %}
         </div>
       </div>
 
-      <!-- Add to Cart & Actions -->
+      <!-- Action Buttons -->
       <div class="flex gap-3 pt-2">
         <button
+          type="button"
           hx-post="{% url 'store:cart_add' product.id %}"
           hx-target="#cart-drawer > div"
           hx-swap="innerHTML"
           hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-          class="btn-primary flex-1 text-center py-3.5 flex items-center justify-center gap-2 text-base">
+          @click="window.dispatchEvent(new CustomEvent('addToast', { detail: { message: 'تمت إضافة {{ product.name|truncatewords:3 }} إلى السلة بنجاح', type: 'success' } }))"
+          class="btn-clinical-primary flex-1 py-4 text-base shadow-md">
           <span>🛍️</span>
           <span>إضافة لسلة المشتريات الذكية</span>
         </button>
 
-        <a href="https://wa.me/{{ whatsapp_number }}?text=مرحباً، أود الاستفسار عن منتج {{ product.brand }} — {{ product.name }}"
+        <button
+          type="button"
+          @click="toggleWishlist({{ product.id }}, $el)"
+          class="btn-clinical-icon w-12 h-12 text-xl"
+          title="حفظ في المفضلة">
+          {% if product.id|stringformat:'s' in wishlist_ids %}❤️{% else %}🤍{% endif %}
+        </button>
+
+        <a href="https://wa.me/{{ whatsapp_number }}?text=مرحباً، أود استشارة صيدلانية حول منتج {{ product.brand }} — {{ product.name }}"
           target="_blank"
-          class="btn-outline px-4 flex items-center justify-center text-lg"
-          title="استشارة صيدلانية عبر واتساب">
+          class="btn-clinical-outline px-4 flex items-center justify-center text-xl"
+          title="استشارة عبر واتساب">
           💬
         </a>
       </div>
     </div>
   </div>
 
-  <!-- ── Interactive Application Simulator & Wait-Timer ───────────────── -->
-  <section class="mt-12 card p-6">
-    <h3 class="font-black text-xl mb-4 flex items-center gap-2" style="color: var(--text);">
-      <span>⏱️</span> محاكي طريقة الاستخدام والمؤقت الزمني الحي
-    </h3>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-      <div class="p-4 rounded-xl bg-white/40 border" style="border-color: var(--border);">
-        <div class="text-3xl mb-1">🫛</div>
-        <div class="font-bold text-xs opacity-60">الكمية القياسية:</div>
-        <div class="font-bold text-sm mt-1">{{ product.get_dosage_display }}</div>
+  <!-- ── 2. Collapsible Tabs & Scientific Accordions ────────────────────────── -->
+  <section class="mt-14" x-data="{ activeTab: 'usage' }">
+    <!-- Tabs Header -->
+    <div class="flex items-center gap-2 border-b border-stone-200 overflow-x-auto pb-px">
+      <button type="button" @click="activeTab = 'usage'"
+        :class="activeTab === 'usage' ? 'border-emerald-700 text-emerald-800 font-black' : 'border-transparent text-gray-500 hover:text-gray-800'"
+        class="py-3 px-5 text-sm border-b-2 font-bold whitespace-nowrap transition">
+        ⏱️ طريقة التطبيق والمؤقت الحي
+      </button>
+      <button type="button" @click="activeTab = 'inci'"
+        :class="activeTab === 'inci' ? 'border-emerald-700 text-emerald-800 font-black' : 'border-transparent text-gray-500 hover:text-gray-800'"
+        class="py-3 px-5 text-sm border-b-2 font-bold whitespace-nowrap transition">
+        🔬 قائمة المكونات INCI
+      </button>
+      <button type="button" @click="activeTab = 'compatibility'"
+        :class="activeTab === 'compatibility' ? 'border-emerald-700 text-emerald-800 font-black' : 'border-transparent text-gray-500 hover:text-gray-800'"
+        class="py-3 px-5 text-sm border-b-2 font-bold whitespace-nowrap transition">
+        ⚗️ التوافق والتعارض الصيدلاني
+      </button>
+      <button type="button" @click="activeTab = 'details'"
+        :class="activeTab === 'details' ? 'border-emerald-700 text-emerald-800 font-black' : 'border-transparent text-gray-500 hover:text-gray-800'"
+        class="py-3 px-5 text-sm border-b-2 font-bold whitespace-nowrap transition">
+        📋 الوصف الكامل والفعالية
+      </button>
+    </div>
+
+    <!-- Tab 1: Usage Simulator & Live Wait Timer -->
+    <div x-show="activeTab === 'usage'" class="py-8 space-y-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div class="p-4 rounded-2xl bg-white border border-stone-200 shadow-xs">
+          <div class="text-3xl mb-1">🫛</div>
+          <div class="font-bold text-xs text-gray-400">الكمية القياسية الموصى بها:</div>
+          <div class="font-bold text-sm text-gray-900 mt-1">{{ product.get_dosage_display }}</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-stone-200 shadow-xs">
+          <div class="text-3xl mb-1">💦</div>
+          <div class="font-bold text-xs text-gray-400">حالة الجلد قبل التطبيق:</div>
+          <div class="font-bold text-sm text-gray-900 mt-1">{{ product.get_skin_state_before_display }}</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-stone-200 shadow-xs">
+          <div class="text-3xl mb-1">🧴</div>
+          <div class="font-bold text-xs text-gray-400">القوام الصيدلاني:</div>
+          <div class="font-bold text-sm text-gray-900 mt-1">{{ product.get_texture_display }}</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-stone-200 shadow-xs flex flex-col justify-center items-center">
+          <div class="font-bold text-xs text-gray-400 mb-1">مؤقت الامتصاص قبل الخطوة التالية:</div>
+          <button @click="startTimer()" x-show="!timerRunning" class="btn-clinical-primary text-xs py-1.5 px-3">
+            ▶ ابدأ المؤقت ({{ product.wait_seconds }} ثانية)
+          </button>
+          <div x-show="timerRunning" class="font-black text-2xl text-emerald-700 animate-pulse">
+            ⏳ <span x-text="timeLeft"></span> ثانية
+          </div>
+        </div>
       </div>
-      <div class="p-4 rounded-xl bg-white/40 border" style="border-color: var(--border);">
-        <div class="text-3xl mb-1">💦</div>
-        <div class="font-bold text-xs opacity-60">حالة الجلد قبل التطبيق:</div>
-        <div class="font-bold text-sm mt-1">{{ product.get_skin_state_before_display }}</div>
+
+      {% if product.beginner_schedule %}
+      <div class="p-4 rounded-2xl bg-emerald-50 text-emerald-900 text-xs border border-emerald-200">
+        <strong>📅 جدول التدرج للمبتدئين:</strong> {{ product.beginner_schedule }}
       </div>
-      <div class="p-4 rounded-xl bg-white/40 border" style="border-color: var(--border);">
-        <div class="text-3xl mb-1">🧴</div>
-        <div class="font-bold text-xs opacity-60">القوام الصيدلاني:</div>
-        <div class="font-bold text-sm mt-1">{{ product.get_texture_display }}</div>
-      </div>
-      <div class="p-4 rounded-xl bg-white/40 border flex flex-col justify-center items-center" style="border-color: var(--border);">
-        <div class="font-bold text-xs opacity-60 mb-2">مؤقت الامتصاص قبل الخطوة التالية:</div>
-        <button @click="startTimer()" x-show="!timerRunning" class="btn-primary text-xs py-2 px-3">
-          ▶ ابدأ المؤقت ({{ product.wait_seconds }} ثانية)
-        </button>
-        <div x-show="timerRunning" class="font-black text-2xl text-emerald-600 animate-pulse">
-          ⏳ <span x-text="timeLeft"></span> ثانية
+      {% endif %}
+    </div>
+
+    <!-- Tab 2: INCI List -->
+    <div x-show="activeTab === 'inci'" class="py-8 space-y-4">
+      <div class="bg-white p-6 rounded-2xl border border-stone-200">
+        <h4 class="font-black text-sm text-gray-900 mb-2">قائمة المكونات الكاملة بشفافية سريرية:</h4>
+        <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs font-mono text-gray-700 leading-relaxed">
+          {{ product.inci_list|default:"Aqua/Water/Eau, Glycerin, Sodium Hyaluronate, Propanediol, Phenoxyethanol, Ethylhexylglycerin." }}
+        </div>
+        <div class="mt-4">
+          <a href="{% url 'store:inci_decoder' %}?product_id={{ product.id }}" class="text-xs font-bold text-emerald-800 hover:underline">
+            تحليل وتفكيك هذه المكونات في محلل INCI الذكي ←
+          </a>
         </div>
       </div>
     </div>
 
-    {% if product.beginner_schedule %}
-    <div class="mt-4 p-4 rounded-xl bg-emerald-50 text-emerald-900 text-xs">
-      <strong>📅 جدول التدرج للمبتدئين:</strong> {{ product.beginner_schedule }}
+    <!-- Tab 3: Compatibility & Lab -->
+    <div x-show="activeTab === 'compatibility'" class="py-8 space-y-4">
+      <div class="bg-white p-6 rounded-2xl border border-stone-200">
+        <h4 class="font-black text-sm text-gray-900 mb-3">فحص التوافق مع روتينك الحالي:</h4>
+        <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+          نحن في ريمشي نفحص تعارض المواد الفعالة تلقائياً عند إضافة هذا المنتج إلى سلتك للتأكد من عدم تعارضه مع أي منتج آخر (مثل تعارض فيتامين C مع الريتينول المقشر).
+        </p>
+        <a href="{% url 'store:compatibility_lab' %}" class="btn-clinical-outline text-xs py-2 px-5">
+          فتح مختبر التوافق الكيميائي ⚗️
+        </a>
+      </div>
     </div>
-    {% endif %}
+
+    <!-- Tab 4: Full Description -->
+    <div x-show="activeTab === 'details'" class="py-8">
+      <div class="bg-white p-6 rounded-2xl border border-stone-200 text-xs text-gray-700 leading-relaxed space-y-3">
+        {{ product.full_description|linebreaks }}
+      </div>
+    </div>
   </section>
 
-  <!-- ── INCI List Decoder ────────────────────────────────────────────── -->
-  {% if product.inci_list %}
-  <section class="mt-8 card p-6">
-    <h3 class="font-black text-xl mb-3 flex items-center gap-2" style="color: var(--text);">
-      <span>🔬</span> قائمة المكونات الكاملة (INCI List)
-    </h3>
-    <p class="text-xs opacity-60 mb-3">جميع المواد الفعالة والمساعدة مفصلة بشفافية سريرية تامة:</p>
-    <div class="p-4 rounded-xl bg-gray-50 border text-xs font-mono leading-relaxed" style="border-color: var(--border);">
-      {{ product.inci_list }}
+  <!-- ── 3. Recommended Pairs & Related ───────────────────────────────────── -->
+  {% if related %}
+  <section class="mt-14 pt-10 border-t border-stone-200">
+    <div class="mb-6">
+      <span class="badge-brand">SYNERGY PROTOCOL</span>
+      <h3 class="text-2xl font-black text-gray-900 mt-1">منتجات متناغمة تكمل هذا المستحضر</h3>
     </div>
-    <div class="mt-3">
-      <a href="{% url 'store:inci_decoder' %}?product_id={{ product.id }}" class="text-xs font-bold text-emerald-700 underline">
-        فحص وتحليل هذه المكونات في محلل INCI الذكي ←
-      </a>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      {% for product in related %}
+        {% include "store/partials/product_card.html" %}
+      {% endfor %}
     </div>
   </section>
   {% endif %}
+
+  <!-- ── 4. Mobile Sticky Bottom Bar (Always Accessible) ───────────────────── -->
+  <div class="sticky-bottom-mobile-bar md:hidden">
+    <div class="flex items-center gap-2">
+      <div class="text-lg font-black text-emerald-800">
+        {% if current_currency == 'usd' %}{{ product.discounted_price_usd }} $
+        {% elif current_currency == 'sar' %}{{ product.discounted_price_sar }} ر.س
+        {% else %}{{ product.discounted_price_yer|floatformat:0 }} ر.ي{% endif %}
+      </div>
+    </div>
+
+    <button
+      type="button"
+      hx-post="{% url 'store:cart_add' product.id %}"
+      hx-target="#cart-drawer > div"
+      hx-swap="innerHTML"
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+      @click="window.dispatchEvent(new CustomEvent('addToast', { detail: { message: 'تمت إضافة {{ product.name|truncatewords:3 }} إلى السلة', type: 'success' } }))"
+      class="btn-clinical-primary text-xs py-2.5 px-6 shadow-md">
+      <span>🛍️</span>
+      <span class="font-bold">أضف للسلة</span>
+    </button>
+  </div>
 
 </div>
 
@@ -218,13 +332,16 @@
       startTimer() {
         this.timeLeft = this.totalSeconds;
         this.timerRunning = true;
+        if (this.intervalId) clearInterval(this.intervalId);
         this.intervalId = setInterval(() => {
           if (this.timeLeft > 1) {
             this.timeLeft--;
           } else {
             clearInterval(this.intervalId);
             this.timerRunning = false;
-            alert('✅ اكتمل وقت الامتصاص! يمكنك الآن وضع الخطوة التالية من روتينك.');
+            window.dispatchEvent(new CustomEvent('addToast', {
+              detail: { message: '✅ اكتمل وقت الامتصاص! يمكنك الآن وضع الخطوة التالية من روتينك.', type: 'success' }
+            }));
           }
         }, 1000);
       }

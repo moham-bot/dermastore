@@ -1,120 +1,191 @@
 {% load static store_tags %}
-<!-- Product Card Partial -->
-<div class="card overflow-hidden group"
-  x-data="{ imageError: false }"
-  hx-boost="true">
+<!-- ═══ REMSHY LUXURY CLINICAL PRODUCT CARD ════════════════════════════════ -->
+<div class="luxury-card h-full group relative"
+  x-data="{ imageError: false, showTooltip: false, tooltipText: '' }"
+  data-product-id="{{ product.id }}">
 
-  <!-- Image Area -->
-  <div class="relative overflow-hidden" style="height: 220px; background: var(--bg);">
-    {% if product.get_image_url %}
-      <img src="{{ product.get_image_url }}"
-        alt="{{ product.name }}"
-        class="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-        @error="imageError = true"
-        x-show="!imageError"
-        loading="lazy">
-      <!-- Fallback SVG if image fails -->
-      <div x-show="imageError" class="w-full h-full flex items-center justify-center">
-        {{ product|svg_placeholder }}
-      </div>
-    {% else %}
-      <!-- Dynamic SVG Placeholder -->
-      <div class="w-full h-full flex items-center justify-center">
-        {{ product|svg_placeholder }}
-      </div>
-    {% endif %}
-
-    <!-- Badge -->
-    {% if product.badge %}
-    <div class="absolute top-3 right-3">
-      <span class="text-xs font-bold px-3 py-1 rounded-full"
-        style="background: var(--primary); color: #fff;">
-        {% if product.badge == 'bestseller' %}🔥 الأكثر مبيعاً
-        {% elif product.badge == 'featured' %}⭐ مميز
-        {% elif product.badge == 'new' %}✨ جديد
-        {% elif product.badge == 'sale' %}🏷️ عرض
-        {% endif %}
-      </span>
+  <!-- Top Badges & Wishlist Action Bar -->
+  <div class="absolute top-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none">
+    <!-- Status Badge (Single / High Priority) -->
+    <div class="pointer-events-auto">
+      {% if product.badge == 'bestseller' %}
+        <span class="badge-clinical badge-bestseller">🔥 الأكثر مبيعاً</span>
+      {% elif product.badge == 'new' %}
+        <span class="badge-clinical badge-new">✨ جديد</span>
+      {% elif product.badge == 'featured' %}
+        <span class="badge-clinical badge-featured">⭐ مميز سريرياً</span>
+      {% elif product.discount_percent > 0 %}
+        <span class="badge-clinical badge-sale">🏷️ خصم {{ product.discount_percent }}%</span>
+      {% endif %}
     </div>
-    {% endif %}
 
-    <!-- Low stock warning -->
-    {% if product.is_low_stock %}
-    <div class="absolute bottom-3 left-3">
-      <span class="text-xs font-bold px-2 py-1 rounded-full bg-amber-500 text-white">
-        ⚠️ بقي {{ product.stock_quantity }} فقط!
-      </span>
-    </div>
-    {% endif %}
+    <!-- Quick Actions (Wishlist & Quick View) -->
+    <div class="flex items-center gap-1.5 pointer-events-auto">
+      <!-- Quick View Button -->
+      <button
+        type="button"
+        hx-get="{% url 'store:quick_view' product.id %}"
+        hx-target="#quick-view-content"
+        hx-swap="innerHTML"
+        onclick="document.getElementById('quick-view-modal').classList.remove('hidden')"
+        class="w-8 h-8 rounded-full bg-white/90 shadow-sm border border-gray-200 text-gray-700 flex items-center justify-center text-xs hover:bg-white hover:scale-110 transition active:scale-95"
+        title="معاينة سريعة">
+        👁️
+      </button>
 
-    <!-- Routine step + time pill (shows on hover) -->
-    <div class="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity">
-      <span class="text-xs font-bold px-2 py-1 rounded-full bg-black/60 text-white">
-        خطوة {{ product.routine_step }}
-        {% if product.use_time == 'morning' %}☀️{% elif product.use_time == 'evening' %}🌙{% else %}☀️🌙{% endif %}
-      </span>
+      <!-- Wishlist Toggle -->
+      <button
+        type="button"
+        @click="toggleWishlist({{ product.id }}, $el)"
+        class="w-8 h-8 rounded-full bg-white/90 shadow-sm border border-gray-200 text-xs flex items-center justify-center hover:bg-white hover:scale-110 transition active:scale-95"
+        :class="{ 'text-rose-500': {{ product.id|stringformat:'s' }} in (wishlistIds || []) }"
+        title="إضافة للمفضلة">
+        {% if product.id|stringformat:'s' in wishlist_ids %}❤️{% else %}🤍{% endif %}
+      </button>
     </div>
   </div>
 
-  <!-- Content -->
-  <div class="p-4">
-    <div class="text-xs font-semibold mb-1 opacity-60">{{ product.brand }}</div>
-    <h3 class="font-bold text-base mb-2 leading-snug" style="color: var(--text);">{{ product.name }}</h3>
-
-    {% if product.short_description %}
-    <p class="text-xs opacity-60 mb-3 leading-relaxed">{{ product.short_description|truncatewords:12 }}</p>
-    {% endif %}
-
-    <!-- Scientific mini-bars -->
-    <div class="flex gap-3 mb-3">
-      <div class="flex-1" title="الترطيب {{ product.hydration_level }}%">
-        <div class="text-xs opacity-50 mb-1">💧 {{ product.hydration_level }}%</div>
-        <div class="sci-bar"><div class="sci-bar-fill" style="width: {{ product.hydration_level }}%; background: #38bdf8;"></div></div>
-      </div>
-      <div class="flex-1" title="الأمان {{ product.sensitivity_safety }}%">
-        <div class="text-xs opacity-50 mb-1">🌸 {{ product.sensitivity_safety }}%</div>
-        <div class="sci-bar"><div class="sci-bar-fill" style="width: {{ product.sensitivity_safety }}%; background: #a78bfa;"></div></div>
-      </div>
-    </div>
-
-    <!-- Safety tags -->
-    <div class="flex flex-wrap gap-1 mb-3">
-      {% if product.safe_pregnancy %}<span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">🤰 آمن للحمل</span>{% endif %}
-      {% if product.fragrance_free %}<span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">🌿 خالٍ من العطور</span>{% endif %}
-      {% if product.non_comedogenic %}<span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">✓ لا يسد المسام</span>{% endif %}
-    </div>
-
-    <!-- Price & Actions -->
-    <div class="flex items-center justify-between mt-4">
-      <div>
-        {% if product.discount_percent > 0 %}
-        <div class="text-xs line-through opacity-40">
-          {% if current_currency == 'usd' %}{{ product.price_usd }} ${% elif current_currency == 'sar' %}{{ product.price_sar }} ر.س{% else %}{{ product.price_yer }} ر.ي{% endif %}
+  <!-- Hero Image Area (Strict Aspect Ratio & Fit) -->
+  <a href="{% url 'store:product_detail' product.slug %}" class="block focus:outline-none">
+    <div class="product-image-container">
+      {% if product.get_image_url %}
+        <img src="{{ product.get_image_url }}"
+          alt="{{ product.name }}"
+          loading="lazy"
+          @error="imageError = true"
+          x-show="!imageError"
+          class="drop-shadow-sm select-none">
+        <div x-show="imageError" class="w-full h-full flex items-center justify-center">
+          {{ product|svg_placeholder }}
         </div>
+      {% else %}
+        <div class="w-full h-full flex items-center justify-center">
+          {{ product|svg_placeholder }}
+        </div>
+      {% endif %}
+
+      <!-- Step Indicator Tag -->
+      <span class="absolute bottom-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-xs text-gray-700 border border-gray-200 shadow-xs">
+        الخطوة {{ product.routine_step }}: {{ product.get_routine_step_display|truncatewords:2 }}
+      </span>
+
+      <!-- Stock warning if low -->
+      {% if product.is_low_stock %}
+        <span class="absolute bottom-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500 text-white shadow-xs">
+          بقي {{ product.stock_quantity }} فقط
+        </span>
+      {% endif %}
+    </div>
+  </a>
+
+  <!-- Content & Details Area -->
+  <div class="p-4 flex flex-col flex-1 justify-between gap-3">
+    <div>
+      <!-- Brand & Rating Header -->
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="badge-brand">{{ product.brand }}</span>
+        <div class="flex items-center gap-1 text-[11px] font-bold text-amber-500">
+          <span>★</span>
+          <span>{{ product.rating|default:"4.9" }}</span>
+          <span class="text-[10px] opacity-40 text-gray-500">({{ product.review_count|default:"24" }})</span>
+        </div>
+      </div>
+
+      <!-- Product Name (Max 2 Lines) -->
+      <h3 class="font-bold text-sm leading-snug line-clamp-2 min-h-[2.5rem] mb-1" style="color: var(--color-text-main);">
+        <a href="{% url 'store:product_detail' product.slug %}" class="hover:text-emerald-700 transition">
+          {{ product.name }}
+        </a>
+      </h3>
+
+      <!-- Capacity & Application hint -->
+      <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
+        {% if product.volume_ml %}
+          <span class="font-semibold">{{ product.volume_ml }}</span>
+          <span>•</span>
         {% endif %}
-        <div class="text-lg font-black" style="color: var(--primary);">
+        <span>{{ product.get_texture_display|default:"مستحضر علاجي" }}</span>
+        <span>•</span>
+        <span>{% if product.use_time == 'morning' %}☀️ صباحي{% elif product.use_time == 'evening' %}🌙 مسائي{% else %}☀️🌙 يومي{% endif %}</span>
+      </div>
+
+      <!-- Simplified Clinical Gauges (Hydration & Gentleness) -->
+      <div class="space-y-1.5 my-2.5 pt-2 border-t border-gray-100"
+        @mouseleave="showTooltip = false">
+        <!-- Hydration -->
+        <div class="cursor-pointer"
+          @click="showTooltip = !showTooltip; tooltipText = 'مستوى الترطيب العميق للمنتج: {{ product.hydration_level }}%'"
+          @mouseenter="showTooltip = true; tooltipText = 'مستوى الترطيب العميق للمنتج: {{ product.hydration_level }}%'">
+          <div class="flex justify-between text-[10px] font-bold text-gray-500 mb-0.5">
+            <span>💧 ترطيب الحاجز</span>
+            <span class="text-emerald-700">{{ product.hydration_level }}%</span>
+          </div>
+          <div class="sci-gauge">
+            <div class="sci-gauge-bar" style="width: {{ product.hydration_level }}%; background: #059669;"></div>
+          </div>
+        </div>
+
+        <!-- Gentleness / Safety -->
+        <div class="cursor-pointer"
+          @click="showTooltip = !showTooltip; tooltipText = 'درجة الأمان للبشرة الحساسة: {{ product.sensitivity_safety }}%'"
+          @mouseenter="showTooltip = true; tooltipText = 'درجة الأمان للبشرة الحساسة: {{ product.sensitivity_safety }}%'">
+          <div class="flex justify-between text-[10px] font-bold text-gray-500 mb-0.5">
+            <span>🌸 أمان الحساسية</span>
+            <span class="text-sky-700">{{ product.sensitivity_safety }}%</span>
+          </div>
+          <div class="sci-gauge">
+            <div class="sci-gauge-bar" style="width: {{ product.sensitivity_safety }}%; background: #0284c7;"></div>
+          </div>
+        </div>
+
+        <!-- Tooltip Output -->
+        <div x-show="showTooltip" x-transition
+          class="text-[10px] p-1.5 rounded-lg bg-gray-900 text-white text-center leading-tight">
+          <span x-text="tooltipText"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Purchase CTA Footer -->
+    <div class="pt-2 border-t border-gray-100 flex items-center justify-between gap-2 mt-auto">
+      <!-- Price Display -->
+      <div class="flex flex-col">
+        {% if product.discount_percent > 0 %}
+          <div class="text-[11px] line-through text-gray-400">
+            {% if current_currency == 'usd' %}{{ product.price_usd }} $
+            {% elif current_currency == 'sar' %}{{ product.price_sar }} ر.س
+            {% else %}{{ product.price_yer|floatformat:0 }} ر.ي{% endif %}
+          </div>
+        {% endif %}
+        <div class="text-base font-black text-emerald-800">
           {% if current_currency == 'usd' %}{{ product.discounted_price_usd }} $
           {% elif current_currency == 'sar' %}{{ product.discounted_price_sar }} ر.س
           {% else %}{{ product.discounted_price_yer|floatformat:0 }} ر.ي{% endif %}
         </div>
-        {% if product.discount_percent > 0 %}
-        <div class="text-xs font-bold text-red-500">خصم {{ product.discount_percent }}%</div>
-        {% endif %}
       </div>
 
-      <div class="flex gap-2">
-        <a href="{% url 'store:product_detail' product.slug %}" class="btn-outline text-xs px-3 py-2">التفاصيل</a>
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-1.5">
+        <!-- Compare Button -->
+        <a href="{% url 'store:compare' %}?p={{ product.id }}"
+          class="w-8 h-8 rounded-lg border border-gray-200 text-gray-600 hover:text-emerald-700 hover:border-emerald-700 flex items-center justify-center text-xs transition"
+          title="مقارنة سريرية">
+          ⚖️
+        </a>
+
+        <!-- Add to Cart (HTMX) -->
         <button
+          type="button"
           hx-post="{% url 'store:cart_add' product.id %}"
-          hx-trigger="click"
           hx-target="#cart-drawer > div"
           hx-swap="innerHTML"
           hx-include="[name=csrfmiddlewaretoken]"
-          class="btn-primary text-xs px-3 py-2">
-          🛍️ أضف
+          @click="window.dispatchEvent(new CustomEvent('addToast', { detail: { message: 'تمت إضافة {{ product.name|truncatewords:3 }} إلى السلة', type: 'success' } }))"
+          class="btn-clinical-primary text-xs py-2 px-3 sm:px-4 active:scale-95 shadow-sm">
+          <span>🛍️</span>
+          <span class="font-bold">أضف</span>
         </button>
       </div>
     </div>
   </div>
 </div>
-

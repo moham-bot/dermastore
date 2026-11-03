@@ -140,7 +140,7 @@ class ProductAdmin(ModelAdmin):
     def view_on_site_btn(self, obj):
         if obj.slug:
             return format_html(
-                '<a href="/product/{}/" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;">'
+                '<a href="/product/{}/" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:#F0F5F3;color:#355C52;border:1px solid #DCE7E2;border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;">'
                 'عرض بالموقع ↗</a>',
                 obj.slug
             )
@@ -149,22 +149,22 @@ class ProductAdmin(ModelAdmin):
 
     def image_source_badge(self, obj):
         if obj.cloudinary_public_id:
-            return mark_safe('<span style="background:#0284c7;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">☁️ Cloudinary</span>')
+            return mark_safe('<span style="background:#8DA9B8;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">☁️ Cloudinary</span>')
         elif obj.image_file:
-            return mark_safe('<span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;">📁 محلي</span>')
+            return mark_safe('<span style="background:#4E806A;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;">📁 محلي</span>')
         elif obj.image_url:
-            return mark_safe('<span style="background:#8b5cf6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;">🔗 رابط خارجي</span>')
-        return mark_safe('<span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;">🎨 SVG تلقائي</span>')
+            return mark_safe('<span style="background:#6F8F82;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;">🔗 رابط خارجي</span>')
+        return mark_safe('<span style="background:#C4954B;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;">🎨 SVG تلقائي</span>')
     image_source_badge.short_description = 'مصدر الصورة'
 
     def product_thumbnail(self, obj):
         img_url = obj.get_image_url()
         if img_url:
             return format_html(
-                '<img src="{}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid #e5e7eb;">',
+                '<img src="{}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid #E5ECE8;">',
                 img_url
             )
-        color = obj.package_color or '#5c8a6e'
+        color = obj.package_color or '#6F8F82'
         return format_html(
             '<div style="width:48px;height:48px;border-radius:8px;background:{};display:flex;align-items:center;justify-content:center;font-size:20px;">🧴</div>',
             color
@@ -175,13 +175,13 @@ class ProductAdmin(ModelAdmin):
         img_url = obj.get_image_url()
         if img_url:
             return format_html(
-                '<div style="display:inline-block;padding:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;">'
+                '<div style="display:inline-block;padding:8px;background:#FBF8F3;border:1px solid #E5ECE8;border-radius:14px;">'
                 '<img src="{}" style="max-width:220px;max-height:220px;object-fit:contain;border-radius:10px;">'
                 '</div>',
                 img_url
             )
         return format_html(
-            '<div style="width:200px;height:200px;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0;">'
+            '<div style="width:200px;height:200px;border-radius:12px;overflow:hidden;border:1px solid #E5ECE8;">'
             '{}</div>',
             mark_safe(obj.get_svg_placeholder())
         )
@@ -191,15 +191,15 @@ class ProductAdmin(ModelAdmin):
         if obj.cloudinary_public_id and obj.cloudinary_url:
             optimized_url = obj.get_optimized_cloudinary_url()
             return format_html(
-                '<div style="padding:10px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;color:#0369a1;font-size:12px;">'
+                '<div style="padding:10px;background:#EFF5F8;border:1px solid #D4E4EC;border-radius:8px;color:#355C52;font-size:12px;">'
                 '<strong>✅ متصل بـ Cloudinary بنجاح!</strong><br>'
                 '<strong>Public ID:</strong> <code>{}</code><br>'
-                '<strong>رابط التحسين التلقائي (f_auto, q_auto):</strong> <a href="{}" target="_blank" style="color:#0284c7;text-decoration:underline;">فتح الرابط ↗</a>'
+                '<strong>رابط التحسين التلقائي (f_auto, q_auto):</strong> <a href="{}" target="_blank" style="color:#6F8F82;text-decoration:underline;">فتح الرابط ↗</a>'
                 '</div>',
                 obj.cloudinary_public_id, optimized_url
             )
         return mark_safe(
-            '<div style="padding:10px;background:#fefce8;border:1px solid #fef08a;border-radius:8px;color:#854d0e;font-size:12px;">'
+            '<div style="padding:10px;background:#FBF7EE;border:1px solid #EFE2C5;border-radius:8px;color:#966C28;font-size:12px;">'
             'ℹ️ لم تُرفع صورة لهذا المنتج إلى Cloudinary بعد. ارفع صورة من الحقل أدناه ليتم رفعها وحفظها سحابياً تلقائياً.'
             '</div>'
         )
@@ -212,10 +212,10 @@ class ProductAdmin(ModelAdmin):
     def stock_qty_display(self, obj):
         qty = obj.stock_quantity
         if qty == 0:
-            return mark_safe('<span style="color:#ef4444;font-weight:bold;">نفد المخزون</span>')
+            return mark_safe('<span style="color:#B75D63;font-weight:bold;">نفد المخزون</span>')
         if qty <= 5:
-            return format_html('<span style="color:#f59e0b;font-weight:bold;">⚠️ بقي {} فقط</span>', qty)
-        return format_html('<span style="color:#22c55e;">{}</span>', qty)
+            return format_html('<span style="color:#C4954B;font-weight:bold;">⚠️ بقي {} فقط</span>', qty)
+        return format_html('<span style="color:#4E806A;font-weight:bold;">{}</span>', qty)
     stock_qty_display.short_description = 'المخزون'
 
 
@@ -246,11 +246,14 @@ class OrderAdmin(ModelAdmin):
 
     def status_badge(self, obj):
         colors = {
-            'pending': '#f59e0b', 'confirmed': '#3b82f6',
-            'processing': '#8b5cf6', 'shipped': '#06b6d4',
-            'delivered': '#22c55e', 'cancelled': '#ef4444',
+            'pending': '#C4954B',
+            'confirmed': '#6F8F82',
+            'processing': '#8DA9B8',
+            'shipped': '#355C52',
+            'delivered': '#4E806A',
+            'cancelled': '#B75D63',
         }
-        color = colors.get(obj.status, '#6b7280')
+        color = colors.get(obj.status, '#66736D')
         return format_html(
             '<span style="background:{};color:white;padding:2px 8px;border-radius:12px;font-size:12px;">{}</span>',
             color, obj.get_status_display()

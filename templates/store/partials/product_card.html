@@ -1,19 +1,19 @@
 {% load static store_tags %}
-<!-- ═══ REMSHY LUXURY CLINICAL PRODUCT CARD ════════════════════════════════ -->
+<!-- ═══ REMSHY REFINED SKINCARE PRODUCT CARD ═════════════════════════════════ -->
 <div class="luxury-card h-full group relative"
   x-data="{ imageError: false, showTooltip: false, tooltipText: '' }"
   data-product-id="{{ product.id }}">
 
-  <!-- Top Badges & Wishlist Action Bar -->
+  <!-- Top Badges & Action Bar -->
   <div class="absolute top-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none">
-    <!-- Status Badge (Single / High Priority) -->
+    <!-- Single Prominent Status Badge -->
     <div class="pointer-events-auto">
       {% if product.badge == 'bestseller' %}
         <span class="badge-clinical badge-bestseller">🔥 الأكثر مبيعاً</span>
       {% elif product.badge == 'new' %}
         <span class="badge-clinical badge-new">✨ جديد</span>
       {% elif product.badge == 'featured' %}
-        <span class="badge-clinical badge-featured">⭐ مميز سريرياً</span>
+        <span class="badge-clinical badge-featured">⭐ مميز</span>
       {% elif product.discount_percent > 0 %}
         <span class="badge-clinical badge-sale">🏷️ خصم {{ product.discount_percent }}%</span>
       {% endif %}
@@ -21,15 +21,15 @@
 
     <!-- Quick Actions (Wishlist & Quick View) -->
     <div class="flex items-center gap-1.5 pointer-events-auto">
-      <!-- Quick View Button -->
+      <!-- Quick View Button (Details Modal) -->
       <button
         type="button"
         hx-get="{% url 'store:quick_view' product.id %}"
         hx-target="#quick-view-content"
         hx-swap="innerHTML"
         onclick="document.getElementById('quick-view-modal').classList.remove('hidden')"
-        class="w-8 h-8 rounded-full bg-white/90 shadow-sm border border-gray-200 text-gray-700 flex items-center justify-center text-xs hover:bg-white hover:scale-110 transition active:scale-95"
-        title="معاينة سريعة">
+        class="w-8 h-8 rounded-full bg-white/95 shadow-xs border border-[#E5ECE8] text-[#26332F] flex items-center justify-center text-xs hover:bg-[#F0F5F3] hover:text-[#355C52] hover:border-[#6F8F82] hover:scale-105 transition active:scale-95"
+        title="معاينة تفاصيل المستحضر">
         👁️
       </button>
 
@@ -37,15 +37,14 @@
       <button
         type="button"
         @click="toggleWishlist({{ product.id }}, $el)"
-        class="w-8 h-8 rounded-full bg-white/90 shadow-sm border border-gray-200 text-xs flex items-center justify-center hover:bg-white hover:scale-110 transition active:scale-95"
-        :class="{ 'text-rose-500': {{ product.id|stringformat:'s' }} in (wishlistIds || []) }"
-        title="إضافة للمفضلة">
+        class="w-8 h-8 rounded-full bg-white/95 shadow-xs border border-[#E5ECE8] text-xs flex items-center justify-center hover:bg-[#FAF0F2] hover:scale-105 transition active:scale-95"
+        title="إضافة لقائمة الأمنيات">
         {% if product.id|stringformat:'s' in wishlist_ids %}❤️{% else %}🤍{% endif %}
       </button>
     </div>
   </div>
 
-  <!-- Hero Image Area (Strict Aspect Ratio & Fit) -->
+  <!-- Hero Image Area (Warm Pale Sage / Grey Background) -->
   <a href="{% url 'store:product_detail' product.slug %}" class="block focus:outline-none">
     <div class="product-image-container">
       {% if product.get_image_url %}
@@ -54,7 +53,7 @@
           loading="lazy"
           @error="imageError = true"
           x-show="!imageError"
-          class="drop-shadow-sm select-none">
+          class="drop-shadow-xs select-none">
         <div x-show="imageError" class="w-full h-full flex items-center justify-center">
           {{ product|svg_placeholder }}
         </div>
@@ -64,14 +63,14 @@
         </div>
       {% endif %}
 
-      <!-- Step Indicator Tag -->
-      <span class="absolute bottom-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-xs text-gray-700 border border-gray-200 shadow-xs">
+      <!-- Routine Step Badge (Bottom Right) -->
+      <span class="absolute bottom-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-xs text-[#355C52] border border-[#E5ECE8] shadow-xs">
         الخطوة {{ product.routine_step }}: {{ product.get_routine_step_display|truncatewords:2 }}
       </span>
 
-      <!-- Stock warning if low -->
+      <!-- Low Stock Warning (Bottom Left) -->
       {% if product.is_low_stock %}
-        <span class="absolute bottom-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500 text-white shadow-xs">
+        <span class="absolute bottom-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#C4954B] text-white shadow-xs">
           بقي {{ product.stock_quantity }} فقط
         </span>
       {% endif %}
@@ -79,27 +78,27 @@
   </a>
 
   <!-- Content & Details Area -->
-  <div class="p-4 flex flex-col flex-1 justify-between gap-3">
+  <div class="p-4 flex flex-col flex-1 justify-between gap-3 bg-white">
     <div>
       <!-- Brand & Rating Header -->
       <div class="flex items-center justify-between mb-1.5">
         <span class="badge-brand">{{ product.brand }}</span>
-        <div class="flex items-center gap-1 text-[11px] font-bold text-amber-500">
+        <div class="flex items-center gap-1 text-[11px] font-bold text-[#C4954B]">
           <span>★</span>
           <span>{{ product.rating|default:"4.9" }}</span>
-          <span class="text-[10px] opacity-40 text-gray-500">({{ product.review_count|default:"24" }})</span>
+          <span class="text-[10px] text-[#66736D]">({{ product.review_count|default:"24" }})</span>
         </div>
       </div>
 
-      <!-- Product Name (Max 2 Lines) -->
-      <h3 class="font-bold text-sm leading-snug line-clamp-2 min-h-[2.5rem] mb-1" style="color: var(--color-text-main);">
-        <a href="{% url 'store:product_detail' product.slug %}" class="hover:text-emerald-700 transition">
+      <!-- Product Name (Soft Charcoal #26332F, Max 2 Lines) -->
+      <h3 class="font-bold text-sm leading-snug line-clamp-2 min-h-[2.5rem] mb-1 text-[#26332F]">
+        <a href="{% url 'store:product_detail' product.slug %}" class="hover:text-[#6F8F82] transition">
           {{ product.name }}
         </a>
       </h3>
 
-      <!-- Capacity & Application hint -->
-      <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
+      <!-- Description / Texture & Timing Hint (Sage Grey #66736D) -->
+      <div class="flex items-center gap-2 text-xs text-[#66736D] mb-2">
         {% if product.volume_ml %}
           <span class="font-semibold">{{ product.volume_ml }}</span>
           <span>•</span>
@@ -109,55 +108,55 @@
         <span>{% if product.use_time == 'morning' %}☀️ صباحي{% elif product.use_time == 'evening' %}🌙 مسائي{% else %}☀️🌙 يومي{% endif %}</span>
       </div>
 
-      <!-- Simplified Clinical Gauges (Hydration & Gentleness) -->
-      <div class="space-y-1.5 my-2.5 pt-2 border-t border-gray-100"
+      <!-- Gauges (Hydration & Sensitivity Safety) -->
+      <div class="space-y-1.5 my-2.5 pt-2 border-t border-[#EEF4F1]"
         @mouseleave="showTooltip = false">
-        <!-- Hydration -->
+        <!-- Hydration Gauge -->
         <div class="cursor-pointer"
-          @click="showTooltip = !showTooltip; tooltipText = 'مستوى الترطيب العميق للمنتج: {{ product.hydration_level }}%'"
-          @mouseenter="showTooltip = true; tooltipText = 'مستوى الترطيب العميق للمنتج: {{ product.hydration_level }}%'">
-          <div class="flex justify-between text-[10px] font-bold text-gray-500 mb-0.5">
+          @click="showTooltip = !showTooltip; tooltipText = 'مستوى ترطيب البشرة: {{ product.hydration_level }}%'"
+          @mouseenter="showTooltip = true; tooltipText = 'مستوى ترطيب البشرة: {{ product.hydration_level }}%'">
+          <div class="flex justify-between text-[10px] font-bold text-[#66736D] mb-0.5">
             <span>💧 ترطيب الحاجز</span>
-            <span class="text-emerald-700">{{ product.hydration_level }}%</span>
+            <span class="text-[#4E806A] font-bold">{{ product.hydration_level }}%</span>
           </div>
           <div class="sci-gauge">
-            <div class="sci-gauge-bar" style="width: {{ product.hydration_level }}%; background: #059669;"></div>
+            <div class="sci-gauge-bar" style="width: {{ product.hydration_level }}%; background: #4E806A;"></div>
           </div>
         </div>
 
-        <!-- Gentleness / Safety -->
+        <!-- Sensitivity Safety Gauge -->
         <div class="cursor-pointer"
-          @click="showTooltip = !showTooltip; tooltipText = 'درجة الأمان للبشرة الحساسة: {{ product.sensitivity_safety }}%'"
-          @mouseenter="showTooltip = true; tooltipText = 'درجة الأمان للبشرة الحساسة: {{ product.sensitivity_safety }}%'">
-          <div class="flex justify-between text-[10px] font-bold text-gray-500 mb-0.5">
+          @click="showTooltip = !showTooltip; tooltipText = 'أمان البشرة الحساسة: {{ product.sensitivity_safety }}%'"
+          @mouseenter="showTooltip = true; tooltipText = 'أمان البشرة الحساسة: {{ product.sensitivity_safety }}%'">
+          <div class="flex justify-between text-[10px] font-bold text-[#66736D] mb-0.5">
             <span>🌸 أمان الحساسية</span>
-            <span class="text-sky-700">{{ product.sensitivity_safety }}%</span>
+            <span class="text-[#8DA9B8] font-bold">{{ product.sensitivity_safety }}%</span>
           </div>
           <div class="sci-gauge">
-            <div class="sci-gauge-bar" style="width: {{ product.sensitivity_safety }}%; background: #0284c7;"></div>
+            <div class="sci-gauge-bar" style="width: {{ product.sensitivity_safety }}%; background: #8DA9B8;"></div>
           </div>
         </div>
 
         <!-- Tooltip Output -->
         <div x-show="showTooltip" x-transition
-          class="text-[10px] p-1.5 rounded-lg bg-gray-900 text-white text-center leading-tight">
+          class="text-[10px] p-1.5 rounded-lg bg-[#26332F] text-white text-center leading-tight">
           <span x-text="tooltipText"></span>
         </div>
       </div>
     </div>
 
     <!-- Pricing & Purchase CTA Footer -->
-    <div class="pt-2 border-t border-gray-100 flex items-center justify-between gap-2 mt-auto">
-      <!-- Price Display -->
+    <div class="pt-2 border-t border-[#EEF4F1] flex items-center justify-between gap-2 mt-auto">
+      <!-- Price Display: Forest Green Bold Price, Strikethrough Grey Old Price -->
       <div class="flex flex-col">
         {% if product.discount_percent > 0 %}
-          <div class="text-[11px] line-through text-gray-400">
+          <div class="text-[11px] line-through text-[#66736D]">
             {% if current_currency == 'usd' %}{{ product.price_usd }} $
             {% elif current_currency == 'sar' %}{{ product.price_sar }} ر.س
             {% else %}{{ product.price_yer|floatformat:0 }} ر.ي{% endif %}
           </div>
         {% endif %}
-        <div class="text-base font-black text-emerald-800">
+        <div class="text-base font-black text-[#355C52]">
           {% if current_currency == 'usd' %}{{ product.discounted_price_usd }} $
           {% elif current_currency == 'sar' %}{{ product.discounted_price_sar }} ر.س
           {% else %}{{ product.discounted_price_yer|floatformat:0 }} ر.ي{% endif %}
@@ -166,14 +165,14 @@
 
       <!-- Action Buttons -->
       <div class="flex items-center gap-1.5">
-        <!-- Compare Button -->
-        <a href="{% url 'store:compare' %}?p={{ product.id }}"
-          class="w-8 h-8 rounded-lg border border-gray-200 text-gray-600 hover:text-emerald-700 hover:border-emerald-700 flex items-center justify-center text-xs transition"
-          title="مقارنة سريرية">
-          ⚖️
+        <!-- Details / Details Link (White with green border) -->
+        <a href="{% url 'store:product_detail' product.slug %}"
+          class="px-2.5 py-1.5 rounded-xl border border-[#355C52] text-[#355C52] bg-white hover:bg-[#F0F5F3] text-xs font-bold transition active:scale-95"
+          title="تفاصيل المستحضر">
+          التفاصيل
         </a>
 
-        <!-- Add to Cart (HTMX) -->
+        <!-- Add to Cart (HTMX) - Dark Forest Green Button -->
         <button
           type="button"
           hx-post="{% url 'store:cart_add' product.id %}"
@@ -181,7 +180,7 @@
           hx-swap="innerHTML"
           hx-include="[name=csrfmiddlewaretoken]"
           @click="window.dispatchEvent(new CustomEvent('addToast', { detail: { message: 'تمت إضافة {{ product.name|truncatewords:3 }} إلى السلة', type: 'success' } }))"
-          class="btn-clinical-primary text-xs py-2 px-3 sm:px-4 active:scale-95 shadow-sm">
+          class="btn-clinical-primary text-xs py-2 px-3 sm:px-3.5 active:scale-95 shadow-xs">
           <span>🛍️</span>
           <span class="font-bold">أضف</span>
         </button>

@@ -6,8 +6,8 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
     <!-- ── Left: Checkout Form ────────────────────────────────────────── -->
-    <div class="md:col-span-2 card p-6">
-      <h1 class="text-2xl font-black mb-6 flex items-center gap-2">
+    <div class="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-[#E5ECE8] shadow-card">
+      <h1 class="text-2xl font-black mb-6 flex items-center gap-2 text-[#355C52]">
         <span>📦</span> بيانات الشحن والتوصيل
       </h1>
 
@@ -15,97 +15,96 @@
         {% csrf_token %}
 
         <div>
-          <label class="block text-xs font-bold mb-1 opacity-70">الاسم الكامل *</label>
+          <label class="block text-xs font-bold mb-1.5 text-[#355C52]">الاسم الكامل *</label>
           <input type="text" name="customer_name" required placeholder="مثال: سارة محمد"
-            class="w-full text-xs p-3 rounded-xl border bg-transparent" style="border-color: var(--border);">
+            class="w-full text-xs p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none transition">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-bold mb-1 opacity-70">رقم الواتساب للتواصل والفاتورة *</label>
-            <input type="tel" name="whatsapp" required placeholder="967771234567"
-              class="w-full text-xs p-3 rounded-xl border bg-transparent" style="border-color: var(--border);">
+            <label class="block text-xs font-bold mb-1.5 text-[#355C52]">رقم الواتساب للتواصل والفاتورة *</label>
+            <input type="tel" name="whatsapp" required placeholder="778550938"
+              class="w-full text-xs p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none transition">
           </div>
           <div>
-            <label class="block text-xs font-bold mb-1 opacity-70">المدينة *</label>
-            <input type="text" name="city" required placeholder="صنعاء / عدن / الرياض..."
-              class="w-full text-xs p-3 rounded-xl border bg-transparent" style="border-color: var(--border);">
+            <label class="block text-xs font-bold mb-1.5 text-[#355C52]">المدينة *</label>
+            <input type="text" name="city" required placeholder="صنعاء / عدن / تعز..."
+              class="w-full text-xs p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none transition">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold mb-1 opacity-70">العنوان التفصيلي *</label>
+          <label class="block text-xs font-bold mb-1.5 text-[#355C52]">العنوان التفصيلي *</label>
           <textarea name="address" required rows="2" placeholder="الشارع، الحي، أقرب معلم بارز..."
-            class="w-full text-xs p-3 rounded-xl border bg-transparent" style="border-color: var(--border);"></textarea>
+            class="w-full text-xs p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none transition"></textarea>
         </div>
 
         <div>
-          <label class="block text-xs font-bold mb-1 opacity-70">ملاحظات عن نوع أو حساسية بشرتك (اختياري)</label>
+          <label class="block text-xs font-bold mb-1.5 text-[#355C52]">ملاحظات عن نوع أو حساسية بشرتك (اختياري)</label>
           <textarea name="skin_notes" rows="2" placeholder="هل تعانين من تحسس تجاه مادة معينة؟ هل ترضعين أو حامل؟"
-            class="w-full text-xs p-3 rounded-xl border bg-transparent" style="border-color: var(--border);"></textarea>
+            class="w-full text-xs p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none transition"></textarea>
         </div>
 
         <!-- Payment Method -->
-        <div class="pt-4 border-t" style="border-color: var(--border);">
-          <label class="block text-sm font-bold mb-3">اختر طريقة الدفع المفضلة:</label>
+        <div class="pt-4 border-t border-[#EEF4F1]">
+          <label class="block text-sm font-bold mb-3 text-[#355C52]">اختر طريقة الدفع المفضلة:</label>
           <div class="grid grid-cols-2 gap-3 text-xs">
-            <label class="card p-3 flex items-center gap-2 cursor-pointer hover:border-emerald-500">
-              <input type="radio" name="payment_method" value="cod" checked>
-              <span>💵 الدفع عند الاستلام</span>
+            <label class="p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] flex items-center gap-2 cursor-pointer hover:border-[#6F8F82] transition">
+              <input type="radio" name="payment_method" value="cod" checked class="text-[#355C52] focus:ring-[#6F8F82]">
+              <span class="font-bold text-[#26332F]">💵 عند الاستلام</span>
             </label>
-            <label class="card p-3 flex items-center gap-2 cursor-pointer hover:border-emerald-500">
-              <input type="radio" name="payment_method" value="kreemi">
-              <span>💳 الكريمي مميز</span>
+            <label class="p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] flex items-center gap-2 cursor-pointer hover:border-[#6F8F82] transition">
+              <input type="radio" name="payment_method" value="kreemi" class="text-[#355C52] focus:ring-[#6F8F82]">
+              <span class="font-bold text-[#26332F]">💳 بنك الكريمي</span>
             </label>
-            <label class="card p-3 flex items-center gap-2 cursor-pointer hover:border-emerald-500">
-              <input type="radio" name="payment_method" value="jawali">
-              <span>📱 محفظة جوالي</span>
+            <label class="p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] flex items-center gap-2 cursor-pointer hover:border-[#6F8F82] transition">
+              <input type="radio" name="payment_method" value="jawali" class="text-[#355C52] focus:ring-[#6F8F82]">
+              <span class="font-bold text-[#26332F]">📱 محفظة جوالي</span>
             </label>
-            <label class="card p-3 flex items-center gap-2 cursor-pointer hover:border-emerald-500">
-              <input type="radio" name="payment_method" value="onecash">
-              <span>💚 ون كاش (OneCash)</span>
+            <label class="p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] flex items-center gap-2 cursor-pointer hover:border-[#6F8F82] transition">
+              <input type="radio" name="payment_method" value="onecash" class="text-[#355C52] focus:ring-[#6F8F82]">
+              <span class="font-bold text-[#26332F]">💚 ون كاش (OneCash)</span>
             </label>
-            <label class="card p-3 flex items-center gap-2 cursor-pointer hover:border-emerald-500">
-              <input type="radio" name="payment_method" value="jaib">
-              <span>👜 محفظة جيب</span>
+            <label class="p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] flex items-center gap-2 cursor-pointer hover:border-[#6F8F82] transition">
+              <input type="radio" name="payment_method" value="jaib" class="text-[#355C52] focus:ring-[#6F8F82]">
+              <span class="font-bold text-[#26332F]">👜 محفظة جيب</span>
             </label>
-            <label class="card p-3 flex items-center gap-2 cursor-pointer hover:border-emerald-500">
-              <input type="radio" name="payment_method" value="flooss">
-              <span>🏦 فلوسك</span>
+            <label class="p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] flex items-center gap-2 cursor-pointer hover:border-[#6F8F82] transition">
+              <input type="radio" name="payment_method" value="flooss" class="text-[#355C52] focus:ring-[#6F8F82]">
+              <span class="font-bold text-[#26332F]">🏦 محفظة فلوسك</span>
             </label>
           </div>
         </div>
 
-        <button type="submit" class="btn-primary w-full py-4 text-base mt-6">
-          تأكيد الطلب وإنشاء فاتورة الواتساب الطبية ←
+        <button type="submit" class="btn-clinical-primary w-full py-4 text-base mt-6 shadow-md">
+          تأكيد الطلب وإرسال الفاتورة الطبية عبر واتساب ←
         </button>
       </form>
     </div>
 
     <!-- ── Right: Order Summary ───────────────────────────────────────── -->
-    <div class="card p-6 h-fit space-y-4">
-      <h3 class="font-bold text-base border-b pb-3" style="border-color: var(--border);">ملخص الطلب</h3>
+    <div class="bg-white rounded-3xl p-6 border border-[#E5ECE8] shadow-card h-fit space-y-4">
+      <h3 class="font-bold text-base text-[#355C52] border-b border-[#EEF4F1] pb-3">ملخص الطلب</h3>
       <div class="space-y-2 text-xs">
         {% for item in cart_list %}
         <div class="flex justify-between items-center py-1">
           <div class="truncate max-w-[150px]">
-            <span class="font-bold">{{ item.name }}</span>
-            <span class="opacity-50">× {{ item.quantity }}</span>
+            <span class="font-bold text-[#26332F]">{{ item.name }}</span>
+            <span class="text-[#66736D]">× {{ item.quantity }}</span>
           </div>
-          <span class="font-bold">{{ item.subtotal|floatformat:0 }} {{ current_currency_symbol }}</span>
+          <span class="font-bold text-[#355C52]">{{ item.subtotal|floatformat:0 }} {{ current_currency_symbol }}</span>
         </div>
         {% endfor %}
       </div>
-      <div class="pt-3 border-t flex justify-between font-black text-base" style="border-color: var(--border);">
-        <span>المجموع:</span>
-        <span style="color: var(--primary);">{{ cart_total|floatformat:0 }} {{ current_currency_symbol }}</span>
+      <div class="pt-3 border-t border-[#EEF4F1] flex justify-between font-black text-base">
+        <span class="text-[#66736D]">المجموع:</span>
+        <span class="text-[#355C52] text-xl">{{ total|floatformat:0 }} {{ current_currency_symbol }}</span>
       </div>
-      <div class="p-3 rounded-xl bg-emerald-50 text-emerald-800 text-[11px] leading-relaxed">
-        🎁 يتضمن الطلب <strong>دليل الاستخدام الصيدلاني اليومي</strong> المرفق تلقائياً مع فاتورتك عبر الواتساب!
+      <div class="text-[11px] text-[#4E806A] font-bold text-center bg-[#F0F5F3] p-2 rounded-xl border border-[#DCE7E2]">
+        🚚 التوصيل متاح لجميع المحافظات
       </div>
     </div>
 
   </div>
 </div>
 {% endblock %}
-

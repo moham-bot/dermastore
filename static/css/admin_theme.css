@@ -1,0 +1,125 @@
+/**
+ * REMSHY DERMOCOSMETICS — REFINED ADMIN THEME (UNFOLD)
+ * Cohesive Luxury Skincare Palette for Django Admin
+ */
+
+:root {
+  --admin-primary: #355C52;
+  --admin-sage: #6F8F82;
+  --admin-bg: #FBF8F3;
+  --admin-surface: #FFFFFF;
+  --admin-text: #26332F;
+  --admin-text-muted: #66736D;
+  --admin-border: #E5ECE8;
+  --admin-success: #4E806A;
+  --admin-warning: #C4954B;
+  --admin-sale: #A44668;
+  --admin-danger: #B75D63;
+}
+
+/* ─── Global Admin Styling ─────────────────────────────────────────────── */
+body, html {
+  font-family: 'Cairo', 'Readex Pro', sans-serif !important;
+  background-color: var(--admin-bg) !important;
+  color: var(--admin-text) !important;
+}
+
+/* Sidebar Styling: Refined Forest Green / Charcoal Tint */
+aside[aria-label="Sidebar"],
+.unfold-sidebar {
+  background-color: #1F2E2A !important;
+  border-left: 1px solid #2D3F3A !important;
+}
+
+aside[aria-label="Sidebar"] a {
+  border-radius: 10px !important;
+  transition: all 0.18s ease !important;
+}
+
+aside[aria-label="Sidebar"] a:hover {
+  background-color: rgba(111, 143, 130, 0.18) !important;
+  color: #FFFFFF !important;
+}
+
+/* Header & Breadcrumb */
+header {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid var(--admin-border) !important;
+}
+
+/* Tables & Rows */
+table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: 12px !important;
+}
+
+thead th {
+  background-color: #F5F8F6 !important;
+  color: var(--admin-primary) !important;
+  font-weight: 800 !important;
+  border-bottom: 2px solid var(--admin-border) !important;
+}
+
+tbody tr:hover {
+  background-color: #FAFBF9 !important;
+}
+
+/* Form Inputs */
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+select,
+textarea {
+  background-color: #FAFBF9 !important;
+  border: 1px solid var(--admin-border) !important;
+  border-radius: 10px !important;
+  color: var(--admin-text) !important;
+  padding: 8px 12px !important;
+  transition: all 0.2s ease !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  background-color: #FFFFFF !important;
+  border-color: var(--admin-sage) !important;
+  box-shadow: 0 0 0 3px rgba(111, 143, 130, 0.2) !important;
+  outline: none !important;
+}
+
+/* Action Buttons */
+.button, input[type="submit"], button[type="submit"] {
+  background-color: var(--admin-primary) !important;
+  color: #FFFFFF !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  border: none !important;
+  transition: background-color 0.2s, transform 0.12s !important;
+}
+
+.button:hover, input[type="submit"]:hover, button[type="submit"]:hover {
+  background-color: var(--admin-sage) !important;
+  transform: translateY(-1px) !important;
+}
+
+.deletelink {
+  background-color: var(--admin-danger) !important;
+  color: #FFFFFF !important;
+}
+
+/* Image Previews */
+.field-product_thumbnail img,
+.field-product_thumbnail_large img {
+  border-radius: 10px !important;
+  border: 1px solid var(--admin-border) !important;
+  box-shadow: 0 2px 8px rgba(38, 51, 47, 0.08) !important;
+}
+
+/* Responsive Table scrollbar for mobile */
+@media (max-width: 768px) {
+  .results {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}

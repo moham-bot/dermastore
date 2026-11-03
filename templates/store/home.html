@@ -1,33 +1,33 @@
 {% extends "base.html" %}
 {% load static store_tags %}
-{% block title %}ريمشي — علم البشرة بثقة صيدلانية{% endblock %}
+{% block title %}ريمشي — علم العناية بالبشرة بثقة صيدلانية{% endblock %}
 
 {% block content %}
 
-<!-- ═══ 1. HERO SECTION (High-Impact Clinical Luxury) ═══════════════════════ -->
-<section class="relative overflow-hidden py-16 sm:py-24 px-4 bg-gradient-to-b from-stone-100/70 via-stone-50 to-white">
-  <!-- Subtle Ambient Glow -->
-  <div class="absolute top-0 right-1/4 w-96 h-96 bg-emerald-100/50 rounded-full blur-3xl pointer-events-none -z-10"></div>
-  <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-cyan-100/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<!-- ═══ 1. HERO SECTION (Serene Clinical Luxury) ═════════════════════════════ -->
+<section class="relative overflow-hidden py-16 sm:py-24 px-4 bg-[#FBF8F3]">
+  <!-- Subtle Ambient Glows in Sage and Misty Blue -->
+  <div class="absolute top-0 right-1/4 w-96 h-96 bg-[#6F8F82]/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+  <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-[#8DA9B8]/15 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
   <div class="max-w-5xl mx-auto text-center space-y-6">
     <!-- Clinical Emblem Badge -->
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 shadow-xs mb-2">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#F0F5F3] border border-[#DCE7E2] shadow-xs mb-2">
       <img src="{% static 'images/logo.svg' %}" alt="شعار ريمشي" class="w-5 h-5">
-      <span class="text-xs font-bold text-emerald-800 tracking-wide uppercase">REMSHY DERMO-CLINICAL PHARMACY</span>
+      <span class="text-xs font-bold text-[#355C52] tracking-wide uppercase">REMSHY DERMO-CLINICAL APOTHECARY</span>
     </div>
 
-    <!-- Main Value Proposition -->
-    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-gray-900 leading-tight tracking-tight">
+    <!-- Main Value Proposition (Forest Green Title + Sage Grey Subtitle) -->
+    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-[#355C52] leading-tight tracking-tight">
       علم العناية بالبشرة <br class="hidden sm:inline">
-      <span class="text-emerald-800 underline decoration-amber-400 decoration-wavy decoration-2">بثقة صيدلانية حقيقية</span>
+      <span class="text-[#6F8F82] underline decoration-[#C98291]/60 decoration-wavy decoration-2">بثقة صيدلانية حقيقية</span>
     </h1>
 
-    <p class="text-sm sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-      منصة علاجية متخصصة تجمع أفضل المستحضرات الجلدية العالمية مع أدوات صيدلانية تفاعلية لبناء روتين مخصص وآمن تماماً لبشرتك.
+    <p class="text-sm sm:text-lg text-[#66736D] max-w-2xl mx-auto leading-relaxed">
+      منصة صيدلانية متخصصة تجمع أرقى المستحضرات الجلدية العالمية مع أدوات تشخيص تفاعلية لبناء روتين متوازن وآمن تماماً لبشرتك.
     </p>
 
-    <!-- CTAs -->
+    <!-- CTAs: Primary Dark Green -> Hover Sage & Secondary White with Green border -->
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
       <a href="{% url 'store:products' %}" class="btn-clinical-primary text-sm sm:text-base py-3.5 px-8 w-full sm:w-auto shadow-md">
         <span>🛍️</span>
@@ -40,86 +40,87 @@
     </div>
 
     <!-- 4 Trust Pillars -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 pt-8 max-w-4xl mx-auto text-right sm:text-center">
-      <div class="p-3 bg-white rounded-2xl border border-stone-200/80 shadow-xs flex items-center sm:flex-col gap-2">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-8 max-w-4xl mx-auto text-right sm:text-center">
+      <div class="p-3.5 bg-white rounded-2xl border border-[#E5ECE8] shadow-xs flex items-center sm:flex-col gap-2 transition hover:border-[#6F8F82]">
         <span class="text-2xl">🛡️</span>
         <div>
-          <div class="font-bold text-xs text-gray-900">أصالة معتمدة 100%</div>
-          <div class="text-[10px] text-gray-500">من الوكلاء الرسميين</div>
+          <div class="font-bold text-xs text-[#26332F]">أصالة معتمدة 100%</div>
+          <div class="text-[10px] text-[#66736D]">من الوكلاء الرسميين</div>
         </div>
       </div>
-      <div class="p-3 bg-white rounded-2xl border border-stone-200/80 shadow-xs flex items-center sm:flex-col gap-2">
+      <div class="p-3.5 bg-white rounded-2xl border border-[#E5ECE8] shadow-xs flex items-center sm:flex-col gap-2 transition hover:border-[#6F8F82]">
         <span class="text-2xl">⚗️</span>
         <div>
-          <div class="font-bold text-xs text-gray-900">فحص التعارض الذكي</div>
-          <div class="text-[10px] text-gray-500">حماية من تضارب المواد</div>
+          <div class="font-bold text-xs text-[#26332F]">فحص التعارض الذكي</div>
+          <div class="text-[10px] text-[#66736D]">حماية من تضارب المواد</div>
         </div>
       </div>
-      <div class="p-3 bg-white rounded-2xl border border-stone-200/80 shadow-xs flex items-center sm:flex-col gap-2">
+      <div class="p-3.5 bg-white rounded-2xl border border-[#E5ECE8] shadow-xs flex items-center sm:flex-col gap-2 transition hover:border-[#6F8F82]">
         <span class="text-2xl">📋</span>
         <div>
-          <div class="font-bold text-xs text-gray-900">وصفة روتين مجانية</div>
-          <div class="text-[10px] text-gray-500">دليل استخدام صباحي ومسائي</div>
+          <div class="font-bold text-xs text-[#26332F]">وصفة روتين مجانية</div>
+          <div class="text-[10px] text-[#66736D]">دليل استخدام صباحي ومسائي</div>
         </div>
       </div>
-      <div class="p-3 bg-white rounded-2xl border border-stone-200/80 shadow-xs flex items-center sm:flex-col gap-2">
+      <div class="p-3.5 bg-white rounded-2xl border border-[#E5ECE8] shadow-xs flex items-center sm:flex-col gap-2 transition hover:border-[#6F8F82]">
         <span class="text-2xl">💬</span>
         <div>
-          <div class="font-bold text-xs text-gray-900">استشارة واتساب</div>
-          <div class="text-[10px] text-gray-500">صيادلة متخصصون بخدمتك</div>
+          <div class="font-bold text-xs text-[#26332F]">استشارة واتساب</div>
+          <div class="text-[10px] text-[#66736D]">صيادلة متخصصون بخدمتك</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ 2. BROWSE BY SKIN TYPE ══════════════════════════════════════════════ -->
-<section class="py-14 px-4">
+<!-- ═══ 2. BROWSE BY SKIN TYPE (Warm White Background) ═══════════════════════ -->
+<section class="py-16 px-4 bg-white border-y border-[#E5ECE8]">
   <div class="max-w-7xl mx-auto">
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-8">
       <div>
-        <h2 class="text-2xl sm:text-3xl font-black text-gray-900">💆 تسوق حسب نوع بشرتك</h2>
-        <p class="text-xs sm:text-sm text-gray-500">اختر نوع بشرتك لعرض المستحضرات المصممة خصيصاً لاحتياجاتها</p>
+        <h2 class="text-2xl sm:text-3xl font-black text-[#355C52]">💆 تسوق حسب نوع بشرتك</h2>
+        <p class="text-xs sm:text-sm text-[#66736D]">اختر نوع بشرتك لعرض المستحضرات المصممة خصيصاً لتوازنها الحيوي</p>
       </div>
-      <a href="{% url 'store:products' %}" class="text-xs font-bold text-emerald-800 hover:underline">
+      <a href="{% url 'store:products' %}" class="text-xs font-bold text-[#355C52] hover:text-[#6F8F82] transition">
         عرض جميع الفئات ↗
       </a>
     </div>
 
+    <!-- Pastel Calm Skin Type Cards -->
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
       {% for st in skin_types %}
       <a href="{% url 'store:products' %}?skin_type={{ st.slug }}"
-        class="bg-white p-5 rounded-2xl border border-stone-200 hover:border-emerald-700 hover:shadow-md transition text-center flex flex-col items-center justify-center gap-2 group">
-        <span class="text-4xl transition-transform group-hover:scale-110">{{ st.icon }}</span>
-        <span class="font-bold text-sm text-gray-900">بشرة {{ st.name }}</span>
-        <span class="text-[10px] text-gray-400 line-clamp-1">{{ st.description|truncatewords:4 }}</span>
+        class="p-5 rounded-2xl border border-[#E5ECE8] hover:border-[#6F8F82] hover:shadow-sm transition text-center flex flex-col items-center justify-center gap-2 group {% cycle 'bg-[#F9FAF9]' 'bg-[#F6F9FA]' 'bg-[#FAF7F8]' 'bg-[#FAF8F5]' 'bg-[#F7FAF9]' %}">
+        <span class="text-4xl transition-transform group-hover:scale-110 drop-shadow-xs">{{ st.icon }}</span>
+        <span class="font-bold text-sm text-[#26332F]">بشرة {{ st.name }}</span>
+        <span class="text-[10px] text-[#66736D] line-clamp-1">{{ st.description|truncatewords:4 }}</span>
       </a>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<!-- ═══ 3. BROWSE BY SKIN CONCERN ═══════════════════════════════════════════ -->
-<section class="py-14 px-4 bg-stone-50 border-y border-stone-200/80">
+<!-- ═══ 3. BROWSE BY SKIN CONCERN (Warm Ivory Background) ════════════════════ -->
+<section class="py-16 px-4 bg-[#FBF8F3]">
   <div class="max-w-7xl mx-auto">
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-8">
       <div>
-        <h2 class="text-2xl sm:text-3xl font-black text-gray-900">🎯 تسوق حسب المشكلة المستهدفة</h2>
-        <p class="text-xs sm:text-sm text-gray-500">حلول سريرية موجهة لعلاج المشاكل الجلدية بأعلى درجات الفعالية</p>
+        <h2 class="text-2xl sm:text-3xl font-black text-[#355C52]">🎯 تسوق حسب المشكلة المستهدفة</h2>
+        <p class="text-xs sm:text-sm text-[#66736D]">حلول علاجية موجهة لمعالجة المشاكل الجلدية بأعلى درجات الفعالية والأمان</p>
       </div>
-      <a href="{% url 'store:products' %}" class="text-xs font-bold text-emerald-800 hover:underline">
-        استعراض الحلول الكاملة ↗
+      <a href="{% url 'store:products' %}" class="text-xs font-bold text-[#355C52] hover:text-[#6F8F82] transition">
+        استعراض جميع الحلول ↗
       </a>
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4">
       {% for sc in skin_concerns %}
       <a href="{% url 'store:products' %}?concern={{ sc.slug }}"
-        class="bg-white p-4 rounded-2xl border border-stone-200 hover:border-emerald-700 hover:shadow-sm transition flex items-center gap-3">
+        class="bg-white p-4 rounded-2xl border border-[#E5ECE8] hover:border-[#6F8F82] hover:shadow-xs transition flex items-center gap-3">
         <span class="text-3xl shrink-0">{{ sc.icon }}</span>
         <div>
-          <div class="font-bold text-xs text-gray-900 leading-snug">{{ sc.name }}</div>
-          <div class="text-[10px] text-emerald-700 font-semibold mt-0.5">استكشف المنتجات ←</div>
+          <div class="font-bold text-xs text-[#26332F] leading-snug">{{ sc.name }}</div>
+          <div class="text-[10px] text-[#355C52] font-bold mt-0.5">استكشف المنتجات ←</div>
         </div>
       </a>
       {% endfor %}
@@ -127,14 +128,14 @@
   </div>
 </section>
 
-<!-- ═══ 4. FEATURED CLINICAL PRODUCTS ════════════════════════════════════════ -->
+<!-- ═══ 4. FEATURED CLINICAL PRODUCTS (Warm White Background) ═════════════════ -->
 {% if featured_products %}
-<section class="py-16 px-4">
+<section class="py-16 px-4 bg-white border-y border-[#E5ECE8]">
   <div class="max-w-7xl mx-auto">
     <div class="flex items-center justify-between mb-8">
       <div>
-        <div class="badge-brand mb-1">CLINICAL HIGHLIGHTS</div>
-        <h2 class="text-2xl sm:text-3xl font-black text-gray-900">⭐ مستحضرات مميزة سريرياً</h2>
+        <span class="badge-brand mb-1">CLINICAL HIGHLIGHTS</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-[#355C52]">⭐ مستحضرات مميزة سريرياً</h2>
       </div>
       <a href="{% url 'store:products' %}?badge=featured" class="btn-clinical-outline text-xs py-2 px-4">
         عرض الكل ↗
@@ -150,14 +151,14 @@
 </section>
 {% endif %}
 
-<!-- ═══ 5. BESTSELLERS ══════════════════════════════════════════════════════ -->
+<!-- ═══ 5. BESTSELLERS (Warm Ivory Background) ═══════════════════════════════ -->
 {% if bestsellers %}
-<section class="py-16 px-4 bg-stone-50 border-y border-stone-200/80">
+<section class="py-16 px-4 bg-[#FBF8F3]">
   <div class="max-w-7xl mx-auto">
     <div class="flex items-center justify-between mb-8">
       <div>
-        <div class="badge-brand mb-1">TOP SELLERS</div>
-        <h2 class="text-2xl sm:text-3xl font-black text-gray-900">🔥 الأكثر طلباً ومبيعاً</h2>
+        <span class="badge-brand mb-1">TOP SELLERS</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-[#355C52]">🔥 الأكثر طلباً ومبيعاً</h2>
       </div>
       <a href="{% url 'store:products' %}?badge=bestseller" class="btn-clinical-outline text-xs py-2 px-4">
         عرض الكل ↗
@@ -173,15 +174,15 @@
 </section>
 {% endif %}
 
-<!-- ═══ 6. READY ROUTINE BUNDLES ════════════════════════════════════════════ -->
+<!-- ═══ 6. READY ROUTINE BUNDLES (Warm White Background) ═════════════════════ -->
 {% if bundles %}
-<section class="py-16 px-4">
+<section class="py-16 px-4 bg-white border-y border-[#E5ECE8]">
   <div class="max-w-7xl mx-auto">
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
       <div>
-        <div class="badge-brand mb-1">COMPLETE ROUTINES</div>
-        <h2 class="text-2xl sm:text-3xl font-black text-gray-900">📦 باقات الروتين الجاهزة بخصومات خاصة</h2>
-        <p class="text-xs sm:text-sm text-gray-500">باقات علاجية متكاملة مختارة صيدلانياً لنتائج متناغمة وبسعر أوفر</p>
+        <span class="badge-brand mb-1">COMPLETE ROUTINES</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-[#355C52]">📦 باقات الروتين الجاهزة بخصومات خاصة</h2>
+        <p class="text-xs sm:text-sm text-[#66736D]">باقات علاجية متكاملة مختارة صيدلانياً لنتائج متناغمة وبسعر أوفر</p>
       </div>
       <a href="{% url 'store:bundles' %}" class="btn-clinical-outline text-xs py-2 px-4">
         عرض جميع الباقات ↗
@@ -190,23 +191,23 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {% for bundle in bundles %}
-      <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-card flex flex-col justify-between hover:shadow-card-hover transition">
+      <div class="bg-white rounded-3xl p-6 border border-[#E5ECE8] shadow-card flex flex-col justify-between hover:shadow-card-hover transition">
         <div>
           <div class="flex items-center justify-between mb-3">
             <span class="text-2xl">📦</span>
             <span class="badge-clinical badge-sale">وفر {{ bundle.discount_percent }}%</span>
           </div>
-          <h3 class="font-black text-base text-gray-900 mb-2 leading-snug">{{ bundle.name }}</h3>
-          <p class="text-xs text-gray-500 leading-relaxed mb-4">{{ bundle.description|truncatewords:15 }}</p>
+          <h3 class="font-black text-base text-[#26332F] mb-2 leading-snug">{{ bundle.name }}</h3>
+          <p class="text-xs text-[#66736D] leading-relaxed mb-4">{{ bundle.description|truncatewords:15 }}</p>
 
-          <div class="flex items-center gap-1.5 text-xs text-emerald-800 font-bold mb-4">
+          <div class="flex items-center gap-1.5 text-xs text-[#355C52] font-bold mb-4">
             <span>✓</span>
             <span>تحتوي على {{ bundle.products.count }} منتجات متوافقة</span>
           </div>
         </div>
 
-        <div class="pt-4 border-t border-stone-100 flex items-center justify-between mt-auto">
-          <div class="text-lg font-black text-emerald-800">
+        <div class="pt-4 border-t border-[#EEF4F1] flex items-center justify-between mt-auto">
+          <div class="text-lg font-black text-[#355C52]">
             {{ bundle|bundle_total_price:current_currency|floatformat:0 }} {{ current_currency_symbol }}
           </div>
           <form method="post" action="{% url 'store:add_bundle_to_cart' bundle.id %}">
@@ -223,59 +224,60 @@
 </section>
 {% endif %}
 
-<!-- ═══ 7. INTERACTIVE DIAGNOSTIC CONSULTANT BANNER ═════════════════════════ -->
-<section class="py-16 px-4 bg-gradient-to-r from-emerald-900 to-teal-900 text-white relative overflow-hidden">
+<!-- ═══ 7. INTERACTIVE DIAGNOSTIC CONSULTANT BANNER (Forest Green Calm) ═══════ -->
+<section class="py-16 px-4 bg-[#355C52] text-white relative overflow-hidden">
   <div class="max-w-4xl mx-auto text-center space-y-6 relative z-10">
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-bold text-emerald-200">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-bold text-[#8DA9B8]">
       <span>🧪</span>
       <span>مستشارك الصيدلاني الافتراضي المجاني</span>
     </div>
 
-    <h2 class="text-2xl sm:text-4xl font-black leading-tight">
-      لا تعرف ما يناسب بشرتك؟ <br>
-      احصل على وصفتك الصيدلانية في 5 خطوات فقط
+    <h2 class="text-2xl sm:text-4xl font-black leading-tight text-white">
+      لا تعرفين ما يناسب بشرتك بدقة؟ <br>
+      احصلي على وصفتك الصيدلانية في 5 خطوات فقط
     </h2>
 
-    <p class="text-xs sm:text-sm text-emerald-100 max-w-xl mx-auto leading-relaxed">
-      أجب عن 5 أسئلة تشخيصية سريعة وسيقوم محركنا الصيدلاني بتحليل نوع بشرتك ومشاكلها وبناء جدول روتين صباحي ومسائي مفصل وقابل للطباعة مجاناً.
+    <p class="text-xs sm:text-sm text-[#F0F5F3] max-w-xl mx-auto leading-relaxed">
+      أجيبي عن 5 أسئلة تشخيصية سريعة وسيقوم محركنا الصيدلاني بتحليل نوع بشرتك ومشاكلها وبناء جدول روتين صباحي ومسائي مفصل وقابل للطباعة مجاناً.
     </p>
 
     <div>
-      <a href="{% url 'store:skin_consultant' %}" class="btn-clinical-primary bg-amber-400 hover:bg-amber-300 text-gray-900 font-black py-4 px-10 text-base shadow-xl inline-flex items-center gap-2">
+      <a href="{% url 'store:skin_consultant' %}"
+        class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm bg-white text-[#355C52] hover:bg-[#F0F5F3] transition shadow-lg active:scale-95">
         <span>🧪 ابدأ اختبار البشرة الآن</span>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ═══ 8. EDUCATIONAL ROUTINE GUIDE ════════════════════════════════════════ -->
-<section class="py-16 px-4 bg-stone-50">
+<!-- ═══ 8. EDUCATIONAL ROUTINE GUIDE (Warm Ivory Background) ═════════════════ -->
+<section class="py-16 px-4 bg-[#FBF8F3]">
   <div class="max-w-5xl mx-auto">
     <div class="text-center max-w-2xl mx-auto mb-12">
-      <div class="badge-brand mb-1">CLINICAL METHODOLOGY</div>
-      <h2 class="text-2xl sm:text-3xl font-black text-gray-900">الترتيب العلمي الصحيح للروتين اليومي</h2>
-      <p class="text-xs sm:text-sm text-gray-500 mt-2">
+      <span class="badge-brand mb-1">CLINICAL METHODOLOGY</span>
+      <h2 class="text-2xl sm:text-3xl font-black text-[#355C52]">الترتيب العلمي الصحيح للروتين اليومي</h2>
+      <p class="text-xs sm:text-sm text-[#66736D] mt-2">
         تطبيق المنتجات بالترتيب الخاطئ يقلل امتصاصها بنسبة تصل إلى 60%، هذا هو الدليل المعتمد من أطباء الجلدية:
       </p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
       {% for num, title, icon, timing, desc in steps %}
-      <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex flex-col justify-between">
+      <div class="bg-white p-5 rounded-2xl border border-[#E5ECE8] shadow-xs flex flex-col justify-between hover:border-[#6F8F82] transition">
         <div>
           <div class="flex items-center justify-between mb-3">
             <span class="text-3xl">{{ icon }}</span>
-            <span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-800 font-black text-xs flex items-center justify-center">
+            <span class="w-7 h-7 rounded-full bg-[#F0F5F3] text-[#355C52] font-black text-xs flex items-center justify-center">
               {{ num }}
             </span>
           </div>
-          <h3 class="font-bold text-sm text-gray-900 mb-1">{{ title }}</h3>
-          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-gray-600 inline-block mb-2">{{ timing }}</span>
-          <p class="text-xs text-gray-500 leading-relaxed">{{ desc }}</p>
+          <h3 class="font-bold text-sm text-[#26332F] mb-1">{{ title }}</h3>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FBF8F3] text-[#66736D] inline-block mb-2">{{ timing }}</span>
+          <p class="text-xs text-[#66736D] leading-relaxed">{{ desc }}</p>
         </div>
-        <div class="pt-4 border-t border-stone-100 mt-4">
-          <a href="{% url 'store:products' %}?step={{ num }}" class="text-xs font-bold text-emerald-800 hover:underline">
-            تصفح منتجات الخطوة {{ num }} ←
+        <div class="pt-4 border-t border-[#EEF4F1] mt-4">
+          <a href="{% url 'store:products' %}?step={{ num }}" class="text-xs font-bold text-[#355C52] hover:text-[#6F8F82] transition">
+            تصفح مستحضرات الخطوة {{ num }} ←
           </a>
         </div>
       </div>

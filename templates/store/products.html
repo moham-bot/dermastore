@@ -1,43 +1,43 @@
 {% extends "base.html" %}
 {% load static store_tags %}
-{% block title %}كتالوج المنتجات السريرية — ريمشي{% endblock %}
+{% block title %}كتالوج المستحضرات السريرية — ريمشي{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 py-8" x-data="{ mobileFilterOpen: false, viewMode: '{{ view_mode|default:'grid' }}' }">
 
   <!-- ── 1. Page Header & Control Bar ──────────────────────────────────────── -->
-  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-stone-200">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#E5ECE8]">
     <div>
       <div class="flex items-center gap-2 mb-1">
         <span class="badge-brand">REMSHY APOTHECARY</span>
-        <span class="text-xs text-gray-500">• منتجات أصلية معتمدة 100%</span>
+        <span class="text-xs text-[#66736D]">• مستحضرات أصلية معتمدة 100%</span>
       </div>
-      <h1 class="text-2xl sm:text-3xl font-black text-gray-900">كتالوج المستحضرات والعناية الطبية</h1>
+      <h1 class="text-2xl sm:text-3xl font-black text-[#355C52]">كتالوج المستحضرات والعناية الطبية</h1>
     </div>
 
     <!-- Right Controls: View Switcher & Sort -->
     <div class="flex items-center gap-3 self-stretch sm:self-auto justify-between sm:justify-end">
       <!-- Mobile Filter Trigger Button -->
       <button type="button" @click="mobileFilterOpen = true"
-        class="md:hidden flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-stone-200 text-xs font-bold text-gray-800 shadow-sm">
+        class="md:hidden flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-[#E5ECE8] text-xs font-bold text-[#355C52] shadow-xs active:scale-95">
         <span>⚙️</span>
         <span>الفلاتر</span>
-        {% if active_filters %}<span class="w-4 h-4 rounded-full bg-emerald-600 text-white text-[9px] flex items-center justify-center">{{ active_filters|length }}</span>{% endif %}
+        {% if active_filters %}<span class="w-4 h-4 rounded-full bg-[#355C52] text-white text-[9px] flex items-center justify-center">{{ active_filters|length }}</span>{% endif %}
       </button>
 
-      <!-- View Switcher (Grid vs List) -->
-      <div class="flex items-center bg-white border border-stone-200 rounded-xl p-1 shadow-xs">
+      <!-- View Switcher (Grid vs List) with localStorage -->
+      <div class="flex items-center bg-white border border-[#E5ECE8] rounded-xl p-1 shadow-xs">
         <button type="button"
-          @click="viewMode = 'grid'; $dispatch('viewChanged', 'grid')"
-          :class="viewMode === 'grid' ? 'bg-emerald-50 text-emerald-800 font-bold' : 'text-gray-400 hover:text-gray-700'"
+          @click="viewMode = 'grid'; localStorage.setItem('remshyViewMode', 'grid'); $dispatch('viewChanged', 'grid')"
+          :class="viewMode === 'grid' ? 'bg-[#F0F5F3] text-[#355C52] font-bold' : 'text-[#66736D] hover:text-[#26332F]'"
           class="p-1.5 px-3 rounded-lg text-xs flex items-center gap-1 transition"
           title="عرض شبكي">
           <span>▦</span>
           <span class="hidden sm:inline">شبكة</span>
         </button>
         <button type="button"
-          @click="viewMode = 'list'; $dispatch('viewChanged', 'list')"
-          :class="viewMode === 'list' ? 'bg-emerald-50 text-emerald-800 font-bold' : 'text-gray-400 hover:text-gray-700'"
+          @click="viewMode = 'list'; localStorage.setItem('remshyViewMode', 'list'); $dispatch('viewChanged', 'list')"
+          :class="viewMode === 'list' ? 'bg-[#F0F5F3] text-[#355C52] font-bold' : 'text-[#66736D] hover:text-[#26332F]'"
           class="p-1.5 px-3 rounded-lg text-xs flex items-center gap-1 transition"
           title="عرض قائمة">
           <span>☰</span>
@@ -53,7 +53,7 @@
           hx-target="#product-grid-container"
           hx-trigger="change"
           hx-include="#filter-form"
-          class="text-xs font-bold bg-white text-gray-800 border border-stone-200 rounded-xl px-3 py-2 cursor-pointer shadow-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          class="text-xs font-bold bg-white text-[#26332F] border border-[#E5ECE8] rounded-xl px-3 py-2 cursor-pointer shadow-xs focus:ring-2 focus:ring-[#6F8F82]/30 focus:border-[#6F8F82] focus:outline-none">
           <option value="recommended" {% if sort_by == 'recommended' %}selected{% endif %}>⭐ الموصى به صيدلانياً</option>
           <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>✨ الأحدث وصولاً</option>
           <option value="bestseller" {% if sort_by == 'bestseller' %}selected{% endif %}>🔥 الأكثر مبيعاً</option>
@@ -68,37 +68,39 @@
   <!-- ── 2. Main Content Grid (Sidebar + Products) ──────────────────────────── -->
   <div class="flex flex-col md:flex-row gap-8 items-start">
 
-    <!-- Desktop Sidebar -->
+    <!-- Desktop Sidebar Filter Box (Warm White with Delicate Border) -->
     <aside class="hidden md:block w-72 shrink-0 sticky top-24">
       <form id="filter-form"
         hx-get="{% url 'store:products' %}"
         hx-target="#product-grid-container"
         hx-trigger="change, keyup delay:300ms from:#search-input"
         hx-indicator="#loading-indicator"
-        class="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm space-y-6">
+        class="bg-white p-5 rounded-3xl border border-[#E5ECE8] shadow-card space-y-5">
 
-        <div class="flex items-center justify-between pb-3 border-b border-stone-100">
-          <h3 class="font-black text-sm flex items-center gap-2 text-gray-900">
+        <div class="flex items-center justify-between pb-3 border-b border-[#EEF4F1]">
+          <h3 class="font-black text-sm flex items-center gap-2 text-[#355C52]">
             <span>🔬</span> الفلترة السريرية
           </h3>
-          <a href="{% url 'store:products' %}" class="text-xs text-red-600 font-bold hover:underline">مسح الفلاتر</a>
+          <a href="{% url 'store:products' %}" class="text-xs text-[#66736D] hover:text-[#B75D63] font-bold transition">
+            مسح الفلاتر
+          </a>
         </div>
 
         <!-- Live Search -->
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1.5">البحث المباشر:</label>
+          <label class="block text-xs font-bold text-[#355C52] mb-1.5">البحث المباشر:</label>
           <div class="relative">
             <input type="text" name="q" id="search-input" value="{{ search_q }}"
-              placeholder="اسم المنتج، الماركة، المادة..."
-              class="w-full text-xs p-2.5 pr-8 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none">
-            <span class="absolute right-2.5 top-2.5 text-xs text-gray-400">🔍</span>
+              placeholder="اسم المستحضر، الماركة، المادة..."
+              class="w-full text-xs p-2.5 pr-8 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:ring-2 focus:ring-[#6F8F82]/30 focus:border-[#6F8F82] focus:outline-none transition">
+            <span class="absolute right-2.5 top-2.5 text-xs text-[#66736D]">🔍</span>
           </div>
         </div>
 
         <!-- Routine Step -->
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-2">خطوة الروتين:</label>
-          <select name="step" class="w-full text-xs p-2.5 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:outline-none cursor-pointer">
+          <label class="block text-xs font-bold text-[#355C52] mb-1.5">خطوة الروتين:</label>
+          <select name="step" class="w-full text-xs p-2.5 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none cursor-pointer transition">
             <option value="">جميع خطوات الروتين</option>
             <option value="1" {% if selected_step == '1' %}selected{% endif %}>1 — غسول ومنظف 🧴</option>
             <option value="2" {% if selected_step == '2' %}selected{% endif %}>2 — تونر وموازنة 💦</option>
@@ -112,8 +114,8 @@
         <!-- Brand Filter -->
         {% if brands %}
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-2">العلامة التجارية:</label>
-          <select name="brand" class="w-full text-xs p-2.5 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:outline-none cursor-pointer">
+          <label class="block text-xs font-bold text-[#355C52] mb-1.5">العلامة التجارية:</label>
+          <select name="brand" class="w-full text-xs p-2.5 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none cursor-pointer transition">
             <option value="">جميع الماركات المعتمدة</option>
             {% for b in brands %}
               <option value="{{ b }}" {% if selected_brand == b %}selected{% endif %}>{{ b }}</option>
@@ -124,8 +126,8 @@
 
         <!-- Skin Type -->
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-2">نوع البشرة:</label>
-          <select name="skin_type" class="w-full text-xs p-2.5 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:outline-none cursor-pointer">
+          <label class="block text-xs font-bold text-[#355C52] mb-1.5">نوع البشرة:</label>
+          <select name="skin_type" class="w-full text-xs p-2.5 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none cursor-pointer transition">
             <option value="">جميع أنواع البشرة</option>
             {% for st in skin_types %}
               <option value="{{ st.slug }}" {% if selected_skin_type == st.slug %}selected{% endif %}>{{ st.icon }} بشرة {{ st.name }}</option>
@@ -135,8 +137,8 @@
 
         <!-- Skin Concern -->
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-2">المشكلة المستهدفة:</label>
-          <select name="concern" class="w-full text-xs p-2.5 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:outline-none cursor-pointer">
+          <label class="block text-xs font-bold text-[#355C52] mb-1.5">المشكلة المستهدفة:</label>
+          <select name="concern" class="w-full text-xs p-2.5 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none cursor-pointer transition">
             <option value="">جميع المشاكل الجلدية</option>
             {% for sc in skin_concerns %}
               <option value="{{ sc.slug }}" {% if selected_concern == sc.slug %}selected{% endif %}>{{ sc.icon }} {{ sc.name }}</option>
@@ -147,8 +149,8 @@
         <!-- Active Ingredients -->
         {% if active_ingredients %}
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-2">المادة الفعالة:</label>
-          <select name="ingredient" class="w-full text-xs p-2.5 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:outline-none cursor-pointer">
+          <label class="block text-xs font-bold text-[#355C52] mb-1.5">المادة الفعالة:</label>
+          <select name="ingredient" class="w-full text-xs p-2.5 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3] focus:bg-white focus:border-[#6F8F82] focus:ring-2 focus:ring-[#6F8F82]/30 focus:outline-none cursor-pointer transition">
             <option value="">جميع المواد الفعالة</option>
             {% for ing in active_ingredients %}
               <option value="{{ ing.slug }}" {% if selected_ingredient == ing.slug %}selected{% endif %}>{{ ing.name_ar }} ({{ ing.name_en }})</option>
@@ -158,21 +160,21 @@
         {% endif %}
 
         <!-- Safety Checkboxes -->
-        <div class="pt-3 border-t border-stone-100 space-y-2">
-          <label class="block text-xs font-bold text-gray-700 mb-1">فلاتر الأمان الطبي:</label>
-          <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+        <div class="pt-3 border-t border-[#EEF4F1] space-y-2">
+          <label class="block text-xs font-bold text-[#355C52] mb-1">فلاتر الأمان الطبي:</label>
+          <label class="flex items-center gap-2 text-xs text-[#26332F] cursor-pointer">
             <input type="checkbox" name="safe_pregnancy" value="1" {% if selected_safe_pregnancy == '1' %}checked{% endif %}
-              class="rounded text-emerald-700 focus:ring-emerald-700">
+              class="rounded text-[#355C52] focus:ring-[#6F8F82]">
             <span>🤰 آمن للحمل والرضاعة</span>
           </label>
-          <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+          <label class="flex items-center gap-2 text-xs text-[#26332F] cursor-pointer">
             <input type="checkbox" name="fragrance_free" value="1" {% if selected_fragrance_free == '1' %}checked{% endif %}
-              class="rounded text-emerald-700 focus:ring-emerald-700">
+              class="rounded text-[#355C52] focus:ring-[#6F8F82]">
             <span>🌿 خالٍ من العطور</span>
           </label>
-          <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+          <label class="flex items-center gap-2 text-xs text-[#26332F] cursor-pointer">
             <input type="checkbox" name="non_comedogenic" value="1" {% if selected_non_comedogenic == '1' %}checked{% endif %}
-              class="rounded text-emerald-700 focus:ring-emerald-700">
+              class="rounded text-[#355C52] focus:ring-[#6F8F82]">
             <span>✓ لا يسد المسام (Non-comedogenic)</span>
           </label>
         </div>
@@ -185,7 +187,7 @@
     <!-- Main Products Area -->
     <main class="flex-1 w-full relative">
       <!-- Loading Indicator -->
-      <div id="loading-indicator" class="htmx-indicator mb-4 text-center py-2 bg-emerald-50 text-emerald-800 rounded-xl text-xs font-bold border border-emerald-200">
+      <div id="loading-indicator" class="htmx-indicator mb-4 text-center py-2 bg-[#F0F5F3] text-[#355C52] rounded-xl text-xs font-bold border border-[#DCE7E2]">
         ⏳ جاري تحديث النتائج السريرية...
       </div>
 
@@ -194,35 +196,50 @@
     </main>
   </div>
 
-  <!-- ── 3. Mobile Bottom Sheet Filter ──────────────────────────────────────── -->
-  <div x-show="mobileFilterOpen" x-transition:enter="transition ease-out duration-300"
+  <!-- ── 3. Mobile Bottom Sheet Filter (Gentle Backdrop, Smooth Slide-up) ───── -->
+  <div x-show="mobileFilterOpen"
+    x-transition:enter="transition ease-out duration-250"
     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
     x-transition:leave="transition ease-in duration-200"
     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-    class="fixed inset-0 z-[250] bg-black/60 backdrop-blur-xs flex items-end md:hidden"
+    class="fixed inset-0 z-[250] bg-black/40 backdrop-blur-xs flex items-end md:hidden"
     @click.self="mobileFilterOpen = false">
 
-    <div class="w-full bg-white rounded-t-3xl p-6 max-h-[85vh] overflow-y-auto space-y-6 shadow-2xl">
-      <div class="flex items-center justify-between pb-3 border-b border-stone-200">
-        <h3 class="font-black text-base text-gray-900">🔬 فلاتر المنتجات</h3>
-        <button type="button" @click="mobileFilterOpen = false" class="text-gray-400 hover:text-gray-600 text-lg font-bold">✕</button>
+    <div class="w-full bg-white rounded-t-3xl p-6 max-h-[85vh] overflow-y-auto space-y-5 shadow-2xl border-t border-[#E5ECE8]">
+      <div class="flex items-center justify-between pb-3 border-b border-[#E5ECE8]">
+        <h3 class="font-black text-base text-[#355C52]">🔬 فلاتر المستحضرات</h3>
+        <button type="button" @click="mobileFilterOpen = false" class="text-[#66736D] hover:text-[#26332F] text-lg font-bold">✕</button>
       </div>
 
       <div class="space-y-4">
         <!-- Search -->
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">البحث:</label>
+          <label class="block text-xs font-bold text-[#355C52] mb-1">البحث المباشر:</label>
           <input type="text" name="q" value="{{ search_q }}"
             form="filter-form"
             placeholder="ابحث بالاسم أو الماركة..."
-            class="w-full text-xs p-3 rounded-xl border border-stone-200 bg-stone-50">
+            class="w-full text-xs p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3]">
+        </div>
+
+        <!-- Routine Step -->
+        <div>
+          <label class="block text-xs font-bold text-[#355C52] mb-1">الخطوة في الروتين:</label>
+          <select name="step" form="filter-form" class="w-full text-xs p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3]">
+            <option value="">جميع الخطوات</option>
+            <option value="1" {% if selected_step == '1' %}selected{% endif %}>1 — غسول ومنظف</option>
+            <option value="2" {% if selected_step == '2' %}selected{% endif %}>2 — تونر وموازنة</option>
+            <option value="3" {% if selected_step == '3' %}selected{% endif %}>3 — سيروم وعلاج</option>
+            <option value="4" {% if selected_step == '4' %}selected{% endif %}>4 — مرطب وحاجز</option>
+            <option value="5" {% if selected_step == '5' %}selected{% endif %}>5 — واقي شمس</option>
+            <option value="6" {% if selected_step == '6' %}selected{% endif %}>6 — عناية أسبوعية</option>
+          </select>
         </div>
 
         <!-- Brand -->
         {% if brands %}
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">الماركة:</label>
-          <select name="brand" form="filter-form" class="w-full text-xs p-3 rounded-xl border border-stone-200 bg-stone-50">
+          <label class="block text-xs font-bold text-[#355C52] mb-1">الماركة:</label>
+          <select name="brand" form="filter-form" class="w-full text-xs p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3]">
             <option value="">جميع الماركات</option>
             {% for b in brands %}
               <option value="{{ b }}" {% if selected_brand == b %}selected{% endif %}>{{ b }}</option>
@@ -233,31 +250,18 @@
 
         <!-- Skin Type -->
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">نوع البشرة:</label>
-          <select name="skin_type" form="filter-form" class="w-full text-xs p-3 rounded-xl border border-stone-200 bg-stone-50">
+          <label class="block text-xs font-bold text-[#355C52] mb-1">نوع البشرة:</label>
+          <select name="skin_type" form="filter-form" class="w-full text-xs p-3 rounded-xl border border-[#E5ECE8] bg-[#FBF8F3]">
             <option value="">جميع أنواع البشرة</option>
             {% for st in skin_types %}
               <option value="{{ st.slug }}" {% if selected_skin_type == st.slug %}selected{% endif %}>{{ st.icon }} {{ st.name }}</option>
             {% endfor %}
           </select>
         </div>
-
-        <!-- Routine Step -->
-        <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">الخطوة في الروتين:</label>
-          <select name="step" form="filter-form" class="w-full text-xs p-3 rounded-xl border border-stone-200 bg-stone-50">
-            <option value="">جميع الخطوات</option>
-            <option value="1" {% if selected_step == '1' %}selected{% endif %}>1 — غسول ومنظف</option>
-            <option value="2" {% if selected_step == '2' %}selected{% endif %}>2 — تونر وموازنة</option>
-            <option value="3" {% if selected_step == '3' %}selected{% endif %}>3 — سيروم وعلاج</option>
-            <option value="4" {% if selected_step == '4' %}selected{% endif %}>4 — مرطب وحاجز</option>
-            <option value="5" {% if selected_step == '5' %}selected{% endif %}>5 — واقي شمس</option>
-            <option value="6" {% if selected_step == '6' %}selected{% endif %}>6 — عناية أسبوعية</option>
-          </select>
-        </div>
       </div>
 
-      <div class="pt-4 border-t border-stone-200 flex gap-3">
+      <!-- Apply & Clear Buttons -->
+      <div class="pt-4 border-t border-[#E5ECE8] flex gap-3">
         <button type="button" @click="mobileFilterOpen = false; document.getElementById('filter-form').requestSubmit();"
           class="btn-clinical-primary flex-1 py-3 text-sm">
           تطبيق الفلاتر ✓

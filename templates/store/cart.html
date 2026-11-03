@@ -3,82 +3,85 @@
 {% block title %}سلة المشتريات — ريمشي{% endblock %}
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 py-10">
-  <div class="card p-6">
-    <div class="flex items-center justify-between pb-4 border-b mb-6" style="border-color: var(--border);">
-      <h1 class="text-2xl font-black flex items-center gap-2">
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#E5ECE8] shadow-card">
+    <div class="flex items-center justify-between pb-4 border-b border-[#EEF4F1] mb-6">
+      <h1 class="text-2xl font-black flex items-center gap-2 text-[#355C52]">
         <span>🛍️</span> سلة المشتريات الذكية
       </h1>
-      <span class="text-xs px-3 py-1 rounded-full font-bold" style="background: var(--primary); color: #fff;">
-        {{ cart_items_list|length }} أصناف
+      <span class="text-xs px-3 py-1 rounded-full font-bold bg-[#A44668] text-white">
+        {{ cart_items_list|length }} مستحضرات
       </span>
     </div>
 
     {% if cart_items_list %}
       <!-- Missing Sunscreen Warning -->
       {% if cart_analysis.missing_sunscreen %}
-      <div class="mb-4 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-start gap-2">
-        <span class="text-lg">⚠️</span>
-        <div>
-          <span class="font-bold">تنبيه صيدلاني:</span> سلتك تحتوي على مقشر أو مواد فعالة تتطلب واقياً شمسياً صباحاً.
-          <a href="{% url 'store:products' %}?step=5" class="block font-bold text-amber-900 underline mt-1">إضافة واقي شمس مناسب ←</a>
+      <div class="mb-5 p-4 rounded-2xl bg-[#FBF7EE] border border-[#EFE2C5] text-[#966C28] text-xs flex items-start gap-3">
+        <span class="text-xl shrink-0">⚠️</span>
+        <div class="leading-relaxed">
+          <strong class="font-bold">تنبيه صيدلاني:</strong> سلتك تحتوي على مقشر أو مواد فعالة تتطلب واقياً شمسياً صباحاً لحماية حاجز البشرة من التصبغ.
+          <a href="{% url 'store:products' %}?step=5" class="block font-bold text-[#966C28] underline mt-1">إضافة واقي شمس مناسب من الكتالوج ←</a>
         </div>
       </div>
       {% endif %}
 
       <div class="space-y-4">
         {% for item in cart_items_list %}
-        <div class="card p-4 flex gap-4 items-center">
-          <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 flex items-center justify-center" style="background: {{ item.package_color }}22;">
+        <div class="p-4 rounded-2xl border border-[#E5ECE8] bg-white flex gap-4 items-center shadow-xs hover:border-[#6F8F82] transition">
+          <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 flex items-center justify-center bg-[#F5F8F6] border border-[#E5ECE8]">
             {% if item.image_url %}
               <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-full h-full object-contain p-1">
             {% else %}
               <span class="text-2xl">🧴</span>
             {% endif %}
           </div>
-          <div class="flex-1">
-            <div class="flex items-center gap-2">
-              <span class="text-[11px] px-2 py-0.5 rounded font-bold" style="background: var(--bg); border: 1px solid var(--border);">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-0.5">
+              <span class="text-[11px] px-2 py-0.5 rounded font-bold bg-[#F0F5F3] text-[#355C52] border border-[#DCE7E2]">
                 الخطوة {{ item.routine_step }}
               </span>
-              <span class="text-xs opacity-60">{{ item.brand }}</span>
+              <span class="text-xs text-[#66736D]">{{ item.brand }}</span>
             </div>
-            <h3 class="font-bold text-sm" style="color: var(--text);">{{ item.name }}</h3>
-            <div class="text-xs opacity-60 mt-0.5">الكمية: {{ item.quantity }} × {{ item.price|floatformat:0 }} {{ current_currency_symbol }}</div>
+            <h3 class="font-bold text-sm text-[#26332F] truncate">{{ item.name }}</h3>
+            <div class="text-xs text-[#66736D] mt-0.5">الكمية: {{ item.quantity }} × {{ item.price|floatformat:0 }} {{ current_currency_symbol }}</div>
           </div>
-          <div class="text-left font-black text-lg" style="color: var(--primary);">
+          <div class="text-left font-black text-lg text-[#355C52]">
             {{ item.subtotal|floatformat:0 }} {{ current_currency_symbol }}
           </div>
           <form method="post" action="{% url 'store:cart_remove' item.product_id %}">
             {% csrf_token %}
-            <button type="submit" class="p-2 text-red-500 hover:bg-red-50 rounded-lg" title="حذف">🗑️</button>
+            <button type="submit" class="p-2.5 text-[#66736D] hover:text-[#B75D63] hover:bg-[#FAF0F1] rounded-xl transition" title="حذف المستحضر">
+              🗑️
+            </button>
           </form>
         </div>
         {% endfor %}
       </div>
 
-      <div class="mt-8 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-4" style="border-color: var(--border);">
+      <div class="mt-8 pt-6 border-t border-[#EEF4F1] flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <div class="text-xs opacity-60">الإجمالي النهائي:</div>
-          <div class="text-3xl font-black" style="color: var(--primary);">{{ cart_total|floatformat:0 }} {{ current_currency_symbol }}</div>
+          <div class="text-xs text-[#66736D] font-bold">الإجمالي النهائي:</div>
+          <div class="text-3xl font-black text-[#355C52]">{{ cart_total|floatformat:0 }} {{ current_currency_symbol }}</div>
         </div>
-        <div class="flex gap-3">
-          <a href="{% url 'store:prescription_card' %}" target="_blank" class="btn-outline text-xs py-3 px-4">
+        <div class="flex gap-3 w-full sm:w-auto">
+          <a href="{% url 'store:prescription_card' %}" target="_blank" class="btn-clinical-outline text-xs py-3 px-5 flex-1 sm:flex-initial text-center">
             🖨️ طباعة بطاقة الروتين
           </a>
-          <a href="{% url 'store:checkout' %}" class="btn-primary text-sm py-3 px-8">
+          <a href="{% url 'store:checkout' %}" class="btn-clinical-primary text-sm py-3 px-8 flex-1 sm:flex-initial text-center shadow-md">
             متابعة إتمام الطلب ←
           </a>
         </div>
       </div>
     {% else %}
-      <div class="text-center py-16 opacity-60">
+      <div class="text-center py-16 text-[#66736D]">
         <span class="text-6xl block mb-3">🛒</span>
-        <h3 class="font-bold text-lg mb-2">سلتك فارغة</h3>
-        <p class="text-xs mb-4">لم تضف أي منتج بعد إلى سلتك.</p>
-        <a href="{% url 'store:products' %}" class="btn-primary text-xs">تصفح المنتجات الآن</a>
+        <h3 class="font-bold text-lg text-[#26332F] mb-2">سلتك فارغة حالياً</h3>
+        <p class="text-xs mb-4">لم تضف أي مستحضر بعد إلى سلتك.</p>
+        <a href="{% url 'store:products' %}" class="btn-clinical-primary text-xs py-2.5 px-6">
+          تصفح المستحضرات الآن
+        </a>
       </div>
     {% endif %}
   </div>
 </div>
 {% endblock %}
-

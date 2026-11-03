@@ -4,16 +4,16 @@
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 py-10">
   <!-- Header -->
-  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-stone-200">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#E5ECE8]">
     <div>
       <div class="flex items-center gap-2 mb-1">
         <span class="text-2xl">❤️</span>
-        <h1 class="text-2xl sm:text-3xl font-black text-gray-900">قائمة أمنياتي والمفضلة</h1>
+        <h1 class="text-2xl sm:text-3xl font-black text-[#355C52]">قائمة أمنياتي والمفضلة</h1>
       </div>
-      <p class="text-xs sm:text-sm text-gray-500">المنتجات التي قمت بحفظها للمراجعة والشراء لاحقاً.</p>
+      <p class="text-xs sm:text-sm text-[#66736D]">المستحضرات التي قمت بحفظها للمراجعة والشراء لاحقاً.</p>
     </div>
-    <div class="text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-      {{ product_count }} منتجات محفوظة
+    <div class="text-xs font-bold px-3 py-1.5 rounded-full bg-[#F0F5F3] text-[#355C52] border border-[#DCE7E2]">
+      {{ product_count }} مستحضرات محفوظة
     </div>
   </div>
 
@@ -24,14 +24,14 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="text-center py-20 bg-white rounded-3xl border border-stone-200 p-8 max-w-xl mx-auto shadow-sm">
+    <div class="text-center py-20 bg-white rounded-3xl border border-[#E5ECE8] p-8 max-w-xl mx-auto shadow-sm">
       <div class="text-6xl mb-4">🤍</div>
-      <h3 class="text-xl font-bold text-gray-800 mb-2">قائمة أمنياتك فارغة حالياً</h3>
-      <p class="text-xs text-gray-500 mb-6 leading-relaxed">
-        تصفح كتالوج المنتجات السريرية واضغط على أيقونة القلب في أي منتج لحفظه هنا والرجوع إليه في أي وقت.
+      <h3 class="text-xl font-bold text-[#26332F] mb-2">قائمة أمنياتك فارغة حالياً</h3>
+      <p class="text-xs text-[#66736D] mb-6 leading-relaxed">
+        تصفح كتالوج المستحضرات السريرية واضغط على أيقونة القلب في أي مستحضر لحفظه هنا والرجوع إليه في أي وقت.
       </p>
       <a href="{% url 'store:products' %}" class="btn-clinical-primary py-3 px-8 text-sm">
-        استكشاف كتالوج المنتجات
+        استكشاف كتالوج المستحضرات
       </a>
     </div>
   {% endif %}

@@ -1,11 +1,11 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" x-data="remshyApp()" :class="theme" class="scroll-smooth">
+<html lang="ar" dir="rtl" x-data="remshyApp()" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}{{ page_title|default:"ريمشي — المتجر الطبي" }}{% endblock %}</title>
-  <meta name="description" content="ريمشي — متجر طبي متخصص في منتجات العناية بالبشرة والتجميل الطبي بثقة صيدلانية.">
+  <title>{% block title %}{{ page_title|default:"ريمشي — المتجر الطبي التجميلي" }}{% endblock %}</title>
+  <meta name="description" content="ريمشي — منصة رائدة متخصصة في مستحضرات التجميل العلاجية وطب الجلدية بثقة صيدلانية معتمدة.">
   <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
   <link rel="apple-touch-icon" href="{% static 'images/favicon.svg' %}">
   <link rel="stylesheet" href="{% static 'css/theme-tokens.css' %}">
@@ -13,18 +13,31 @@
   <!-- Google Fonts: Cairo + Readex Pro -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: { arabic: ['Cairo', 'Readex Pro', 'sans-serif'] },
           colors: {
-            sage: { 50:'#f0fdf4', 100:'#dcfce7', 500:'#22c55e', 600:'#16a34a', 700:'#15803d' },
+            skincare: {
+              primary: '#6F8F82',
+              dark: '#355C52',
+              secondary: '#8DA9B8',
+              bg: '#FBF8F3',
+              surface: '#FFFFFF',
+              text: '#26332F',
+              muted: '#66736D',
+              accent: '#C98291',
+              sale: '#A44668',
+              success: '#4E806A',
+              warning: '#C4954B',
+              danger: '#B75D63',
+              border: '#E5ECE8',
+            }
           },
           backdropBlur: { xs: '2px' },
         }
@@ -39,104 +52,119 @@
 
   <style>
     /* ─── Base ──────────────────────────────────── */
-    * { font-family: 'Cairo', 'Readex Pro', sans-serif; }
+    * { font-family: 'Cairo', 'Readex Pro', sans-serif; box-sizing: border-box; }
 
-    /* ─── Theme Variables ───────────────────────── */
+    /* ─── Skincare Theme Variables ───────────────── */
     :root {
-      --bg: #f5f0eb;
-      --bg-card: #ffffff;
-      --text: #1a1a2e;
-      --text-muted: #6b7280;
-      --primary: #5c8a6e;
-      --primary-hover: #4a7359;
-      --accent: #4ec9c0;
-      --border: #e5e7eb;
-      --badge-bg: #dcfce7;
-      --badge-text: #15803d;
-      --navbar-bg: rgba(245,240,235,0.85);
-      --shadow: 0 4px 24px rgba(92,138,110,0.12);
-    }
-    .theme-sage   { --bg:#f5f0eb; --bg-card:#fff; --text:#1a1a2e; --primary:#5c8a6e; --primary-hover:#4a7359; --accent:#4ec9c0; --navbar-bg:rgba(245,240,235,0.88); }
-    .theme-rose   { --bg:#fdf6f3; --bg-card:#fffbf9; --text:#3b1a1a; --primary:#9b3a68; --primary-hover:#7e2d55; --accent:#d4a654; --navbar-bg:rgba(253,246,243,0.88); }
-    .theme-blue   { --bg:#f0f7ff; --bg-card:#ffffff; --text:#0f2a55; --primary:#2563eb; --primary-hover:#1d4ed8; --accent:#38bdf8; --navbar-bg:rgba(240,247,255,0.88); }
-    .theme-terracotta { --bg:#f7f0e8; --bg-card:#fefaf5; --text:#3b2a1a; --primary:#c2845a; --primary-hover:#a8703f; --accent:#e9b97a; --navbar-bg:rgba(247,240,232,0.88); }
-    .theme-dark   { --bg:#0f172a; --bg-card:#1e293b; --text:#f1f5f9; --text-muted:#94a3b8; --primary:#10b981; --primary-hover:#059669; --accent:#38bdf8; --border:#334155; --navbar-bg:rgba(15,23,42,0.92); }
+      --color-primary: #6F8F82;
+      --color-primary-dark: #355C52;
+      --color-secondary: #8DA9B8;
+      --color-background: #FBF8F3;
+      --color-surface: #FFFFFF;
+      --color-text: #26332F;
+      --color-text-muted: #66736D;
+      --color-accent: #C98291;
+      --color-sale: #A44668;
+      --color-success: #4E806A;
+      --color-warning: #C4954B;
+      --color-danger: #B75D63;
+      --color-border: #E5ECE8;
 
-    body { background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; }
+      /* Compatibility aliases */
+      --bg: var(--color-background);
+      --bg-card: var(--color-surface);
+      --text: var(--color-text);
+      --text-muted: var(--color-text-muted);
+      --primary: var(--color-primary-dark);
+      --primary-hover: var(--color-primary);
+      --accent: var(--color-accent);
+      --border: var(--color-border);
+      --navbar-bg: rgba(255, 255, 255, 0.96);
+      --shadow: 0 4px 16px rgba(53, 92, 82, 0.08);
+    }
+
+    body {
+      background-color: var(--color-background);
+      color: var(--color-text);
+      transition: background-color 0.25s ease, color 0.25s ease;
+      line-height: 1.6;
+    }
 
     /* ─── Glassmorphism Navbar ──────────────────── */
     .navbar-glass {
       background: var(--navbar-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      transition: all 0.3s;
+      border-bottom: 1px solid var(--color-border);
+      transition: all 0.25s ease;
     }
 
-    /* ─── Cards ─────────────────────────────────── */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    /* ─── Toast Notifications ───────────────────── */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
-
-    /* ─── Buttons ────────────────────────────────── */
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      border-radius: 12px;
-      padding: 10px 24px;
-      font-weight: 700;
-      transition: background 0.2s, transform 0.1s;
-      cursor: pointer;
-      border: none;
+    .toast {
+      padding: 14px 20px;
+      border-radius: 14px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 10px 30px rgba(38, 51, 47, 0.12);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 270px;
+      animation: slideUp 0.25s ease;
     }
-    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
-    .btn-outline {
-      border: 2px solid var(--primary);
-      color: var(--primary);
-      border-radius: 12px;
-      padding: 8px 22px;
-      font-weight: 600;
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.2s;
+    @keyframes slideUp {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
-    .btn-outline:hover { background: var(--primary); color: #fff; }
-
-    /* ─── Skeleton Loader ───────────────────────── */
-    .skeleton { background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
-    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-
-    /* ─── HTMX Loading ──────────────────────────── */
-    .htmx-request .htmx-indicator { display: flex !important; }
-    .htmx-indicator { display: none; }
-
-    /* ─── Progress bars ─────────────────────────── */
-    .sci-bar { height: 8px; border-radius: 99px; background: var(--border); overflow: hidden; }
-    .sci-bar-fill { height: 100%; border-radius: 99px; transition: width 0.8s ease; }
-
-    /* ─── Toast ──────────────────────────────────── */
-    .toast-container { position: fixed; bottom: 24px; left: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-    .toast { padding: 14px 20px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(0,0,0,0.14); display: flex; align-items: center; gap: 10px; min-width: 260px; animation: slideUp 0.3s ease; }
-    @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
-    .toast-bar { position: absolute; bottom: 0; right: 0; height: 3px; border-radius: 0 0 14px 14px; background: var(--primary); animation: shrink linear forwards; }
-    @keyframes shrink { from{width:100%} to{width:0} }
+    .toast-bar {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 0 0 14px 14px;
+      background: var(--color-primary);
+      animation: shrink linear forwards;
+    }
+    @keyframes shrink {
+      from { width: 100%; }
+      to { width: 0; }
+    }
 
     /* ─── Cart Drawer ───────────────────────────── */
-    .cart-drawer { position: fixed; top: 0; right: 0; width: min(420px, 100vw); height: 100vh; background: var(--bg-card); box-shadow: -8px 0 48px rgba(0,0,0,0.18); z-index: 1000; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; }
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(440px, 100vw);
+      height: 100vh;
+      background: var(--color-surface);
+      box-shadow: -8px 0 40px rgba(38, 51, 47, 0.15);
+      z-index: 1000;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
 
     /* ─── Scrollbar ─────────────────────────────── */
-    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
 
     /* ─── RTL fixes ─────────────────────────────── */
     [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
 
     /* ─── Print ─────────────────────────────────── */
-    @media print { .no-print { display: none !important; } body { background: #fff; color: #000; } }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; color: #000; }
+    }
   </style>
 
   {% block extra_head %}{% endblock %}
@@ -144,220 +172,280 @@
 
 <body>
 
-<!-- ▓▓ Portfolio Showcase Bar (dismissible) ▓▓ -->
+<!-- ▓▓ 1. Refined Skincare Announcement Bar ▓▓ -->
 <div id="portfolio-bar" x-show="showPortfolioBar" x-transition
   class="no-print"
-  style="background: linear-gradient(90deg, var(--primary), var(--accent)); color: #fff; padding: 10px 20px; font-size: 13px; position: sticky; top: 0; z-index: 200;">
+  style="background: linear-gradient(90deg, #6F8F82, #C98291); color: #FFFFFF; padding: 9px 18px; font-size: 13px; position: sticky; top: 0; z-index: 200;">
   <div class="max-w-7xl mx-auto flex flex-wrap items-center gap-3 justify-between">
-    <span class="font-bold">✨ نظام المتجر والعيادة التفاعلية الذكي — نموذج حي (Live Demo)</span>
+    <!-- Value Highlight -->
+    <div class="flex items-center gap-2">
+      <span class="text-base">✨</span>
+      <span class="font-bold text-xs sm:text-sm">متجر وصيدلية ريمشي الجلدية — منتجات أصلية معتمدة 100% مع استشارة مجانية</span>
+    </div>
 
-    <!-- Theme switcher -->
-    <div class="flex items-center gap-2 flex-wrap">
-      <span class="text-xs opacity-80">الثيم:</span>
-      {% for th in THEMES %}
-      <button @click="setTheme('{{ th.id }}')"
-        class="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110"
-        :class="theme === 'theme-{{ th.id }}' ? 'border-white scale-110' : 'border-white/50'"
-        style="background: {{ th.color }};" title="{{ th.label }}"></button>
-      {% endfor %}
+    <!-- Controls: Currency & Close -->
+    <div class="flex items-center gap-3">
+      <!-- Currency Switcher -->
+      <div class="flex items-center gap-1.5 bg-black/15 px-2.5 py-1 rounded-lg">
+        <span class="text-[11px] opacity-90">العملة:</span>
+        <form method="post" action="{% url 'store:set_currency' %}" class="inline"
+          hx-post="{% url 'store:set_currency' %}" hx-trigger="change" hx-include="this">
+          {% csrf_token %}
+          <select name="currency" class="text-xs bg-transparent text-white font-bold cursor-pointer focus:outline-none border-none p-0"
+            onchange="this.closest('form').requestSubmit()">
+            <option value="yer" class="text-gray-900" {% if current_currency == 'yer' %}selected{% endif %}>ر.ي (يمني)</option>
+            <option value="sar" class="text-gray-900" {% if current_currency == 'sar' %}selected{% endif %}>ر.س (سعودي)</option>
+            <option value="usd" class="text-gray-900" {% if current_currency == 'usd' %}selected{% endif %}>$ (دولار)</option>
+          </select>
+        </form>
+      </div>
 
-      <!-- Currency -->
-      <span class="text-xs opacity-80 mr-2">العملة:</span>
-      <form method="post" action="{% url 'store:set_currency' %}" class="inline"
-        hx-post="{% url 'store:set_currency' %}" hx-trigger="change" hx-include="this">
-        {% csrf_token %}
-        <select name="currency" class="text-xs bg-white/20 text-white border border-white/30 rounded px-2 py-1 cursor-pointer"
-          onchange="this.closest('form').requestSubmit()">
-          <option value="yer" {% if current_currency == 'yer' %}selected{% endif %}>ر.ي</option>
-          <option value="sar" {% if current_currency == 'sar' %}selected{% endif %}>ر.س</option>
-          <option value="usd" {% if current_currency == 'usd' %}selected{% endif %}>$</option>
-        </select>
-      </form>
-
-      <!-- Admin link -->
-      <a href="/admin/" target="_blank"
-        class="text-xs bg-white/20 border border-white/40 rounded px-3 py-1 hover:bg-white/30 transition font-bold">
-        🛠️ لوحة التحكم <span class="opacity-75">(mohammed / 12345)</span>
-      </a>
-
-      <button @click="showPortfolioBar = false" class="opacity-70 hover:opacity-100 text-lg font-bold">×</button>
+      <!-- Close Announcement Bar Button -->
+      <button @click="showPortfolioBar = false"
+        type="button"
+        class="w-6 h-6 rounded-full hover:bg-white/20 transition flex items-center justify-center font-bold text-base opacity-80 hover:opacity-100"
+        title="إغلاق الشريط الإعلاني">
+        ✕
+      </button>
     </div>
   </div>
 </div>
 
-<!-- ▓▓ Navbar ▓▓ -->
-<nav class="navbar-glass sticky top-0 z-100 no-print" style="z-index: 150;">
+<!-- ▓▓ 2. Main Luxury Header & Navigation ▓▓ -->
+<nav class="navbar-glass sticky top-0 z-[150] no-print">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-    <!-- Logo -->
+    <!-- Brand Logo & Clinical Monogram -->
     <a href="{% url 'store:home' %}" class="flex items-center gap-3 group">
-      <img src="{% static 'images/logo.svg' %}" alt="شعار ريمشي" class="w-10 h-10 transition-transform group-hover:scale-105 drop-shadow-sm">
+      <img src="{% static 'images/logo.svg' %}" alt="شعار متجر ريمشي" class="w-10 h-10 transition-transform group-hover:scale-105 drop-shadow-xs">
       <div class="flex flex-col">
-        <span class="text-2xl font-black leading-tight tracking-tight" style="color: var(--color-primary, var(--primary));">ريمشي</span>
-        <span class="text-[9px] tracking-widest font-bold opacity-60 uppercase" style="color: var(--text-muted);">CLINICAL DERMA</span>
+        <span class="text-2xl font-black leading-tight tracking-tight text-[#355C52]">ريمشي</span>
+        <span class="text-[9px] tracking-widest font-bold uppercase text-[#66736D]">DERMOCOSMETICS</span>
       </div>
     </a>
 
-    <!-- Nav Links (desktop) -->
-    <div class="hidden md:flex items-center gap-6 text-sm font-semibold">
-      <a href="{% url 'store:home' %}" class="hover:opacity-70 transition" style="color: var(--text);">الرئيسية</a>
-      <a href="{% url 'store:products' %}" class="hover:opacity-70 transition" style="color: var(--text);">المنتجات</a>
-      <a href="{% url 'store:bundles' %}" class="hover:opacity-70 transition" style="color: var(--text);">الباقات</a>
+    <!-- Nav Links (Desktop) -->
+    <div class="hidden md:flex items-center gap-7 text-sm font-bold text-[#355C52]">
+      <a href="{% url 'store:home' %}"
+        class="transition hover:text-[#6F8F82] {% if request.resolver_match.url_name == 'home' %}text-[#6F8F82] pb-0.5 border-b-2 border-[#6F8F82]{% endif %}">
+        الرئيسية
+      </a>
+      <a href="{% url 'store:products' %}"
+        class="transition hover:text-[#6F8F82] {% if request.resolver_match.url_name == 'products' %}text-[#6F8F82] pb-0.5 border-b-2 border-[#6F8F82]{% endif %}">
+        المنتجات
+      </a>
+      <a href="{% url 'store:bundles' %}"
+        class="transition hover:text-[#6F8F82] {% if request.resolver_match.url_name == 'bundles' %}text-[#6F8F82] pb-0.5 border-b-2 border-[#6F8F82]{% endif %}">
+        باقات الروتين
+      </a>
 
-      <!-- Tools Dropdown -->
-      <div class="relative" x-data="{open: false}">
+      <!-- Clinical Tools Dropdown -->
+      <div class="relative" x-data="{ open: false }">
         <button @click="open = !open" @click.outside="open = false"
-          class="flex items-center gap-1 hover:opacity-70 transition" style="color: var(--text);">
-          أدوات البشرة ▾
+          class="flex items-center gap-1.5 transition hover:text-[#6F8F82]">
+          <span>أدوات البشرة والتشخيص</span>
+          <span class="text-xs">▾</span>
         </button>
-        <div x-show="open" x-transition class="absolute top-8 right-0 bg-white rounded-2xl shadow-2xl p-4 w-64 z-50 border"
-          style="background: var(--bg-card); border-color: var(--border);">
-          <a href="{% url 'store:face_mapper' %}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition">
-            <span class="text-2xl">🗺️</span>
-            <div><div class="font-bold text-sm">خريطة الوجه</div><div class="text-xs opacity-60">اعرف مشاكل منطقتك</div></div>
-          </a>
-          <a href="{% url 'store:skin_consultant' %}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition">
+        <div x-show="open" x-transition:enter="transition ease-out duration-200"
+          x-transition:enter-start="opacity-0 translate-y-2"
+          x-transition:enter-end="opacity-100 translate-y-0"
+          class="absolute top-9 right-0 bg-white rounded-2xl shadow-xl p-3 w-64 z-50 border border-[#E5ECE8]">
+          <a href="{% url 'store:skin_consultant' %}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#F0F5F3] transition">
             <span class="text-2xl">🧪</span>
-            <div><div class="font-bold text-sm">المستشار الصيدلاني</div><div class="text-xs opacity-60">وصفتك الشخصية</div></div>
+            <div>
+              <div class="font-bold text-xs text-[#26332F]">المستشار الصيدلاني</div>
+              <div class="text-[10px] text-[#66736D]">تشخيص وبناء روتين مخصص</div>
+            </div>
           </a>
-          <a href="{% url 'store:compatibility_lab' %}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition">
+          <a href="{% url 'store:face_mapper' %}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#F0F5F3] transition">
+            <span class="text-2xl">🗺️</span>
+            <div>
+              <div class="font-bold text-xs text-[#26332F]">خريطة مناطق الوجه</div>
+              <div class="text-[10px] text-[#66736D]">تحديد مناطق المشاكل وعلاجها</div>
+            </div>
+          </a>
+          <a href="{% url 'store:compatibility_lab' %}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#F0F5F3] transition">
             <span class="text-2xl">⚗️</span>
-            <div><div class="font-bold text-sm">مختبر التوافق</div><div class="text-xs opacity-60">هل منتجاتك متوافقة؟</div></div>
+            <div>
+              <div class="font-bold text-xs text-[#26332F]">مختبر التوافق الكيميائي</div>
+              <div class="text-[10px] text-[#66736D]">فحص تعارض المواد الفعالة</div>
+            </div>
           </a>
-          <a href="{% url 'store:skin_cycling' %}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition">
+          <a href="{% url 'store:skin_cycling' %}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#F0F5F3] transition">
             <span class="text-2xl">🌙</span>
-            <div><div class="font-bold text-sm">جدول التدوير</div><div class="text-xs opacity-60">4-Night Skin Cycling</div></div>
+            <div>
+              <div class="font-bold text-xs text-[#26332F]">جدول التدوير الجلدي</div>
+              <div class="text-[10px] text-[#66736D]">نظام الـ 4 ليالٍ المتوازن</div>
+            </div>
           </a>
-          <a href="{% url 'store:compare' %}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition">
+          <a href="{% url 'store:compare' %}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#F0F5F3] transition">
             <span class="text-2xl">⚖️</span>
-            <div><div class="font-bold text-sm">مقارنة المنتجات</div><div class="text-xs opacity-60">حتى 3 منتجات جنباً لجنب</div></div>
+            <div>
+              <div class="font-bold text-xs text-[#26332F]">مقارنة المستحضرات</div>
+              <div class="text-[10px] text-[#66736D]">مقارنة تفصيلية جنباً إلى جنب</div>
+            </div>
           </a>
-          <a href="{% url 'store:inci_decoder' %}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition">
+          <a href="{% url 'store:inci_decoder' %}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#F0F5F3] transition">
             <span class="text-2xl">🔬</span>
-            <div><div class="font-bold text-sm">محلل المكونات</div><div class="text-xs opacity-60">فك رموز الـ INCI</div></div>
+            <div>
+              <div class="font-bold text-xs text-[#26332F]">مفكك المكونات (INCI)</div>
+              <div class="text-[10px] text-[#66736D]">تحليل أمان التركيبة الكيميائية</div>
+            </div>
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Right actions -->
+    <!-- Right Actions -->
     <div class="flex items-center gap-2 sm:gap-3">
-      <!-- Search Trigger / Quick Search Bar -->
-      <a href="{% url 'store:products' %}" class="p-2 rounded-xl hover:bg-black/5 transition text-lg" title="البحث في المنتجات">
+      <!-- Search Trigger -->
+      <a href="{% url 'store:products' %}"
+        class="w-10 h-10 rounded-full flex items-center justify-center text-gray-700 hover:bg-[#F0F5F3] hover:text-[#355C52] transition"
+        title="البحث في المنتجات">
         🔍
       </a>
 
-      <!-- Wishlist button -->
-      <a href="{% url 'store:wishlist' %}" class="relative p-2 rounded-xl hover:bg-black/5 transition" title="المفضلة">
+      <!-- Wishlist Button -->
+      <a href="{% url 'store:wishlist' %}"
+        class="relative w-10 h-10 rounded-full flex items-center justify-center text-gray-700 hover:bg-[#FAF0F2] transition"
+        title="قائمة أمنياتي والمفضلة">
         <span class="text-lg">🤍</span>
         <span id="wishlist-badge"
-          class="absolute -top-1 -left-1 w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center bg-rose-500 text-white"
+          class="absolute -top-0.5 -left-0.5 w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center bg-[#C98291] text-white shadow-xs"
           x-show="wishlistCount > 0" x-text="wishlistCount">{{ wishlist_count }}</span>
       </a>
 
-      <!-- Currency badge -->
-      <span class="hidden sm:inline text-xs font-bold px-2 py-1 rounded-full"
-        style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
-        {{ current_currency_symbol }}
-      </span>
-
-      <!-- Cart button -->
+      <!-- Cart Button -->
       <button @click="cartOpen = !cartOpen"
-        class="relative p-2.5 rounded-xl transition hover:scale-105 flex items-center gap-1.5"
-        style="background: var(--color-primary, var(--primary)); color: #fff;">
+        class="btn-clinical-primary py-2 px-3.5 sm:px-4 rounded-xl flex items-center gap-2 shadow-sm text-xs sm:text-sm font-bold">
         <span>🛍️</span>
-        <span class="hidden md:inline text-xs font-bold">السلة</span>
+        <span class="hidden md:inline">السلة</span>
         <span id="cart-badge"
-          class="w-5 h-5 rounded-full text-xs font-black flex items-center justify-center"
-          style="background: #ef4444; color: #fff;"
+          class="w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center bg-[#A44668] text-white"
           x-show="cartCount > 0" x-text="cartCount">{{ cart_count }}</span>
       </button>
 
-      <!-- Mobile menu -->
-      <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 rounded-xl" style="color: var(--text);">☰</button>
+      <!-- Mobile Hamburger Button -->
+      <button @click="mobileMenuOpen = !mobileMenuOpen"
+        class="md:hidden w-10 h-10 rounded-xl flex items-center justify-center text-xl text-[#355C52] hover:bg-[#F0F5F3] transition"
+        title="القائمة الرئيسية">
+        <span x-text="mobileMenuOpen ? '✕' : '☰'">☰</span>
+      </button>
     </div>
   </div>
 
-  <!-- Mobile menu -->
-  <div x-show="mobileMenuOpen" x-transition class="md:hidden px-4 pb-4 flex flex-col gap-2 text-sm font-semibold" style="color: var(--text);">
-    <a href="{% url 'store:home' %}" class="py-2 border-b" style="border-color: var(--border);">🏠 الرئيسية</a>
-    <a href="{% url 'store:products' %}" class="py-2 border-b" style="border-color: var(--border);">🧴 المنتجات</a>
-    <a href="{% url 'store:bundles' %}" class="py-2 border-b" style="border-color: var(--border);">📦 الباقات</a>
-    <a href="{% url 'store:face_mapper' %}" class="py-2 border-b" style="border-color: var(--border);">🗺️ خريطة الوجه</a>
-    <a href="{% url 'store:skin_consultant' %}" class="py-2 border-b" style="border-color: var(--border);">🧪 المستشار</a>
-    <a href="{% url 'store:compatibility_lab' %}" class="py-2 border-b" style="border-color: var(--border);">⚗️ مختبر التوافق</a>
-    <a href="{% url 'store:skin_cycling' %}" class="py-2">🌙 التدوير الليلي</a>
+  <!-- Mobile Hamburger Menu Dropdown -->
+  <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0 -translate-y-2"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    class="md:hidden px-4 pb-4 bg-white border-t border-[#E5ECE8] flex flex-col gap-1 text-sm font-bold text-[#355C52] shadow-lg">
+    <a href="{% url 'store:home' %}" class="py-2.5 px-3 rounded-xl hover:bg-[#F0F5F3] flex items-center gap-2">
+      <span>🏠</span> الرئيسية
+    </a>
+    <a href="{% url 'store:products' %}" class="py-2.5 px-3 rounded-xl hover:bg-[#F0F5F3] flex items-center gap-2">
+      <span>🧴</span> كتالوج المنتجات
+    </a>
+    <a href="{% url 'store:bundles' %}" class="py-2.5 px-3 rounded-xl hover:bg-[#F0F5F3] flex items-center gap-2">
+      <span>📦</span> باقات الروتين الجاهزة
+    </a>
+    <a href="{% url 'store:skin_consultant' %}" class="py-2.5 px-3 rounded-xl hover:bg-[#F0F5F3] flex items-center gap-2">
+      <span>🧪</span> المستشار الصيدلاني الذكي
+    </a>
+    <a href="{% url 'store:face_mapper' %}" class="py-2.5 px-3 rounded-xl hover:bg-[#F0F5F3] flex items-center gap-2">
+      <span>🗺️</span> خريطة مناطق الوجه
+    </a>
+    <a href="{% url 'store:compatibility_lab' %}" class="py-2.5 px-3 rounded-xl hover:bg-[#F0F5F3] flex items-center gap-2">
+      <span>⚗️</span> مختبر التوافق الكيميائي
+    </a>
+    <a href="{% url 'store:skin_cycling' %}" class="py-2.5 px-3 rounded-xl hover:bg-[#F0F5F3] flex items-center gap-2">
+      <span>🌙</span> جدول التدوير الجلدي
+    </a>
+    <a href="{% url 'store:compare' %}" class="py-2.5 px-3 rounded-xl hover:bg-[#F0F5F3] flex items-center gap-2">
+      <span>⚖️</span> مقارنة المنتجات
+    </a>
   </div>
 </nav>
 
-<!-- ▓▓ Cart Drawer ▓▓ -->
-<div x-show="cartOpen" class="fixed inset-0 bg-black/40 z-40 no-print" @click="cartOpen = false" x-transition:enter="transition-opacity ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"></div>
+<!-- ▓▓ 3. Cart Drawer ▓▓ -->
+<div x-show="cartOpen" class="fixed inset-0 bg-black/40 z-40 no-print" @click="cartOpen = false"
+  x-transition:enter="transition-opacity ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"></div>
 <div id="cart-drawer" class="cart-drawer no-print" :style="cartOpen ? 'transform:translateX(0)' : 'transform:translateX(100%)'">
   <div hx-get="{% url 'store:cart' %}" hx-trigger="load, cartUpdated from:body" hx-target="this" hx-swap="innerHTML">
     {% include "store/partials/cart_drawer.html" %}
   </div>
 </div>
 
-<!-- ▓▓ Main Content ▓▓ -->
-<main>
+<!-- ▓▓ 4. Main Page Content ▓▓ -->
+<main class="min-h-[70vh]">
   {% block content %}{% endblock %}
 </main>
 
-<!-- ▓▓ Footer ▓▓ -->
-<footer class="no-print mt-16 py-12 border-t" style="border-color: var(--border); background: var(--bg-card);">
+<!-- ▓▓ 5. Luxury Footer ▓▓ -->
+<footer class="no-print mt-20 py-12 border-t border-[#E5ECE8] bg-white">
   <div class="max-w-7xl mx-auto px-4">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
       <div>
         <div class="flex items-center gap-3 mb-3">
           <img src="{% static 'images/logo.svg' %}" alt="شعار ريمشي" class="w-9 h-9">
           <div class="flex flex-col">
-            <span class="text-2xl font-black leading-tight" style="color: var(--primary);">ريمشي</span>
-            <span class="text-[9px] tracking-widest font-bold opacity-60 uppercase" style="color: var(--text-muted);">DERMOCOSMETICS</span>
+            <span class="text-2xl font-black leading-tight text-[#355C52]">ريمشي</span>
+            <span class="text-[9px] tracking-widest font-bold uppercase text-[#66736D]">DERMOCOSMETICS</span>
           </div>
         </div>
-        <p class="text-sm opacity-60">علم البشرة بثقة صيدلانية. منتجات عالمية أصيلة مع استشارة مجانية.</p>
+        <p class="text-xs sm:text-sm text-[#66736D] leading-relaxed">
+          علم العناية بالبشرة بثقة صيدلانية معتمدة. منتجات عالمية أصيلة مختارة بعناية لحماية وتجديد بشرتك.
+        </p>
       </div>
+
       <div>
-        <h4 class="font-bold mb-3">المتجر</h4>
-        <div class="flex flex-col gap-2 text-sm opacity-70">
-          <a href="{% url 'store:products' %}" class="hover:opacity-100">جميع المنتجات</a>
-          <a href="{% url 'store:bundles' %}" class="hover:opacity-100">الباقات الجاهزة</a>
-          <a href="{% url 'store:cart' %}" class="hover:opacity-100">سلة المشتريات</a>
+        <h4 class="font-bold text-sm text-[#26332F] mb-3">المتجر والكتالوج</h4>
+        <div class="flex flex-col gap-2 text-xs font-semibold text-[#66736D]">
+          <a href="{% url 'store:products' %}" class="hover:text-[#355C52] transition">جميع المنتجات السريرية</a>
+          <a href="{% url 'store:bundles' %}" class="hover:text-[#355C52] transition">باقات الروتين المتكاملة</a>
+          <a href="{% url 'store:wishlist' %}" class="hover:text-[#355C52] transition">قائمة أمنياتي والمفضلة</a>
+          <a href="{% url 'store:cart' %}" class="hover:text-[#355C52] transition">سلة التسوق</a>
         </div>
       </div>
+
       <div>
-        <h4 class="font-bold mb-3">أدوات البشرة</h4>
-        <div class="flex flex-col gap-2 text-sm opacity-70">
-          <a href="{% url 'store:face_mapper' %}" class="hover:opacity-100">🗺️ خريطة الوجه</a>
-          <a href="{% url 'store:skin_consultant' %}" class="hover:opacity-100">🧪 المستشار الصيدلاني</a>
-          <a href="{% url 'store:compatibility_lab' %}" class="hover:opacity-100">⚗️ مختبر التوافق</a>
-          <a href="{% url 'store:skin_cycling' %}" class="hover:opacity-100">🌙 جدول التدوير</a>
+        <h4 class="font-bold text-sm text-[#26332F] mb-3">أدوات العيادة الصيدلانية</h4>
+        <div class="flex flex-col gap-2 text-xs font-semibold text-[#66736D]">
+          <a href="{% url 'store:skin_consultant' %}" class="hover:text-[#355C52] transition">🧪 المستشار الصيدلاني الذكي</a>
+          <a href="{% url 'store:face_mapper' %}" class="hover:text-[#355C52] transition">🗺️ خريطة الوجه التفاعلية</a>
+          <a href="{% url 'store:compatibility_lab' %}" class="hover:text-[#355C52] transition">⚗️ مختبر التوافق الكيميائي</a>
+          <a href="{% url 'store:skin_cycling' %}" class="hover:text-[#355C52] transition">🌙 جدول التدوير الجلدي (4 ليالٍ)</a>
+          <a href="{% url 'store:compare' %}" class="hover:text-[#355C52] transition">⚖️ جدول مقارنة المستحضرات</a>
         </div>
       </div>
+
       <div>
-        <h4 class="font-bold mb-3">تواصل معنا</h4>
-        <div class="flex flex-col gap-2 text-sm opacity-70">
-          <a href="https://wa.me/{{ whatsapp_number }}" target="_blank" class="hover:opacity-100 flex items-center gap-1.5 font-bold text-emerald-600">
+        <h4 class="font-bold text-sm text-[#26332F] mb-3">خدمة العملاء والاستشارات</h4>
+        <div class="flex flex-col gap-2 text-xs text-[#66736D]">
+          <a href="https://wa.me/{{ whatsapp_number }}" target="_blank"
+            class="hover:text-[#355C52] flex items-center gap-1.5 font-bold text-[#355C52] text-sm">
             <span>💬</span> واتساب: {{ whatsapp_display|default:"778550938" }}
           </a>
+          <p class="text-[11px] mt-2 opacity-75 leading-relaxed">
+            مستشارونا متاحون للرد على استفساراتكم ومساعدتكم في اختيار الروتين الأنسب.
+          </p>
         </div>
-        <p class="text-xs mt-4 opacity-50">⚠️ المعلومات هنا تعليمية وليست بديلاً عن استشارة طبيب متخصص.</p>
       </div>
     </div>
-    <div class="text-center mt-8 pt-6 border-t text-sm opacity-40" style="border-color: var(--border);">
-      © 2026 ريمشي — جميع الحقوق محفوظة
+
+    <div class="text-center mt-10 pt-6 border-t border-[#E5ECE8] text-xs text-[#66736D]">
+      © 2026 ريمشي — جميع الحقوق محفوظة • صيدلية طب التجميل والعناية بالبشرة
     </div>
   </div>
 </footer>
 
-<!-- ▓▓ Quick View Modal ▓▓ -->
-<div id="quick-view-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+<!-- ▓▓ 6. Quick View Modal ▓▓ -->
+<div id="quick-view-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
   onclick="if(event.target === this) this.classList.add('hidden')">
-  <div id="quick-view-content" class="w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden relative max-h-[90vh] overflow-y-auto">
+  <div id="quick-view-content" class="w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden relative max-h-[90vh] overflow-y-auto border border-[#E5ECE8]">
     <!-- Loaded via HTMX -->
   </div>
 </div>
 
-<!-- ▓▓ Mobile Bottom Navigation Bar ▓▓ -->
+<!-- ▓▓ 7. Mobile Bottom Navigation Bar ▓▓ -->
 <div class="mobile-nav-bar md:hidden no-print">
   <a href="{% url 'store:home' %}" class="mobile-nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
     <span class="text-xl">🏠</span>
@@ -374,49 +462,37 @@
   <a href="{% url 'store:wishlist' %}" class="mobile-nav-item relative {% if request.resolver_match.url_name == 'wishlist' %}active{% endif %}">
     <span class="text-xl">🤍</span>
     <span>المفضلة</span>
-    <span class="absolute top-1 left-2 w-4 h-4 rounded-full text-[9px] font-black bg-rose-500 text-white flex items-center justify-center"
+    <span class="absolute top-1 left-2 w-4 h-4 rounded-full text-[9px] font-black bg-[#C98291] text-white flex items-center justify-center"
       x-show="wishlistCount > 0" x-text="wishlistCount">{{ wishlist_count }}</span>
   </a>
   <button @click="cartOpen = true" class="mobile-nav-item relative">
     <span class="text-xl">🛍️</span>
     <span>السلة</span>
-    <span class="absolute top-1 left-2 w-4 h-4 rounded-full text-[9px] font-black bg-red-500 text-white flex items-center justify-center"
+    <span class="absolute top-1 left-2 w-4 h-4 rounded-full text-[9px] font-black bg-[#A44668] text-white flex items-center justify-center"
       x-show="cartCount > 0" x-text="cartCount">{{ cart_count }}</span>
   </button>
 </div>
 
-<!-- ▓▓ Toast Notifications ▓▓ -->
+<!-- ▓▓ 8. Toast Notifications ▓▓ -->
 <div class="toast-container no-print" x-data="toastManager()">
   <template x-for="toast in toasts" :key="toast.id">
-    <div class="toast relative" :class="toast.type === 'success' ? 'border-green-200' : 'border-amber-200'">
-      <span x-text="toast.type === 'success' ? '✅' : 'ℹ️'"></span>
-      <span x-text="toast.message" class="font-semibold text-sm"></span>
+    <div class="toast relative" :class="toast.type === 'success' ? 'border-[#4E806A]' : 'border-[#C4954B]'">
+      <span x-text="toast.type === 'success' ? '🌿' : 'ℹ️'"></span>
+      <span x-text="toast.message" class="font-semibold text-xs sm:text-sm text-[#26332F]"></span>
       <div class="toast-bar" :style="`animation-duration: ${toast.duration}ms`"></div>
     </div>
   </template>
 </div>
 
-<!-- ▓▓ Alpine.js App ▓▓ -->
+<!-- ▓▓ 9. Alpine.js App State ▓▓ -->
 <script>
   function remshyApp() {
-    const savedTheme = localStorage.getItem('remshyTheme') || 'theme-sage';
     return {
-      theme: savedTheme,
       cartOpen: false,
       cartCount: {{ cart_count|default:0 }},
       wishlistCount: {{ wishlist_count|default:0 }},
       mobileMenuOpen: false,
       showPortfolioBar: true,
-
-      setTheme(name) {
-        this.theme = 'theme-' + name;
-        localStorage.setItem('remshyTheme', this.theme);
-        fetch('{% url "store:set_theme" %}', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': '{{ csrf_token }}'},
-          body: 'theme=' + name
-        });
-      },
 
       async toggleWishlist(productId, btnEl) {
         try {
@@ -428,7 +504,7 @@
           if (data.status === 'ok') {
             this.wishlistCount = data.wishlist_count;
             if (btnEl) {
-              btnEl.classList.toggle('text-rose-500', data.added);
+              btnEl.classList.toggle('text-[#C98291]', data.added);
               btnEl.innerHTML = data.added ? '❤️' : '🤍';
             }
             window.dispatchEvent(new CustomEvent('addToast', {
@@ -472,11 +548,8 @@
     const modal = document.getElementById('quick-view-modal');
     if (modal) modal.classList.add('hidden');
   }
-
-  document.documentElement.className = (localStorage.getItem('remshyTheme') || 'theme-sage') + ' scroll-smooth';
 </script>
 
 {% block extra_scripts %}{% endblock %}
 </body>
 </html>
-

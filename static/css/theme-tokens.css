@@ -1,74 +1,73 @@
 /**
- * REMSHY CLINICAL DERMOCOSMETICS — DESIGN TOKENS
- * Strict High-Contrast, Calm Luxury Clinical Aesthetics
+ * REMSHY CLINICAL DERMOCOSMETICS — REFINED PREMIUM COLOR SYSTEM
+ * Luxurious, Soft, High-Contrast Skincare & Pharmacy Palette
  */
 
 :root {
-  /* ── 1. Color Palette (Design Tokens) ─────────────────── */
-  --color-primary: #2A5741;         /* Deep Swiss Sage */
-  --color-primary-hover: #1E3F2F;   /* Darker Forest Sage */
-  --color-primary-light: #EBF3EE;   /* Soft Sage Tint */
-  --color-primary-ring: rgba(42, 87, 65, 0.18);
+  /* ─── 1. Central Design Tokens ─────────────────────────────────────────── */
+  --color-primary: #6F8F82;           /* أخضر ساج هادئ */
+  --color-primary-dark: #355C52;      /* أخضر غابة داكن */
+  --color-secondary: #8DA9B8;         /* أزرق ضبابي */
+  --color-background: #FBF8F3;        /* عاجي دافئ */
+  --color-surface: #FFFFFF;           /* أبيض دافئ */
+  --color-text: #26332F;              /* فحمي ناعم */
+  --color-text-muted: #66736D;        /* رمادي أخضر */
+  --color-accent: #C98291;            /* وردي غباري */
+  --color-sale: #A44668;              /* توتي هادئ للخصم */
+  --color-success: #4E806A;           /* أخضر طبيعي */
+  --color-warning: #C4954B;           /* ذهبي هادئ */
+  --color-danger: #B75D63;            /* أحمر ناعم */
 
-  --color-marine: #0E7490;          /* Thermal Marine Blue */
-  --color-marine-hover: #0369A1;
-  --color-marine-light: #F0F9FF;
+  /* ─── 2. Tint Derivations & Borders ────────────────────────────────────── */
+  --color-border: #E5ECE8;            /* حد ناعم بدرجة خضراء رمادية خفيفة */
+  --color-border-subtle: #EEF4F1;
+  --color-primary-light: #F0F5F3;
+  --color-secondary-light: #EFF5F8;
+  --color-accent-light: #FAF0F2;
+  --color-sale-light: #F9EDF1;
+  --color-warning-light: #FBF7EE;
+  --color-danger-light: #FAF0F1;
+  --color-success-light: #EEF5F1;
 
-  --color-gold: #C5A059;            /* 24K Champagne Gold */
-  --color-gold-hover: #B88E3E;
-  --color-gold-light: #FDFBF7;
-  --color-gold-ring: rgba(197, 160, 89, 0.25);
+  /* Legacy mappings for backward compatibility */
+  --bg: var(--color-background);
+  --bg-card: var(--color-surface);
+  --text: var(--color-text);
+  --text-muted: var(--color-text-muted);
+  --primary: var(--color-primary-dark);
+  --primary-hover: var(--color-primary);
+  --accent: var(--color-accent);
+  --border: var(--color-border);
 
-  --color-bg-main: #FBF9F6;         /* Warm Alabaster */
-  --color-bg-card: #FFFFFF;         /* Pure Ivory White */
-  --color-bg-subtle: #F4EFEA;       /* Cashmere Neutral */
-  --color-bg-overlay: rgba(15, 23, 42, 0.65);
+  /* ─── 3. Elevation & Shadows ───────────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(38, 51, 47, 0.04);
+  --shadow-sm: 0 2px 6px rgba(38, 51, 47, 0.05);
+  --shadow-card: 0 4px 16px -2px rgba(53, 92, 82, 0.07), 0 2px 4px rgba(38, 51, 47, 0.03);
+  --shadow-card-hover: 0 12px 28px -4px rgba(53, 92, 82, 0.13), 0 4px 8px rgba(38, 51, 47, 0.04);
+  --shadow-drawer: -8px 0 32px rgba(38, 51, 47, 0.12);
+  --shadow-modal: 0 24px 48px -12px rgba(38, 51, 47, 0.2);
 
-  --color-text-main: #0F172A;       /* Obsidian Black (WCAG AAA) */
-  --color-text-muted: #52616B;      /* Sophisticated Slate Gray */
-  --color-text-light: #94A3B8;      /* Light Hint Gray */
-
-  --color-border: #E8E2D9;          /* Delicate Warm Border */
-  --color-border-subtle: #F0ECE6;
-
-  /* Status Colors */
-  --color-success: #059669;
-  --color-warning: #D97706;
-  --color-danger: #DC2626;
-  --color-info: #0284C7;
-
-  /* ── 2. Elevation & Shadows ───────────────────────────── */
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
-  --shadow-card: 0 4px 16px -2px rgba(42, 87, 65, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
-  --shadow-card-hover: 0 14px 30px -4px rgba(42, 87, 65, 0.12), 0 6px 12px -2px rgba(0, 0, 0, 0.04);
-  --shadow-drawer: -8px 0 32px rgba(15, 23, 42, 0.15);
-  --shadow-modal: 0 24px 48px -12px rgba(15, 23, 42, 0.25);
-
-  /* ── 3. Border Radii ──────────────────────────────────── */
+  /* ─── 4. Border Radii ──────────────────────────────────────────────────── */
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 18px;
+  --radius-lg: 20px;                  /* 18px-24px للبطاقات كما في المواصفات */
   --radius-xl: 24px;
   --radius-pill: 9999px;
 
-  /* ── 4. Typography Scale ──────────────────────────────── */
+  /* ─── 5. Typography Scale ──────────────────────────────────────────────── */
   --font-arabic: 'Cairo', 'Readex Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-clinical: 'Readex Pro', 'Cairo', sans-serif;
-
-  /* ── 5. Layout Constants ──────────────────────────────── */
   --card-img-height: 230px;
-  --navbar-height: 74px;
 }
 
-/* ─── Global Base Settings ─────────────────────────────── */
+/* ─── Global Base Settings ─────────────────────────────────────────────── */
 * {
   font-family: var(--font-arabic);
   box-sizing: border-box;
 }
 
 body {
-  background-color: var(--color-bg-main);
-  color: var(--color-text-main);
+  background-color: var(--color-background);
+  color: var(--color-text);
   direction: rtl;
   text-align: right;
   overflow-x: hidden;
@@ -78,7 +77,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ─── Accessibility & Reduced Motion ───────────────────── */
+/* ─── Accessibility & Reduced Motion ───────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.001ms !important;
@@ -88,13 +87,22 @@ body {
   }
 }
 
-/* ─── Luxury Component Styles ──────────────────────────── */
+/* ─── Navbar Glassmorphism ─────────────────────────────────────────────── */
+.navbar-glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--color-border);
+  transition: all 0.25s ease;
+}
+
+/* ─── Refined Skincare Product Card ─────────────────────────────────────── */
 .luxury-card {
-  background: var(--color-bg-card);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -103,7 +111,7 @@ body {
 .luxury-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-card-hover);
-  border-color: rgba(42, 87, 65, 0.25);
+  border-color: rgba(111, 143, 130, 0.4);
 }
 
 /* Product Card Fixed Image Container */
@@ -111,11 +119,11 @@ body {
   position: relative;
   width: 100%;
   height: var(--card-img-height);
-  background: linear-gradient(180deg, #F9F7F4 0%, #FFFFFF 100%);
+  background: linear-gradient(180deg, #F5F8F6 0%, #FFFFFF 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 1.25rem;
   overflow: hidden;
 }
 
@@ -125,16 +133,16 @@ body {
   width: auto;
   height: auto;
   object-fit: contain;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .luxury-card:hover .product-image-container img {
   transform: scale(1.05);
 }
 
-/* Scientific Indicators */
+/* ─── Scientific Indicators ─────────────────────────────────────────────── */
 .sci-gauge {
-  background: var(--color-bg-subtle);
+  background: var(--color-border-subtle);
   border-radius: 999px;
   height: 5px;
   overflow: hidden;
@@ -146,7 +154,7 @@ body {
   transition: width 0.6s ease;
 }
 
-/* Pill Badges */
+/* ─── Pill Badges ───────────────────────────────────────────────────────── */
 .badge-clinical {
   font-size: 0.68rem;
   font-weight: 700;
@@ -163,42 +171,44 @@ body {
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--color-primary);
+  color: var(--color-primary-dark);
   background: var(--color-primary-light);
+  border: 1px solid #DCE7E2;
   padding: 0.2rem 0.55rem;
   border-radius: 6px;
 }
 
 .badge-bestseller {
-  background: #FEF3C7;
-  color: #92400E;
-  border: 1px solid #FDE68A;
+  background: var(--color-accent-light);
+  color: var(--color-sale);
+  border: 1px solid #F3D7DE;
 }
 
 .badge-new {
-  background: #E0F2FE;
-  color: #075985;
-  border: 1px solid #BAE6FD;
+  background: var(--color-secondary-light);
+  color: #4F7385;
+  border: 1px solid #D4E4EC;
 }
 
 .badge-featured {
-  background: #FDF8ED;
-  color: #B88E3E;
-  border: 1px solid #F3E5AB;
+  background: var(--color-warning-light);
+  color: #966C28;
+  border: 1px solid #EFE2C5;
 }
 
 .badge-sale {
-  background: #FEE2E2;
-  color: #991B1B;
-  border: 1px solid #FECACA;
+  background: var(--color-sale-light);
+  color: var(--color-sale);
+  border: 1px solid #F2D6DF;
 }
 
-/* Luxury Buttons */
+/* ─── Unified Buttons System ────────────────────────────────────────────── */
 .btn-clinical-primary {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-dark);
   color: #FFFFFF !important;
   font-weight: 700;
   font-size: 0.88rem;
+  min-height: 44px;
   padding: 0.65rem 1.4rem;
   border-radius: var(--radius-md);
   border: none;
@@ -207,77 +217,146 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  transition: background-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
-  box-shadow: 0 2px 8px rgba(42, 87, 65, 0.2);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(53, 92, 82, 0.18);
 }
 
 .btn-clinical-primary:hover {
-  background-color: var(--color-primary-hover);
+  background-color: var(--color-primary);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(42, 87, 65, 0.3);
+  box-shadow: 0 4px 14px rgba(53, 92, 82, 0.25);
 }
 
 .btn-clinical-primary:active {
-  transform: translateY(0);
+  transform: scale(0.98);
+}
+
+.btn-clinical-primary:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .btn-clinical-outline {
-  background-color: transparent;
-  color: var(--color-primary) !important;
+  background-color: var(--color-surface);
+  color: var(--color-primary-dark) !important;
   font-weight: 700;
   font-size: 0.88rem;
+  min-height: 44px;
   padding: 0.6rem 1.35rem;
   border-radius: var(--radius-md);
-  border: 1.5px solid var(--color-primary);
+  border: 1.5px solid var(--color-primary-dark);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  transition: background-color 0.18s ease, color 0.18s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
 
 .btn-clinical-outline:hover {
   background-color: var(--color-primary-light);
+  color: var(--color-primary-dark) !important;
+}
+
+.btn-clinical-outline:active {
+  transform: scale(0.98);
+}
+
+.btn-clinical-outline:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn-clinical-danger {
+  background-color: var(--color-danger);
+  color: #FFFFFF !important;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-clinical-danger:hover {
+  background-color: #A34A50;
+}
+
+.btn-clinical-danger:active {
+  transform: scale(0.98);
 }
 
 .btn-clinical-icon {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-card);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
-  color: var(--color-text-main);
+  color: var(--color-text);
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  transition: background 0.18s, border-color 0.18s, transform 0.12s;
 }
 
 .btn-clinical-icon:hover {
   background: var(--color-primary-light);
   border-color: var(--color-primary);
-  color: var(--color-primary);
-  transform: scale(1.05);
+  color: var(--color-primary-dark);
+  transform: scale(1.06);
 }
 
-/* Sticky Bottom Mobile Bar */
+.btn-clinical-icon:active {
+  transform: scale(0.95);
+}
+
+/* ─── Form Inputs & Dropdowns ───────────────────────────────────────────── */
+.form-input-skincare,
+input[type="text"],
+input[type="search"],
+select {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.85rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.form-input-skincare:focus,
+input[type="text"]:focus,
+input[type="search"]:focus,
+select:focus {
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(111, 143, 130, 0.18);
+  outline: none;
+}
+
+/* ─── Sticky Bottom Mobile Bar ──────────────────────────────────────────── */
 .sticky-bottom-mobile-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-top: 1px solid var(--color-border);
   padding: 0.75rem 1rem;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 -4px 18px rgba(38, 51, 47, 0.06);
 }
 
 @media (min-width: 768px) {
@@ -286,7 +365,7 @@ body {
   }
 }
 
-/* Mobile Bottom Navigation Bar */
+/* ─── Mobile Bottom Navigation Bar ──────────────────────────────────────── */
 .mobile-nav-bar {
   position: fixed;
   bottom: 0;
@@ -300,7 +379,7 @@ body {
   align-items: center;
   justify-content: space-around;
   z-index: 90;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 -2px 10px rgba(38, 51, 47, 0.04);
 }
 
 @media (min-width: 768px) {
@@ -319,23 +398,25 @@ body {
   color: var(--color-text-muted);
   text-decoration: none;
   gap: 2px;
+  transition: color 0.15s ease;
 }
 
-.mobile-nav-item.active, .mobile-nav-item:hover {
-  color: var(--color-primary);
+.mobile-nav-item.active,
+.mobile-nav-item:hover {
+  color: var(--color-primary-dark);
 }
 
-/* Clean List View for Catalog */
+/* ─── Clean List View for Catalog ───────────────────────────────────────── */
 .product-list-view .luxury-card {
   flex-direction: row;
   align-items: center;
-  padding: 1rem;
+  padding: 1.25rem;
   gap: 1.5rem;
 }
 
 .product-list-view .product-image-container {
-  width: 160px;
-  height: 160px;
+  width: 170px;
+  height: 170px;
   flex-shrink: 0;
   border-radius: var(--radius-md);
 }

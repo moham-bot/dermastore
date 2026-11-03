@@ -57,19 +57,25 @@ assert res.status_code == 200, f"Wishlist page returned {res.status_code}"
 assert product.name.encode('utf-8') in res.content, "Product missing from wishlist page"
 print("[PASS] 5. Wishlist toggle & Wishlist page render properly (HTTP 200)")
 
-# 6. Test Interactive clinical tools
-tools = [
+# 6. Test Interactive clinical tools & pages
+pages = [
     '/face-mapper/',
     '/consultant/',
     '/compatibility-lab/',
     '/skin-cycling/',
     '/compare/',
     '/inci-decoder/',
+    '/bundles/',
+    '/cart/',
+    '/checkout/',
 ]
-for tool in tools:
-    r = client.get(tool)
-    assert r.status_code == 200, f"Tool {tool} failed with {r.status_code}"
-print("[PASS] 6. All 6 clinical interactive tools verified (HTTP 200)")
+for p in pages:
+    r = client.get(p)
+    if p == '/checkout/':
+        assert r.status_code in (200, 302), f"Page {p} failed with {r.status_code}"
+    else:
+        assert r.status_code == 200, f"Page {p} failed with {r.status_code}"
+print("[PASS] 6. All clinical tools & pages (bundles, cart, checkout) verified (HTTP 200)")
 
 # 7. Test Admin login & access
 from django.contrib.auth.models import User
